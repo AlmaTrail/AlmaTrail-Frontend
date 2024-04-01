@@ -36,7 +36,8 @@ export default function Home() {
   ];
   return (
     <main>
-      <div className="mx-auto bg-[#3b0764] flex justify-center pb-2 items-center relative z-0">
+      <div className = "h-screen">
+      <div className="h-3/4 mx-auto bg-[#3b0764] flex justify-center pb-2 items-center relative z-0">
         <Navbar />
         <div className="flex flex-col lg:flex-row justify-center lg:justify-between items-center gap-5 sm:mt-24 md:mt-24 lg:mt-24">
           <div className="flex flex-col gap-4 sm:justify-center sm:items-center md:justify-center md:items-center lg:gap-10">
@@ -59,9 +60,10 @@ export default function Home() {
             alt=""
           />
         </div>
-      </div>
-      <div className='pt-12 bg-zinc-950'>
+              </div>
+      <div className="h-1/4 pt-12 bg-violet-50">
         <CountrySection data={data}/>
+      </div>
       </div>
     </main>
   );
