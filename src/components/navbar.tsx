@@ -37,7 +37,8 @@ const Navbar = () => {
     <div className="bg-white rounded-full py-2 fixed top-5 z-10">
       <div className="mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
         <div className="flex items-center mr-40 lg:mr-80">
-          <span className="font-bold">AlmaTrail</span>
+          <span className="text-white bg-auto bg-[#3b0764] font-bold">Alma</span>
+          <span className="text-[#3b0764] font-bold">Trail</span>
         </div>
         <div className="hidden lg:flex lg:items-center">
           <ul className="flex space-x-6">
@@ -54,10 +55,7 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="hidden lg:flex">
-          <button
-            type="button"
-            className="py-1 px-5 ml-3 bg-black text-white rounded-full"
-          >
+          <button className="py-1 px-5 ml-5 bg-[#3b0764] rounded-md text-white font-semibold shadow-sm transition duration-200 hover:bg-white hover:text-[#3b0764] border-2 border-transparent hover:border-[#3b0764]">
             Sign up
           </button>
         </div>
@@ -80,10 +78,7 @@ const Navbar = () => {
                 </li>
               ))}
             </ul>
-            <button
-              type="button"
-              className="w-full bg-black py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-black"
-            >
+            <button className="w-full bg-[#3b0764] rounded-md py-2 text-white font-semibold shadow-sm transition duration-200 hover:bg-white hover:text-[#3b0764] border-2 border-transparent hover:border-[#3b0764]">
               Sign Up
             </button>
           </div>
