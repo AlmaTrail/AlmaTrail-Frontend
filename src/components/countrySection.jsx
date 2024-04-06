@@ -19,7 +19,7 @@ const CountrySection = () => {
   };
 
   return (
-    <div className="pt-8 bg-black">
+    <div className='h-1/4 pt-12 bg-black'>
       <div className="flex items-center">
         <FaChevronLeft
           onClick={handlePrev}
