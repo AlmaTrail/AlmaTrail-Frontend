@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React from "react";
 import Hero from "../../public/images/hero_1.png";
@@ -17,7 +17,7 @@ const HeroSection = () => {
           We have the best mentors for you <br className="lg:flex hidden" />{" "}
           Connect Today..
         </p>
-        <button className="btn btn-sm lg:btn-lg bg-[#524fd5] text-white rounded-full py-2 w-36 lg:w-44 capitalize">
+        <button className="btn btn-sm lg:btn-lg bg-[#524fd5] text-white rounded-full py-3 w-36 lg:w-44 capitalize">
           Sign Up
         </button>
       </div>
