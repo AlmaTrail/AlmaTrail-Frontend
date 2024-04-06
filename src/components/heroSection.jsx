@@ -17,7 +17,7 @@ const HeroSection = () => {
           We have the best mentors for you <br className="lg:flex hidden" />{" "}
           Connect Today..
         </p>
-        <button className="btn btn-sm lg:btn-lg bg-[#524fd5] text-white rounded-full py-3 w-36 lg:w-44 capitalize">
+        <button className="flex-grow py-2 bg-white rounded-md text-[#3b0764] font-semibold shadow-sm transition duration-200 hover:bg-[#3b0764] hover:text-white border-2 border-transparent hover:border-white">
           Sign Up
         </button>
       </div>
