@@ -26,7 +26,7 @@ const CountrySection = () => {
           style={{ width: "50px", height: "50px" }} // Adjust width and height here
           className="cursor-pointer text-white"
         />
-        <div className="flex flex-wrap justify-center items-center">
+        <div className="w-full flex flex-wrap justify-center items-center">
           {countries
             .slice(activeIndex, activeIndex + 6)
             .map((country, index) => (
