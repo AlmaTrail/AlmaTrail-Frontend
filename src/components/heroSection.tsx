@@ -17,9 +17,14 @@ const HeroSection = () => {
           We have the best mentors for you <br className="lg:flex hidden" />{" "}
           Connect Today..
         </p>
+        <div className="flex justify-around space-x-4">
         <button className="flex-grow py-2 bg-white rounded-md text-[#3b0764] font-semibold shadow-sm transition duration-200 hover:bg-[#3b0764] hover:text-white border-2 border-transparent hover:border-white">
           Sign Up
         </button>
+        <button className="flex-grow py-2 bg-white rounded-md text-[#3b0764] font-semibold shadow-sm transition duration-200 hover:bg-[#3b0764] hover:text-white border-2 border-transparent hover:border-white">
+          Login
+        </button>
+        </div>
       </div>
       <Image
         className="hidden md:hidden lg:block lg:ml-16 w-96 h-96"
