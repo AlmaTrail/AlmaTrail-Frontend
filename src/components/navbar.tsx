@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 // Navbar.js
 import { useState } from 'react';
 import { CiMenuFries } from "react-icons/ci";
@@ -56,7 +57,7 @@ const Navbar = () => {
         </div>
         <div className="hidden lg:flex">
           <button className="py-1 px-5 ml-5 bg-[#3b0764] rounded-md text-white font-semibold shadow-sm transition duration-200 hover:bg-white hover:text-[#3b0764] border-2 border-transparent hover:border-[#3b0764]">
-            Sign up
+          <Link href={'/user_signup'}>Sign Up</Link>
           </button>
         </div>
         <div className="lg:hidden">
@@ -79,7 +80,7 @@ const Navbar = () => {
               ))}
             </ul>
             <button className="w-full bg-[#3b0764] rounded-md py-2 text-white font-semibold shadow-sm transition duration-200 hover:bg-white hover:text-[#3b0764] border-2 border-transparent hover:border-[#3b0764]">
-              Sign Up
+            <Link href={'/user_signup'}>Sign Up</Link>
             </button>
           </div>
         )}

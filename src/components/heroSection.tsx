@@ -3,6 +3,7 @@
 import React from "react";
 import Hero from "../../public/images/hero_1.png";
 import Image from "next/image";
+import Link from "next/link";
 
 const HeroSection = () => {
   return (
@@ -18,12 +19,12 @@ const HeroSection = () => {
           Connect Today..
         </p>
         <div className="flex justify-around space-x-4">
-        <button className="flex-grow py-2 bg-white rounded-md text-[#3b0764] font-semibold shadow-sm transition duration-200 hover:bg-[#3b0764] hover:text-white border-2 border-transparent hover:border-white">
-          Sign Up
-        </button>
-        <button className="flex-grow py-2 bg-white rounded-md text-[#3b0764] font-semibold shadow-sm transition duration-200 hover:bg-[#3b0764] hover:text-white border-2 border-transparent hover:border-white">
-          Login
-        </button>
+          <button className="flex-grow py-2 bg-white rounded-md text-[#3b0764] font-semibold shadow-sm transition duration-200 hover:bg-[#3b0764] hover:text-white border-2 border-transparent hover:border-white">
+            <Link href={'/user_signup'}>Sign Up</Link>
+          </button>
+          <button className="flex-grow py-2 bg-white rounded-md text-[#3b0764] font-semibold shadow-sm transition duration-200 hover:bg-[#3b0764] hover:text-white border-2 border-transparent hover:border-white">
+            Login
+          </button>
         </div>
       </div>
       <Image
