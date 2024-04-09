@@ -7,23 +7,20 @@ import Link from "next/link";
 
 const HeroSection = () => {
   return (
-    <div className="flex flex-col lg:flex-row justify-center lg:justify-between items-center gap-5 sm:mt-24 md:mt-24 lg:mt-24">
+    <div className="flex flex-col lg:flex-row justify-center lg:justify-between items-center gap-5 mt-8">
       <div className="flex flex-col gap-4 sm:justify-center sm:items-center md:justify-center md:items-center lg:gap-10">
         <p className="text-2xl text-white font-bold sm:text-4xl sm:text-center md:text-center md:text-5xl lg:text-6xl">
           A Unique approach <br className="lg:flex hidden" /> to know about your{" "}
           <br className="lg:flex hidden text-blue-500" />{" "}
           <span className="text-blue-500">dream college.</span>.
         </p>
-        <p className="text-2xl sm:text-base sm:text-center md:text-center text-white font-bold">
+        <p className="text-3xl sm:text-base sm:text-center md:text-center text-white font-bold">
           We have the best mentors for you <br className="lg:flex hidden" />{" "}
           Connect Today..
         </p>
-        <div className="flex justify-around space-x-4">
-          <button className="flex-grow py-2 bg-white rounded-md text-[#3b0764] font-semibold shadow-sm transition duration-200 hover:bg-[#3b0764] hover:text-white border-2 border-transparent hover:border-white">
-            <Link href={'/user_signup'}>Sign Up</Link>
-          </button>
-          <button className="flex-grow py-2 bg-white rounded-md text-[#3b0764] font-semibold shadow-sm transition duration-200 hover:bg-[#3b0764] hover:text-white border-2 border-transparent hover:border-white">
-            Login
+        <div className="flex">
+          <button className="py-2 px-2 bg-white rounded-md text-[#3b0764] font-semibold shadow-sm transition duration-200 hover:bg-[#3b0764] hover:text-white border-2 border-transparent hover:border-white">
+            <Link href={'/user_signup'}>Connect 1:1 with Mentor</Link>
           </button>
         </div>
       </div>
