@@ -12,8 +12,8 @@ function SignUp() {
             <div className="h-screen bg-[#3b0764] flex justify-center relative z-0">
                 <Navbar />
                 <div className="w-1/3 flex flex-col justify-center px-6 py-12">
-                    <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
-                        Sign up to your account
+                    <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-white">
+                        Sign up because you deserve
                     </h2>
                     <div className="mt-8">
                         <form className="space-y-6">
