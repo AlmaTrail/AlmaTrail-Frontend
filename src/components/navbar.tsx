@@ -38,8 +38,8 @@ const Navbar = () => {
     <div className="bg-white rounded-full py-2 fixed top-5 z-100">
       <div className="mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
         <div className="flex items-center mr-40 lg:mr-80">
-          <span className="text-white bg-auto bg-[#3b0764] font-bold">Alma</span>
-          <span className="text-[#3b0764] font-bold">Trail</span>
+          <span className="text-black bg-auto font-bold">AlmaTrail</span>
+          {/* <span className="text-[#3b0764] font-bold">Trail</span> */}
         </div>
         <div className="hidden lg:flex lg:items-center">
           <ul className="flex space-x-6">

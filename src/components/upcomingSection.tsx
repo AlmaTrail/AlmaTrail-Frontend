@@ -18,8 +18,8 @@ const UpcomingSection = () => {
       >
         Coming Soon
       </motion.h1>
-      <p className="text-white text-2xl">We are launching the user centric website soon</p>
-      <p className="text-white text-2xl flex justify-center items-center">Welcome</p>
+      <p className="text-white text-2xl font-bold">We are launching the user centric website soon</p>
+      <p className="text-white text-2xl flex justify-center items-center font-bold">We welcome you as a mentor   </p>
     </LampContainer>
   );
 }
