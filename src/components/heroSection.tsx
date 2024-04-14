@@ -20,7 +20,7 @@ const HeroSection = () => {
         </p>
         <div className="flex">
           <button className="py-2 px-2 bg-white rounded-md text-[#3b0764] font-semibold shadow-sm transition duration-200 hover:bg-[#3b0764] hover:text-white border-2 border-transparent hover:border-white">
-            <Link href={'/user_signup'}>Connect 1:1 with Mentor</Link>
+            <Link href={'/user_signup'}>Register As a Mentor </Link>
           </button>
         </div>
       </div>

@@ -4,6 +4,7 @@ import CountrySection from '@/components/countrySection';
 import HeroSection from '@/components/heroSection';
 import FeatureSection from '@/components/featureSection';
 import DatashowSection from '@/components/datashowSection';
+import UpcomingSection from '@/components/upcomingSection';
 export default function Home() {
   return (
     <main>
@@ -11,9 +12,8 @@ export default function Home() {
         <Navbar />
         <HeroSection />
       </div>
-      <DatashowSection />
-      <FeatureSection />
-      <CountrySection />
+      <UpcomingSection/>
+      <FeatureSection/>
     </main>
   );
 }
