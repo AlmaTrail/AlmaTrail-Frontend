@@ -1,10 +1,9 @@
 'use client';
 import Navbar from '@/components/navbar';
-import CountrySection from '@/components/countrySection';
 import HeroSection from '@/components/heroSection';
 import FeatureSection from '@/components/featureSection';
-import DatashowSection from '@/components/datashowSection';
 import UpcomingSection from '@/components/upcomingSection';
+import UniversitiesSection from '../components/universitiesSection';
 export default function Home() {
   return (
     <main>
@@ -14,6 +13,7 @@ export default function Home() {
       </div>
       <UpcomingSection/>
       <FeatureSection/>
+      <UniversitiesSection/>
     </main>
   );
 }

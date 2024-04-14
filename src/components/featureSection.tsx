@@ -16,7 +16,6 @@ const FeatureSection = () => {
                     <div className='h-64 col-span-2 bg-white rounded-lg shadow-2xl'>
 
                     </div>
-
                     <div className='h-64 col-start-2 col-span-2 bg-white rounded-lg'>
 
                     </div>
