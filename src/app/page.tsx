@@ -4,6 +4,7 @@ import HeroSection from '@/components/heroSection';
 import FeatureSection from '@/components/featureSection';
 import UpcomingSection from '@/components/upcomingSection';
 import UniversitiesSection from '../components/universitiesSection';
+import Faq from '../components/faq'
 export default function Home() {
   return (
     <main>
@@ -14,6 +15,7 @@ export default function Home() {
       <UpcomingSection />
       <FeatureSection />
       <UniversitiesSection />
+      <Faq/>
     </main>
   );
 }
