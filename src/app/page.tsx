@@ -11,9 +11,9 @@ export default function Home() {
         <Navbar />
         <HeroSection />
       </div>
-      <UpcomingSection/>
-      <FeatureSection/>
-      <UniversitiesSection/>
+      <UpcomingSection />
+      <FeatureSection />
+      <UniversitiesSection />
     </main>
   );
 }
