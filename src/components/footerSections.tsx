@@ -14,16 +14,13 @@ const FooterSection = () => {
         <>
             <footer className="bg-black shadow-lg">
                 <div className="container mx-auto  pt-[2rem] pb-4">
-                    {/* footer div all */}
-                    <div className="flex justify-between flex-row items-start  md:gap-[5rem] text-left">
-                        {/* logo side */}
-                        <div className="flex flex-col w-1/2 p-0 gap-8">
-                            <h1 className="text-6xl text-white">AlmaTrail</h1>
+                    <div className="flex justify-between flex-row items-start md:gap-[5rem] text-left">
+                        <div className="flex flex-col w-1/2 p-0 gap-6">
+                            <h1 className="text-6xl sm:text-4xl text-white">AlmaTrail</h1>
                             <p className="text-[15px] font-medium text-white">
                                 Make your dreams come true
                             </p>
-                            {/* socials */}
-                            <div className="flex gap-7 text-[18px] text-[#646464] justify-start">
+                            <div className="flex gap-7 sm:gap-4 text-[18px] text-[#646464] justify-start">
                                 {iconsTab.map(({ icon }, index) => {
                                     return (
                                         <div
@@ -42,9 +39,8 @@ const FooterSection = () => {
                         </div>
 
                         {/* right div */}
-                        <div className="flex flex-col gap-5 relative">
+                        <div className="flex flex-col gap-5 relative sm:hidden">
                             <p className="text-[16px]  text-white">About Us</p>
-
 
                             <p className="text-[16px]  text-white">
                                 Mentor Registration
@@ -58,7 +54,7 @@ const FooterSection = () => {
                             </p>
 
                         </div>
-                        <div className="flex flex-col gap-5 relative">
+                        <div className="flex flex-col gap-5 relative sm:ml-16">
                             <p className="text-[16px]  text-white">About Us</p>
 
 
@@ -74,9 +70,6 @@ const FooterSection = () => {
                             </p>
 
                         </div>
-
-                        {/* middle div */}
-                        <span></span>
                     </div>
                 </div>
             </footer>
