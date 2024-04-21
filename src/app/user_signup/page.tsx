@@ -9,7 +9,7 @@ function SignUp() {
 
     return (
         <main>
-            <div className="h-screen bg-[#3b0764] flex justify-center relative z-0">
+            <div className="h-screen bg-[#3b0764] flex justify-center relative">
                 <Navbar />
                 <div className="w-1/3 flex flex-col justify-center px-6 py-12">
                     <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-white">
