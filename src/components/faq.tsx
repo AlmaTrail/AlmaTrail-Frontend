@@ -30,7 +30,7 @@ const Section5 = () => {
     setFeedback(QNA[index].answer);
   };
   return (
-    <div className="bg-purple-950">
+    <div className="bg-[#1d0828]">
       <p className="flex justify-center text-4xl text-white pt-4 font-bold">Frequently Asked Questions</p>
       <div className="flex justify-between p-8 w-full gap-8">
         
@@ -39,7 +39,7 @@ const Section5 = () => {
             <div
               key={index}
               className={`lex items-center w-full p-3 rounded-md cursor-pointer ${
-                selected === index && !isFeedback ? "bg-blue-500 text-white" : "bg-white"
+                selected === index && !isFeedback ? "bg-[#654485] text-white" : "bg-white"
               }`}
               onClick={() => handleSelect(index)}
             >
@@ -47,7 +47,7 @@ const Section5 = () => {
             </div>
           ))}
           <div
-            className={`flex justify-between items-center w-full p-4 rounded-md cursor-pointer ${isFeedback ? "bg-blue-600 text-white" : "bg-white"
+            className={`flex justify-between items-center w-full p-4 rounded-md cursor-pointer ${isFeedback ? "bg-[#654485] text-white" : "bg-white"
               }`}
             onClick={() => {
               setIsFeedback(true);
@@ -68,7 +68,7 @@ const Section5 = () => {
           {isFeedback && (
             <div className="flex justify-start items-center w-full gap-3">
               <button
-                className="btn-cancel text-black shadow-md bg-white p-2 rounded-md hover:bg-blue-500 hover:text-white"
+                className="btn-cancel text-black shadow-md bg-white p-2 rounded-md"
                 onClick={() => {
                   setIsFeedback(false);
                   setFeedback(QNA[selected].answer);
@@ -77,7 +77,7 @@ const Section5 = () => {
                 Cancel
               </button>
               <button
-                className="btn-save text-black shadow-md bg-white p-2 rounded-md hover:bg-blue-500 hover:text-white"
+                className="btn-save text-black shadow-md bg-white p-2 rounded-md"
                 onClick={() => {
                   QNA[selected].answer = feedback;
                   setIsFeedback(false);

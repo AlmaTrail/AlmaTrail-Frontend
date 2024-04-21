@@ -12,7 +12,7 @@ const FooterSection = () => {
     ];
     return (
         <>
-            <footer className="bg-[#141414] shadow-lg">
+            <footer className="bg-black shadow-lg">
                 <div className="container mx-auto  pt-[2rem] pb-4">
                     {/* footer div all */}
                     <div className="flex justify-between flex-row items-start  md:gap-[5rem] text-left">
@@ -43,33 +43,33 @@ const FooterSection = () => {
 
                         {/* right div */}
                         <div className="flex flex-col gap-5 relative">
-                            <p className="text-[16px]  text-[#646464]">About Us</p>
+                            <p className="text-[16px]  text-white">About Us</p>
 
 
-                            <p className="text-[16px]  text-[#646464]">
+                            <p className="text-[16px]  text-white">
                                 Mentor Registration
                             </p>
 
-                            <p className="text-[16px] text-[#646464]">
+                            <p className="text-[16px] text-white">
                                 Feedback
                             </p>
-                            <p className="text-[16px] text-[#646464]">
+                            <p className="text-[16px] text-white">
                                 Universities
                             </p>
 
                         </div>
                         <div className="flex flex-col gap-5 relative">
-                            <p className="text-[16px]  text-[#646464]">About Us</p>
+                            <p className="text-[16px]  text-white">About Us</p>
 
 
-                            <p className="text-[16px]  text-[#646464]">
+                            <p className="text-[16px]  text-white">
                                 Mentor Registration
                             </p>
 
-                            <p className="text-[16px] text-[#646464]">
+                            <p className="text-[16px] text-white">
                                 Feedback
                             </p>
-                            <p className="text-[16px] text-[#646464]">
+                            <p className="text-[16px] text-white">
                                 Privacy
                             </p>
 

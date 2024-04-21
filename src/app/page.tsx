@@ -9,7 +9,7 @@ import FooterSection from "../components/footerSections"
 export default function Home() {
   return (
     <main>
-      <div className="h-screen mx-auto bg-[#3b0764] flex justify-center pb-2 items-center relative z-60">
+      <div className="h-screen mx-auto bg-[#1d0828] flex justify-center pb-2 items-center relative">
         <Navbar />
         <HeroSection />
       </div>

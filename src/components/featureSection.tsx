@@ -4,7 +4,7 @@ import React from 'react'
 
 const FeatureSection = () => {
     return (
-        <div className='bg-purple-950 p-16 '>
+        <div className='bg-[#1d0828] p-16 '>
             <div className='flex justify-center items-center'>
                 <h2 className='text-center text-4xl font-bold text-white'>Benefits you will get as a Mentor</h2>
             </div>
