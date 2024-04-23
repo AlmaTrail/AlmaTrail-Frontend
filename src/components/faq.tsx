@@ -39,7 +39,7 @@ const Section5 = () => {
             <div
               key={index}
               className={`lex items-center w-full p-3 rounded-md cursor-pointer ${
-                selected === index && !isFeedback ? "bg-[#654485] text-white" : "bg-white"
+                selected === index && !isFeedback ? "bg-[#654485] text-white border-solid border-2 border-[white]" : "bg-white"
               }`}
               onClick={() => handleSelect(index)}
             >
