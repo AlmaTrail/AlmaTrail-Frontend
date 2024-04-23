@@ -5,7 +5,8 @@ import FeatureSection from '@/components/featureSection';
 import UpcomingSection from '@/components/upcomingSection';
 import UniversitiesSection from '../components/universitiesSection';
 import Faq from '../components/faq'
-import FooterSection from "../components/footerSections" 
+import FooterSection from "../components/footerSections" ;
+import DatashowSection from '@/components/datashowSection';
 export default function Home() {
   return (
     <main>
@@ -13,6 +14,7 @@ export default function Home() {
         <Navbar />
         <HeroSection />
       </div>
+      <DatashowSection/>
       <UpcomingSection />
       <FeatureSection />
       <UniversitiesSection />
