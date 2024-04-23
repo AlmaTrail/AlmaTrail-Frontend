@@ -25,7 +25,7 @@ const FooterSection = () => {
                                     return (
                                         <div
                                             key={index}
-                                            className="text-2xl bg-[#efefef] p-2 rounded-full hover:bg-[#ff0366] hover:text-white"
+                                            className="text-2xl bg-[#efefef] p-2 rounded-full hover:bg-purple-950 hover:text-white"
                                             style={{ transition: "all 0.3s" }}
                                         >
                                             {icon}
@@ -33,15 +33,15 @@ const FooterSection = () => {
                                     );
                                 })}
                             </div>
-                            <p className="text-[16px] font-medium text-[#646464]">
+                            <p className="text-[16px] font-medium text-white">
                                 Privacy Policy | © {new Date().getFullYear()} AlmaTrail <br />{" "}
                             </p>
                         </div>
 
                         <div className="flex flex-col gap-5 relative sm:hidden">
-                            <p className="text-[16px]  text-white">About Us</p>
+                            <p className="text-[16px] text-white">About Us</p>
 
-                            <p className="text-[16px]  text-white">
+                            <p className="text-[16px] text-white">
                                 Mentor Registration
                             </p>
 
