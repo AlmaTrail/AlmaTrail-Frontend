@@ -38,7 +38,6 @@ const FooterSection = () => {
                             </p>
                         </div>
 
-                        {/* right div */}
                         <div className="flex flex-col gap-5 relative sm:hidden">
                             <p className="text-[16px]  text-white">About Us</p>
 
