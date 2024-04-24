@@ -3,6 +3,13 @@ import Link from 'next/link';
 // Navbar.js
 import { useState } from 'react';
 import { CiMenuFries } from "react-icons/ci";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
+import SignupSection from './signupSection';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -55,13 +62,17 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="hidden lg:flex">
-          <button className="py-1 px-5 ml-5 bg-[#1d0828] rounded-md text-white font-semibold shadow-sm transition duration-200 hover:bg-white hover:text-[#3b0764] border-2 border-transparent hover:border-[#3b0764]">
-          <Link href={'/user_signup'}>Sign Up</Link>
-          </button>
+          {/* <Link href={'/user_signup'}>Sign Up</Link> */}
+          <Dialog>
+            <DialogTrigger className='py-1 px-5 ml-5 bg-[#1d0828] rounded-md text-white font-semibold shadow-sm transition duration-200 hover:bg-white hover:text-[#3b0764] border-2 border-transparent hover:border-[#3b0764]'>Sign Up</DialogTrigger>
+            <DialogContent>
+              <SignupSection />
+            </DialogContent>
+          </Dialog>
         </div>
         <div className="lg:hidden">
           <button onClick={toggleMenu} className="h-6 w-6 cursor-pointer">
-          <CiMenuFries />
+            <CiMenuFries />
           </button>
         </div>
         {isMenuOpen && (
@@ -79,7 +90,7 @@ const Navbar = () => {
               ))}
             </ul>
             <button className="w-full bg-[#1d0828] rounded-md py-2 text-white font-semibold shadow-sm transition duration-200 hover:bg-white hover:text-[#3b0764] border-2 border-transparent hover:border-[#3b0764]">
-            <Link href={'/user_signup'}>Sign up</Link>
+              <Link href={'/user_signup'}>Sign up</Link>
             </button>
           </div>
         )}
