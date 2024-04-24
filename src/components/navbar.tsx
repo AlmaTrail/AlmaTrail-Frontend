@@ -65,7 +65,7 @@ const Navbar = () => {
           {/* <Link href={'/user_signup'}>Sign Up</Link> */}
           <Dialog>
             <DialogTrigger className='py-1 px-5 ml-5 bg-[#1d0828] rounded-md text-white font-semibold shadow-sm transition duration-200 hover:bg-white hover:text-[#3b0764] border-2 border-transparent hover:border-[#3b0764]'>Sign Up</DialogTrigger>
-            <DialogContent>
+            <DialogContent className='m-0 p-0 rounded-xl'>
               <SignupSection />
             </DialogContent>
           </Dialog>
