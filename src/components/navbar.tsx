@@ -2,7 +2,8 @@
 import Link from 'next/link';
 // Navbar.js
 import { useState } from 'react';
-import { CiMenuFries } from "react-icons/ci";
+
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import {
   Dialog,
   DialogContent,
@@ -72,7 +73,7 @@ const Navbar = () => {
         </div>
         <div className="lg:hidden">
           <button onClick={toggleMenu} className="h-6 w-6 cursor-pointer">
-            <CiMenuFries />
+            <HamburgerMenuIcon />
           </button>
         </div>
         {isMenuOpen && (

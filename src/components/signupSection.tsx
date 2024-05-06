@@ -1,8 +1,5 @@
 "use client"
-
-import {
-    IconBrandGoogle,
-} from "@tabler/icons-react"; import { Button } from "./ui/button"
+import { Button } from "./ui/button"
 import {
     Card,
     CardContent,
@@ -27,11 +24,7 @@ const SignupSection = () => {
                 <CardContent className="grid gap-4">
                     <div className="grid grid-cols-2 gap-6">
                         <Button variant="outline">
-                            <IconBrandGoogle />
                             Github
-                        </Button>
-                        <Button variant="outline">
-                            <IconBrandGoogle />
                         </Button>
                     </div>
                     <div className="relative">
