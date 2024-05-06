@@ -2,20 +2,20 @@ import { useState } from "react";
 
 const QNA = [
   {
-    question: "How to register?",
-    answer: "Content..",
+    question: "What kind of time commitment is required to be a mentor?",
+    answer: "AlmaTrail offers flexibility. You can choose the level of engagement that suits you, with estimated time commitments outlined. \n\nWe recommend X hours per week for effective mentorship.",
   },
   {
-    question: "When you are starting?",
-    answer: "Content..",
+    question: "What qualifications do I need to be a mentor?",
+    answer: "You should be a current student (or recent graduate) at a university abroad.\n\nPassion for international education and a willingness to share your knowledge and experiences are key...",
   },
   {
-    question: "How we can use this thing?",
-    answer: "Content..",
+    question: "How do I register to be a mentor on AlmaTrail?",
+    answer: "Visit our website and click on the \"Unlock your inner yoda\" button. You'll be directed to a registration form",
   },
   {
-    question: "How we make money from this?",
-    answer: "Content..",
+    question: "What happens after I register?",
+    answer: "Once you register, your application will be reviewed by our team.\n\nIf selected, you'll complete a short onboarding process to familiarize yourself with the platform and best practices for mentoring.",
   },
 ];
 

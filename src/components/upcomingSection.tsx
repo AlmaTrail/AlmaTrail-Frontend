@@ -16,10 +16,9 @@ const UpcomingSection = () => {
         }}
         className="bg-gradient-to-br from-slate-50 to-slate-100 py-4 bg-clip-text text-center text-5xl font-medium tracking-tight text-transparent md:text-7xl"
       >
-        Coming Soon
+        Coming Soon!
       </motion.h1>
-      <p className="text-white text-2xl">We are launching the user centeric website soon</p>
-      <p className="text-white text-2xl flex justify-center items-center">We welcome you as a mentor   </p>
+      <p className="text-white text-2xl flex justify-center items-center">Level up guidance, level up experience</p>
     </LampContainer>
   );
 }
