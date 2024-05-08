@@ -22,7 +22,7 @@ const SignupSection = () => {
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4">
-                    <div className="grid grid-cols-2 gap-6">
+                    {/* <div className="grid grid-cols-2 gap-6">
                         <Button variant="outline">
                             Github
                         </Button>
@@ -36,13 +36,17 @@ const SignupSection = () => {
                                 Or continue with
                             </span>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="grid gap-2">
                         <Label htmlFor="email" className="text-white">Email</Label>
                         <Input id="email" type="email" placeholder="m@example.com" />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="password" className="text-white">Password</Label>
+                        <Input id="password" type="password" />
+                    </div>
+                    <div className="grid gap-2">
+                        <Label htmlFor="password" className="text-white"> Confirm Password</Label>
                         <Input id="password" type="password" />
                     </div>
                 </CardContent>
