@@ -20,7 +20,7 @@ const FeatureSection = () => {
                         <h3>Earn a side income: Fill up your cargo pockets with some extra cash you can make by just talking to students</h3>
                     </div>
                     <div className='col-start-4 col-span-3 h-64 bg-white rounded-lg'>
-                        <h3>Fulfillment Unlocked: Experience the satisfaction of knowing your mentorship has a lasting impact on a student's life and career.
+                        <h3>{`Fulfillment Unlocked: Experience the satisfaction of knowing your mentorship has a lasting impact on a student's life and career.`}
                         </h3>
                     </div>
                 </div>
