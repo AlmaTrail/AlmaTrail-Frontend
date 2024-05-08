@@ -4,7 +4,7 @@ import HeroSection from '@/components/heroSection';
 import FeatureSection from '@/components/featureSection';
 import UpcomingSection from '@/components/upcomingSection';
 import UniversitiesSection from '../components/universitiesSection';
-import Faq from '../components/faq'
+import FaqSection from '../components/faq'
 import FooterSection from "../components/footerSections";
 import IntroSection from '@/components/introSection';
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
       <IntroSection />
       <FeatureSection />
       <UniversitiesSection />
-      <Faq />
+      <FaqSection />
       <UpcomingSection />
       <FooterSection />
     </main>
