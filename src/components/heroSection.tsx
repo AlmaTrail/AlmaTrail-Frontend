@@ -9,18 +9,18 @@ const HeroSection = () => {
   return (
     <div className="flex flex-col lg:flex-row justify-center lg:justify-between items-center gap-5 mt-8">
       <div className="flex flex-col gap-4 sm:justify-center sm:items-center md:justify-center md:items-center lg:gap-10">
-        <p className="text-2xl text-white font-bold sm:text-4xl sm:text-center md:text-center md:text-5xl lg:text-6xl">
-        Bridge the Gap <br className="lg:flex hidden" /> Between Dream School and{" "}
+        <p className="text-2xl text-white font-bold sm:text-4xl sm:text-center md:text-center md:text-5xl lg:text-5xl">
+          Bridge the Gap <br className="lg:flex hidden" /> Between Dream School and{" "}
           <br className="lg:flex hidden text-blue-500" />{" "}
           <span className="text-yellow-500">Reality.</span>
         </p>
         <p className="text-3xl sm:text-base sm:text-center md:text-center text-white font-bold">
-        We Make it Happen <br className="lg:flex hidden" />{" "}
+          We Make it Happen <br className="lg:flex hidden" />{" "}
         </p>
         <div className="flex">
           <button className="py-2 px-2 bg-white rounded-md text-[#3b0764] font-semibold shadow-sm transition duration-200 hover:bg-[#3b0764] hover:text-white border-2 border-transparent hover:border-white">
             <div>
-            <Link href={'/user_signup'}>Unlock Your Inner Yoda </Link>
+              <Link href={'/user_signup'}>Unlock Your Inner Yoda </Link>
             </div>
           </button>
         </div>

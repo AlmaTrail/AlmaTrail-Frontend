@@ -1,6 +1,6 @@
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useState } from "react";
-import countries from "../data/countryData.js";
+import countries from "../config/countryData.js";
 import Image from "next/image.js";
 
 const CountrySection = () => {
