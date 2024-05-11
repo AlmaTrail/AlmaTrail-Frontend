@@ -2,24 +2,24 @@ import { useState } from "react";
 
 const QNA = [
   {
-    question: "How to register?",
-    answer: "Content..",
+    question: "kind of time commitment is required to be a peer?",
+    answer: "AlmaTrail offers flexibility. You can choose the level of engagement that suits you, with estimated time commitments outlined. \n\nWe recommend X hours per week for effective mentorship.",
   },
   {
-    question: "When you are starting?",
-    answer: "Content..",
+    question: "What qualifications do I need to be a mentor?",
+    answer: "You should be a current student (or recent graduate) at a university abroad.\n\nPassion for international education and a willingness to share your knowledge and experiences are key...",
   },
   {
-    question: "How we can use this thing?",
-    answer: "Content..",
+    question: "How do I register to be a mentor on AlmaTrail?",
+    answer: "Visit our website and click on the \"Unlock your inner yoda\" button. You'll be directed to a registration form",
   },
   {
-    question: "How we make money from this?",
-    answer: "Content..",
+    question: "What happens after I register?",
+    answer: "Once you register, your application will be reviewed by our team.\n\nIf selected, you'll complete a short onboarding process to familiarize yourself with the platform and best practices for mentoring.",
   },
 ];
 
-const Section5 = () => {
+const FaqSection = () => {
   const [selected, setSelected] = useState(0);
   const [isFeedback, setIsFeedback] = useState(false);
   const [feedback, setFeedback] = useState("");
@@ -32,13 +32,12 @@ const Section5 = () => {
   return (
     <div className="bg-[#1d0828]">
       <p className="flex justify-center text-4xl text-white pt-4 font-bold">Frequently Asked Questions</p>
-      <div className="flex justify-between p-8 w-full gap-8">
-
-        <div className="w-1/2 flex flex-col gap-2">
+      <div className="flex justify-center p-8 w-full gap-8">
+        <div className="w-2/5 flex flex-col gap-2">
           {QNA.map((qna, index) => (
             <div
               key={index}
-              className={`lex items-center w-full p-3 rounded-md cursor-pointer ${selected === index && !isFeedback ? "bg-[#654485] text-white border-solid border-2 border-[white]" : "bg-white"
+              className={`flex items-center w-full p-3 rounded-md cursor-pointer ${selected === index && !isFeedback ? "bg-[#654485] text-white border-solid border-2 border-[white]" : "bg-white"
                 }`}
               onClick={() => handleSelect(index)}
             >
@@ -46,7 +45,7 @@ const Section5 = () => {
             </div>
           ))}
           <div
-            className={`flex justify-between items-center w-full p-4 rounded-md cursor-pointer ${isFeedback ? "bg-[#654485] text-white border-solid border-2 border-[white]" : "bg-white"
+            className={`flex justify-between items-center w-full p-3 rounded-md cursor-pointer ${isFeedback ? "bg-[#654485] text-white border-solid border-2 border-[white]" : "bg-white"
               }`}
             onClick={() => {
               setIsFeedback(true);
@@ -56,11 +55,11 @@ const Section5 = () => {
             <p className="cursor-pointer">Feedback</p>
           </div>
         </div>
-        <div className="w-1/2">
+        <div className="w-2/5">
           <textarea
             value={isFeedback ? feedback : QNA[selected].answer}
             disabled={!isFeedback}
-            className="w-full p-4 rounded-md bg-white"
+            className="w-full p-3 rounded-md bg-white"
             rows={10}
             onChange={(e) => setFeedback(e.target.value)}
           />
@@ -92,4 +91,4 @@ const Section5 = () => {
   );
 };
 
-export default Section5;
+export default FaqSection;

@@ -4,8 +4,9 @@ import HeroSection from '@/components/heroSection';
 import FeatureSection from '@/components/featureSection';
 import UpcomingSection from '@/components/upcomingSection';
 import UniversitiesSection from '../components/universitiesSection';
-import Faq from '../components/faq'
-import FooterSection from "../components/footerSections" 
+import FaqSection from '../components/faq'
+import FooterSection from "../components/footerSections";
+import IntroSection from '@/components/introSection';
 export default function Home() {
   return (
     <main>
@@ -13,11 +14,12 @@ export default function Home() {
         <Navbar />
         <HeroSection />
       </div>
-      <UpcomingSection />
+      <IntroSection />
       <FeatureSection />
       <UniversitiesSection />
-      <Faq/>
-      <FooterSection/>
+      <FaqSection />
+      <UpcomingSection />
+      <FooterSection />
     </main>
   );
 }

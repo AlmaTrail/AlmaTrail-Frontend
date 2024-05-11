@@ -8,25 +8,25 @@ const DatashowSection = () => {
     const [storyCount, setStoryCount] = useState(0);
 
     return (
-        <div className="flex justify-center items-center p-28 gap-16">
+        <div className="flex justify-center items-center p-14 gap-16">
             <div className="flex flex-col">
                 <h1 className="text-6xl font-bold flex justify-center">4.6</h1>
-                <p className="text-xl">80K Reviews</p>
+                <p>80K Reviews</p>
             </div>
             <div className="h-6 w-1 bg-purple-950"></div>
             <div className="flex flex-col">
                 <h1 className="text-6xl font-bold flex justify-center">3M</h1>
-                <p className="text-xl">Successfull Sessions</p>
+                <p>Successfull Sessions</p>
             </div>
             <div className="h-6 w-1 bg-purple-950"></div>
             <div className="flex flex-col">
                 <h1 className="text-6xl font-bold flex justify-center">2K+</h1>
-                <p className="text-xl">Great Peers</p>
+                <p>Great Peers</p>
             </div>
             <div className="h-6 w-1 bg-purple-950"></div>
             <div className="flex flex-col">
                 <h1 className="text-6xl font-bold flex justify-center">5k+</h1>
-                <p className="text-xl">Success Stories</p>
+                <p>Success Stories</p>
             </div>
         </div>
     )
