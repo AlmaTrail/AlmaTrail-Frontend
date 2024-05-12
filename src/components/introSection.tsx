@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import IntroImage from "../../public/images/introImage.jpg"
+import { AiOutlineThunderbolt } from "react-icons/ai";
 
 const IntroSection = () => {
     return (
@@ -14,14 +15,34 @@ const IntroSection = () => {
                         early participants. We will give the great offers to the early registeration. Stay tuned.</p>
                 </div>
             </div>
-            <div className='flex flex-row py-8 px-10 justify-center gap-16'>
-                <div className='rounded-lg h-40 w-40 bg-slate-800'>
+            <div className='flex flex-row py-10 px-10 justify-center gap-16'>
+                <div className='rounded-lg h-52 w-52 border-2 border-solid border-[#1d0828]'>
+                    <div className='mt-3 flex flex-col ml-3'>
+                        <AiOutlineThunderbolt className='w-10 h-10' />
+                        <p className='font-bold mt-2'>Money Making</p>
+                        <p className='text-slate-500 text-sm mt-2'>we give the platform where you can make money speedly by contributing to the society</p>
+                    </div>
                 </div>
-                <div className='rounded-lg h-40 w-40 bg-slate-800'>
+                <div className='rounded-lg h-52 w-52 border-2 border-solid border-[#1d0828]'>
+                    <div className='mt-3 flex flex-col ml-3'>
+                        <AiOutlineThunderbolt className='w-10 h-10' />
+                        <p className='font-bold mt-2'>Money Making</p>
+                        <p className='text-slate-500 text-sm mt-2'>we give the platform where you can make money speedly by contributing to the society</p>
+                    </div>
                 </div>
-                <div className='rounded-lg h-40 w-40 bg-slate-800'>
+                <div className='rounded-lg h-52 w-52 border-2 border-solid border-[#1d0828]'>
+                    <div className='mt-3 flex flex-col ml-3'>
+                        <AiOutlineThunderbolt className='w-10 h-10' />
+                        <p className='font-bold mt-2'>Money Making</p>
+                        <p className='text-slate-500 text-sm mt-2'>we give the platform where you can make money speedly by contributing to the society</p>
+                    </div>
                 </div>
-                <div className='rounded-lg h-40 w-40 bg-slate-800'>
+                <div className='rounded-lg h-52 w-52 border-2 border-solid border-[#1d0828]'>
+                    <div className='mt-3 flex flex-col ml-3'>
+                        <AiOutlineThunderbolt className='w-10 h-10' />
+                        <p className='font-bold mt-2'>Money Making</p>
+                        <p className='text-slate-500 text-sm mt-2'>we give the platform where you can make money speedly by contributing to the society</p>
+                    </div>
                 </div>
             </div>
         </div>
