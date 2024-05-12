@@ -16,7 +16,7 @@ export default function Home() {
       </div>
       <IntroSection />
       <FeatureSection />
-      <UniversitiesSection />
+      {/* <UniversitiesSection /> */}
       <FaqSection />
       <UpcomingSection />
       <FooterSection />
