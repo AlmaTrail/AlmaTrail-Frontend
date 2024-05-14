@@ -15,33 +15,32 @@ const IntroSection = () => {
                         early participants. We will give the great offers to the early registeration. Stay tuned.</p>
                 </div>
             </div>
-            <div className='flex flex-row py-10 px-10 justify-center gap-16'>
-                <div className='rounded-lg h-52 w-52 border-2 border-solid border-[#1d0828]'>
-                    <div className='mt-3 flex flex-col ml-3'>
-                        <AiOutlineThunderbolt className='w-10 h-10' />
-                        <p className='font-bold mt-2'>Money Making</p>
-                        <p className='text-slate-500 text-sm mt-2'>we give the platform where you can make money speedly by contributing to the society</p>
+            <div className='flex flex-row py-7 px-10 justify-center gap-16'>
+                <div className='w-52'>
+                    <div className="mt-3 flex flex-col ml-3 justify-center items-center">
+                        <div className="text-[#1d0828] hover:text-white hover:bg-[#1d0828] border-2 border-[#1d0828] rounded-full p-4">
+                            <AiOutlineThunderbolt className="w-10 h-10" />
+                        </div>
+                        <p className="font-bold mt-2">Money Making</p>
+                        <p className="text-slate-500 text-sm mt-2">we give the platform the best</p>
                     </div>
                 </div>
-                <div className='rounded-lg h-52 w-52 border-2 border-solid border-[#1d0828]'>
-                    <div className='mt-3 flex flex-col ml-3'>
-                        <AiOutlineThunderbolt className='w-10 h-10' />
-                        <p className='font-bold mt-2'>Money Making</p>
-                        <p className='text-slate-500 text-sm mt-2'>we give the platform where you can make money speedly by contributing to the society</p>
+                <div className='w-52'>
+                    <div className="mt-3 flex flex-col ml-3 justify-center items-center">
+                        <div className="text-[#1d0828] hover:text-white hover:bg-[#1d0828] border-2 border-[#1d0828] rounded-full p-4">
+                            <AiOutlineThunderbolt className="w-10 h-10" />
+                        </div>
+                        <p className="font-bold mt-2">Money Making</p>
+                        <p className="text-slate-500 text-sm mt-2">we give the platform the best</p>
                     </div>
                 </div>
-                <div className='rounded-lg h-52 w-52 border-2 border-solid border-[#1d0828]'>
-                    <div className='mt-3 flex flex-col ml-3'>
-                        <AiOutlineThunderbolt className='w-10 h-10' />
-                        <p className='font-bold mt-2'>Money Making</p>
-                        <p className='text-slate-500 text-sm mt-2'>we give the platform where you can make money speedly by contributing to the society</p>
-                    </div>
-                </div>
-                <div className='rounded-lg h-52 w-52 border-2 border-solid border-[#1d0828]'>
-                    <div className='mt-3 flex flex-col ml-3'>
-                        <AiOutlineThunderbolt className='w-10 h-10' />
-                        <p className='font-bold mt-2'>Money Making</p>
-                        <p className='text-slate-500 text-sm mt-2'>we give the platform where you can make money speedly by contributing to the society</p>
+                <div className='w-52'>
+                    <div className="mt-3 flex flex-col ml-3 justify-center items-center">
+                        <div className="text-[#1d0828] hover:text-white hover:bg-[#1d0828] border-2 border-[#1d0828] rounded-full p-4">
+                            <AiOutlineThunderbolt className="w-10 h-10" />
+                        </div>
+                        <p className="font-bold mt-2">Money Making</p>
+                        <p className="text-slate-500 text-sm mt-2">we give the platform the best</p>
                     </div>
                 </div>
             </div>
