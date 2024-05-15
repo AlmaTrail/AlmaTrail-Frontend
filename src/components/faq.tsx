@@ -77,15 +77,6 @@ const FaqSection = () => {
               {isFeedback && (
                 <div className="flex justify-start items-center w-full gap-3 pt-2">
                   <button
-                    className="btn-cancel text-black shadow-md bg-white p-2 rounded-md"
-                    onClick={() => {
-                      setIsFeedback(false);
-                      setFeedback(QNA[selected].answer);
-                    }}
-                  >
-                    Cancel
-                  </button>
-                  <button
                     className="btn-save text-black shadow-md bg-white p-3 ml-auto rounded-md"
                     onClick={() => {
                       QNA[selected].answer = feedback;
