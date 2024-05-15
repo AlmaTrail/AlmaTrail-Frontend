@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { PaperPlaneIcon } from "@radix-ui/react-icons";
+
 const QNA = [
   {
     question: "What kind of time commitment is required to be a peer?",
@@ -31,14 +33,14 @@ const FaqSection = () => {
   };
   return (
     <div className="bg-[#1d0828] flex justify-center items-center pb-16">
-      <div className="border-2 border-solid rounded-2xl border-white p-4 w-11/12">
-        <p className="flex justify-center text-4xl text-white pt-4 font-bold">Frequently Asked Questions</p>
+      <div className="rounded-2xl p-4 w-11/12 bg-white">
+        <p className="flex justify-center text-4xl text-[#1d0828] pt-4 font-bold">Frequently Asked Questions</p>
         <div className="flex justify-center p-8 w-full gap-8">
           <div className="w-full flex flex-col gap-2">
             {QNA.map((qna, index) => (
               <div
                 key={index}
-                className={`flex items-center w-full p-3 rounded-md cursor-pointer ${selected === index && !isFeedback ? "bg-[#281742] text-white border-solid border-2 border-[white]" : "bg-white"
+                className={`flex items-center w-full p-3 rounded-2xl cursor-pointer border-solid border-2 border-[#1d0828] ${selected === index && !isFeedback ? "bg-[#281742] text-white" : "bg-white"
                   }`}
                 onClick={() => handleSelect(index)}
               >
@@ -49,7 +51,7 @@ const FaqSection = () => {
               </div>
             ))}
             <div
-              className={`flex justify-between items-center w-full p-3 rounded-md cursor-pointer ${isFeedback ? "bg-[#281742] text-white border-solid border-2 border-[white]" : "bg-white"
+              className={`flex justify-between items-center w-full p-3 rounded-2xl cursor-pointer border-solid border-2 border-[#1d0828] ${isFeedback ? "bg-[#281742] text-white border-solid border-2 border-[white]" : "bg-white"
                 }`}
               onClick={() => {
                 setIsFeedback(true);
@@ -68,7 +70,7 @@ const FaqSection = () => {
               <textarea
                 value={isFeedback ? feedback : QNA[selected].answer}
                 disabled={!isFeedback}
-                className={`w-full mt-3 ${isFeedback ? 'bg-white rounded-xl' : 'bg-transparent'}  text-white`}
+                className={`w-full mt-3 ${isFeedback ? 'bg-white rounded-xl text-[#1d0828] p-1' : 'bg-transparent text-white'}`}
                 rows={10}
                 onChange={(e) => setFeedback(e.target.value)}
               />
@@ -84,13 +86,13 @@ const FaqSection = () => {
                     Cancel
                   </button>
                   <button
-                    className="btn-save text-black shadow-md bg-white p-2 rounded-md"
+                    className="btn-save text-black shadow-md bg-white p-3 ml-auto rounded-md"
                     onClick={() => {
                       QNA[selected].answer = feedback;
                       setIsFeedback(false);
                     }}
                   >
-                    Save
+                    <PaperPlaneIcon/>
                   </button>
                 </div>
               )}

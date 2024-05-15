@@ -22,7 +22,7 @@ const IntroSection = () => {
                             <AiOutlineThunderbolt className="w-10 h-10" />
                         </div>
                         <p className="font-bold mt-2">Money Making</p>
-                        <p className="text-slate-500 text-sm mt-2">we give the platform the best</p>
+                        <p className="text-slate-500 text-sm mt-2 text-center">we give the platform the best to make money</p>
                     </div>
                 </div>
                 <div className='w-52'>
@@ -31,7 +31,7 @@ const IntroSection = () => {
                             <AiOutlineThunderbolt className="w-10 h-10" />
                         </div>
                         <p className="font-bold mt-2">Money Making</p>
-                        <p className="text-slate-500 text-sm mt-2">we give the platform the best</p>
+                        <p className="text-slate-500 text-sm mt-2 text-center">we give the platform the best to make money</p>
                     </div>
                 </div>
                 <div className='w-52'>
@@ -40,7 +40,7 @@ const IntroSection = () => {
                             <AiOutlineThunderbolt className="w-10 h-10" />
                         </div>
                         <p className="font-bold mt-2">Money Making</p>
-                        <p className="text-slate-500 text-sm mt-2">we give the platform the best</p>
+                        <p className="text-slate-500 text-sm mt-2 text-center">we give the platform the best to make money</p>
                     </div>
                 </div>
             </div>
