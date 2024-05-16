@@ -8,12 +8,12 @@ const HeroSection = () => {
   return (
     <div className="flex flex-col lg:flex-row justify-center lg:justify-between items-center gap-5 mt-8">
       <div className="flex flex-col gap-4 sm:justify-center sm:items-center md:justify-center md:items-center lg:gap-8">
-        <p className="text-white font-bold sm:text-4xl sm:text-center md:text-center md:text-5xl lg:text-6xl mt-10">
+        <p className="text-white font-gilroy-bold font-bold sm:text-4xl sm:text-center md:text-center md:text-5xl lg:text-6xl mt-10">
           Bridge the Gap<br /> Between<br className="lg:flex hidden" />Dream School and{" "}
           <br className="lg:flex hidden text-blue-500" />{" "}
           <span className="text-yellow-500"> Reality.<br /></span>
         </p>
-        <p className="text-lg sm:text-base sm:text-center md:text-center text-white font-medium mb-0">
+        <p className="text-lg font-gilroy-regular sm:text-base sm:text-center md:text-center text-white font-medium mb-0">
           Turn your passion and knowledge into a thriving business.<br />Help your audience get ahead in life.<br />
         </p>
         <div className="flex justify-around">

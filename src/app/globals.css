@@ -74,3 +74,38 @@
     @apply bg-background text-foreground;
   }
 }
+
+@font-face {
+  font-family: "gilroyRegular";
+  src: url(../../public/fonts/gilroy/Gilroy-Regular.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "gilroyBold";
+  src: url(../../public/fonts/gilroy/Gilroy-Bold.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "gilroyLight";
+  src: url(../../public/fonts/gilroy/Gilroy-Light.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font-gilroy-regular {
+  font-family: 'gilroyRegular', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+.font-gilroy-bold {
+  font-family: 'gilroyBold', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+.font-gilroy-light {
+  font-family: 'gilroyLight', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}

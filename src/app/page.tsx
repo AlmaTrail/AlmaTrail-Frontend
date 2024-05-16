@@ -7,6 +7,7 @@ import UniversitiesSection from '../components/universitiesSection';
 import FaqSection from '../components/faq'
 import FooterSection from "../components/footerSections";
 import IntroSection from '@/components/introSection';
+import "./globals.css";
 export default function Home() {
   return (
     <main>
