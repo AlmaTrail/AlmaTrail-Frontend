@@ -2,7 +2,9 @@ import Image from 'next/image'
 import React from 'react'
 import IntroImage from "../../public/images/introImage.jpg"
 import { AiOutlineThunderbolt } from "react-icons/ai";
-
+import myImage from "../../public/images/check.png"
+import flexibleTiming from "../../public/images/happy-hour.png"
+import Interaction from "../../public/images/interactive.png"
 const IntroSection = () => {
     return (
         <div>
@@ -18,29 +20,47 @@ const IntroSection = () => {
             <div className='flex flex-row py-7 px-10 justify-center gap-16'>
                 <div className='w-52'>
                     <div className="mt-3 flex flex-col ml-3 justify-center items-center">
-                        <div className="text-[#1d0828] hover:text-white hover:bg-[#1d0828] border-2 border-[#1d0828] rounded-full p-4">
-                            <AiOutlineThunderbolt className="w-10 h-10" />
+                        <div>
+                            <Image
+                                src={myImage}
+                                alt="Description of the image"
+                                width={80}
+                                height={80}
+                                className="w-16 h-16"
+                            />
                         </div>
-                        <p className="font-bold mt-2">Money Making</p>
-                        <p className="text-slate-500 text-sm mt-2 text-center">we give the platform the best to make money</p>
+                        <p className="font-bold mt-2">Seamless Onboarding</p>
+                        <p className="text-slate-500 text-sm mt-2 text-left">Effortlessly become a mentor in just a few straightforward steps. Our simple process ensures you can get started quickly and easily.</p>
                     </div>
                 </div>
                 <div className='w-52'>
                     <div className="mt-3 flex flex-col ml-3 justify-center items-center">
-                        <div className="text-[#1d0828] hover:text-white hover:bg-[#1d0828] border-2 border-[#1d0828] rounded-full p-4">
-                            <AiOutlineThunderbolt className="w-10 h-10" />
+                        <div>
+                            <Image
+                                src={flexibleTiming}
+                                alt="Description of the image"
+                                width={80}
+                                height={80}
+                                className="w-16 h-16"
+                            />
                         </div>
-                        <p className="font-bold mt-2">Money Making</p>
-                        <p className="text-slate-500 text-sm mt-2 text-center">we give the platform the best to make money</p>
+                        <p className="font-bold mt-2">Flexible Scheduling</p>
+                        <p className="text-slate-500 text-sm mt-2 text-left">Choose convenient times to mentor students. Our platform fits your availability, making mentoring easy to schedule.</p>
                     </div>
                 </div>
                 <div className='w-52'>
                     <div className="mt-3 flex flex-col ml-3 justify-center items-center">
-                        <div className="text-[#1d0828] hover:text-white hover:bg-[#1d0828] border-2 border-[#1d0828] rounded-full p-4">
-                            <AiOutlineThunderbolt className="w-10 h-10" />
+                        <div>
+                            <Image
+                                src={Interaction}
+                                alt="Description of the image"
+                                width={80}
+                                height={80}
+                                className="w-16 h-16"
+                            />
                         </div>
-                        <p className="font-bold mt-2">Money Making</p>
-                        <p className="text-slate-500 text-sm mt-2 text-center">we give the platform the best to make money</p>
+                        <p className="font-bold mt-2">Direct Interaction</p>
+                        <p className="text-slate-500 text-sm mt-2 text-left">Engage with your future peers through one-on-one interactions. Build meaningful relationships and provide tailored guidance.</p>
                     </div>
                 </div>
             </div>
