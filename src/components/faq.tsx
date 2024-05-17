@@ -34,7 +34,7 @@ const FaqSection = () => {
   return (
     <div className="bg-[#1d0828] flex justify-center items-center pb-16">
       <div className="rounded-2xl p-4 w-11/12 bg-white">
-        <p className="flex justify-center text-4xl text-[#1d0828] pt-4 font-bold">Frequently Asked Questions</p>
+        <p className="flex justify-center text-4xl text-[#1d0828] pt-4 font-gilroy-bold">Frequently Asked Questions</p>
         <div className="flex justify-center p-8 w-full gap-8">
           <div className="w-full flex flex-col gap-2">
             {QNA.map((qna, index) => (
@@ -44,7 +44,7 @@ const FaqSection = () => {
                   }`}
                 onClick={() => handleSelect(index)}
               >
-                <p>{qna.question}</p>
+                <p className="font-gilroy-regular">{qna.question}</p>
                 <div className="flex-grow">
                   <div className="w-3 h-3 rounded-3xl bg-white ml-auto"></div>
                 </div>
@@ -70,7 +70,7 @@ const FaqSection = () => {
               <textarea
                 value={isFeedback ? feedback : QNA[selected].answer}
                 disabled={!isFeedback}
-                className={`w-full mt-3 ${isFeedback ? 'bg-white rounded-xl text-[#1d0828] p-1' : 'bg-transparent text-white'}`}
+                className={`w-full mt-3 font-gilroy-regular ${isFeedback ? 'bg-white rounded-xl text-[#1d0828] p-1' : 'bg-transparent text-white'}`}
                 rows={10}
                 onChange={(e) => setFeedback(e.target.value)}
               />

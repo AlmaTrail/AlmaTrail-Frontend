@@ -17,12 +17,12 @@ const HeroSection = () => {
           Turn your passion and knowledge into a thriving business.<br />Help your audience get ahead in life.<br />
         </p>
         <div className="flex justify-around">
-          <button className="py-2 w-full bg-white rounded-md text-[#1d0828] font-semibold shadow-sm transition duration-200 hover:bg-[#1d0828] hover:text-white border-2 border-transparent hover:border-white mr-5">
+          <button className="py-2 w-full bg-white rounded-md text-[#1d0828] font-gilroy-bold shadow-sm transition duration-200 hover:bg-[#1d0828] hover:text-white border-2 border-transparent hover:border-white mr-5">
             <div>
               <Link href={'/user_signup'}>Register Here</Link>
             </div>
           </button>
-          <button className="py-2 w-full hover:bg-white rounded-md hover:text-[#1d0828] font-semibold shadow-sm transition duration-200 bg-[#1d0828] text-white border-2 border-white">
+          <button className="py-2 w-full hover:bg-white rounded-md hover:text-[#1d0828] font-gilroy-bold shadow-sm transition duration-200 bg-[#1d0828] text-white border-2 border-white">
             <div>
               <Link href={'/user_signup'}>Sign up</Link>
             </div>

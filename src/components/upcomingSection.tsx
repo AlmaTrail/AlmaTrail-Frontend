@@ -14,11 +14,11 @@ const UpcomingSection = () => {
           duration: 0.8,
           ease: "easeInOut",
         }}
-        className="bg-gradient-to-br from-slate-50 to-slate-100 py-4 bg-clip-text text-center text-5xl font-medium tracking-tight text-transparent md:text-7xl"
+        className="bg-gradient-to-br from-slate-50 to-slate-100 py-4 bg-clip-text text-center text-5xl font-gilroy-semibold tracking-tight text-transparent md:text-7xl"
       >
         Coming Soon!
       </motion.h1>
-      <p className="text-white text-2xl flex justify-center items-center">Level up guidance, level up experience</p>
+      <p className="text-white text-2xl flex justify-center items-center font-gilroy-regular">Level up guidance, level up experience</p>
     </LampContainer>
   );
 }
