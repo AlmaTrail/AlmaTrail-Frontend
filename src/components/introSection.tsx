@@ -60,7 +60,7 @@ const IntroSection = () => {
                             />
                         </div>
                         <p className="font-bold mt-2 font-gilroy-bold">Direct Interaction</p>
-                        <p className="text-slate-500 text-sm mt-1 text-center font-gilroy-light">Engage with your future peers through one-on-one interactions. Build meaningful relationships and provide tailored guidance.</p>
+                        <p className="text-slate-500 text-sm mt-1 text-center font-gilroy-light">Engage with your future peers through one-on-one interactions. Build meaningful relationships.</p>
                     </div>
                 </div>
             </div>

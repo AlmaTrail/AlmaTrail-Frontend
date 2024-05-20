@@ -18,7 +18,7 @@ const UpcomingSection = () => {
       >
         Coming Soon!
       </motion.h1>
-      <p className="text-white text-2xl flex justify-center items-center font-gilroy-regular">Level up guidance, level up experience</p>
+      <p className="text-white text-2xl flex justify-center items-center font-gilroy-semibold">Level up guidance, level up experience</p>
     </LampContainer>
   );
 }
