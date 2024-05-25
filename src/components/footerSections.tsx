@@ -1,14 +1,14 @@
 "use client";
 import { FaFacebookF } from "react-icons/fa";
-import { AiOutlineTwitter, AiFillYoutube } from "react-icons/ai";
+import { AiOutlineTwitter, AiFillYoutube, AiFillLinkedin, AiOutlineInstagram } from "react-icons/ai";
 import { BiLogoPinterestAlt } from "react-icons/bi";
 
 const FooterSection = () => {
     const iconsTab = [
         { icon: <FaFacebookF /> },
-        { icon: <AiOutlineTwitter /> },
+        { icon: <AiFillLinkedin /> },
+        { icon: <AiOutlineInstagram /> },
         { icon: <AiFillYoutube /> },
-        { icon: <BiLogoPinterestAlt /> },
     ];
     return (
         <>
