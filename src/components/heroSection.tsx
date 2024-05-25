@@ -19,7 +19,7 @@ const HeroSection = () => {
         <div className="flex sm:flex-col justify-around">
           <button className="py-2 w-full sm:my-4 bg-white rounded-md text-[#1d0828] font-gilroy-bold shadow-sm transition duration-200 hover:bg-[#1d0828] hover:text-white border-2 border-transparent hover:border-white mr-5">
             <div >
-              <Link href={'/user_signup'}>Register Here</Link>
+              <Link href={'/mentor_form'}>Register Here</Link>
             </div>
           </button>
           <button className="py-2 w-full sm:my-2 hover:bg-white rounded-md hover:text-[#1d0828] font-gilroy-bold shadow-sm transition duration-200 bg-[#1d0828] text-white border-2 border-white">
