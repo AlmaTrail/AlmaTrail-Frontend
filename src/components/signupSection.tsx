@@ -51,7 +51,7 @@ const SignupSection = () => {
                     </div>
                 </CardContent>
                 <CardFooter>
-                    <Button className="w-full bg-white text-[#1d0828] hover:bg-[#1d0828] hover:text-white">Create account</Button>
+                    <Button className="w-full bg-white text-[#1d0828] hover:bg-purple-800 hover:text-white">Create account</Button>
                 </CardFooter>
             </Card>
         </div>
