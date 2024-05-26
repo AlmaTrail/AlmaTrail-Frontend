@@ -5,28 +5,28 @@ import { HoverEffect } from "../components/ui/card-hover-effect";
 const FeatureSection = () => {
     const projects = [
         {
-            title: "Google",
+            title: "Monetary Compensation",
             description:
-                "A multinational technology company that specializes in Internet-related services and products.",
-            link: "https://google.com",
+                "Earn money for your time and expertise by helping others achieve their academic and career goals.",
+            link: "",
         },
         {
-            title: "Meta",
+            title: "Flexible Schedule",
             description:
-                "A technology company that focuses on building products that advance Facebook's mission of bringing the world closer together.",
-            link: "https://meta.com",
+                "Enjoy the flexibility to set your own schedule and choose mentoring sessions that fit around your personal and academic commitments.",
+            link: "",
         },
         {
-            title: "Amazon",
+            title: "Alumni Connections",
             description:
-                "A multinational technology company focusing on e-commerce, cloud computing, digital streaming, and artificial intelligence.",
-            link: "https://amazon.com",
+                " Build connections with alumni and other professionals from your dream college, providing additional networking and career opportunities.",
+            link: "",
         },
         {
-            title: "Microsoft",
+            title: "Personal Satisfaction and Fulfillment",
             description:
-                "A multinational technology company that develops, manufactures, licenses, supports, and sells computer software, consumer electronics, personal computers, and related services.",
-            link: "https://microsoft.com",
+                "Experience the rewarding feeling of making a positive impact on someone else's journey and helping them reach their dream college.",
+            link: "",
         },
     ];
     return (
