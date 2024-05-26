@@ -1,5 +1,3 @@
-'use client';
-
 import { HoverEffect } from "../components/ui/card-hover-effect";
 
 const FeatureSection = () => {
