@@ -46,7 +46,7 @@ const Navbar = () => {
     <div className="bg-white rounded-full py-2 fixed top-5 z-10">
       <div className="mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
         <div className="flex items-center mr-40 lg:mr-80">
-          <span className="text-black bg-auto font-bold">AlmaTrail</span>
+          <span className="text-black bg-auto font-gilroy-bold">AlmaTrail</span>
         </div>
         <div className="hidden lg:flex lg:items-center">
           <ul className="flex space-x-6">
@@ -54,7 +54,7 @@ const Navbar = () => {
               <li key={item.name}>
                 <a
                   href={item.href}
-                  className="text-sm font-semibold text-gray-800 hover:text-gray-900"
+                  className="text-sm font-gilroy-bold text-[#1d0828]"
                 >
                   {item.name}
                 </a>
@@ -65,7 +65,7 @@ const Navbar = () => {
         <div className="hidden lg:flex">
           {/* <Link href={'/user_signup'}>Sign Up</Link> */}
           <Dialog>
-            <DialogTrigger className='py-1 px-5 ml-5 bg-[#1d0828] rounded-md text-white font-semibold shadow-sm transition duration-200 hover:bg-white hover:text-[#3b0764] border-2 border-transparent hover:border-[#3b0764]'>Sign Up</DialogTrigger>
+            <DialogTrigger className='py-1 px-5 ml-5 bg-[#1d0828] rounded-md text-white font-gilroy-bold shadow-sm transition duration-200 hover:bg-white hover:text-[#3b0764] border-2 border-transparent hover:border-[#3b0764]'>Sign Up</DialogTrigger>
             <DialogContent className='m-0 p-0 rounded-xl'>
               <SignupSection />
             </DialogContent>
@@ -83,14 +83,14 @@ const Navbar = () => {
                 <li key={item.name}>
                   <a
                     href={item.href}
-                    className="block py-2 px-4 text-sm font-semibold text-gray-800 hover:text-gray-900"
+                    className="block py-2 px-4 text-sm font-gilroy-bold text-[#1d0828]"
                   >
                     {item.name}
                   </a>
                 </li>
               ))}
             </ul>
-            <button className="w-full bg-[#1d0828] rounded-md py-2 text-white font-semibold shadow-sm transition duration-200 hover:bg-white hover:text-[#3b0764] border-2 border-transparent hover:border-[#3b0764]">
+            <button className="w-full bg-[#1d0828] rounded-md py-2 text-white font-gilroy-bold shadow-sm transition duration-200 hover:bg-white hover:text-[#1d0828] border-2 border-transparent hover:border-[#1d0828]">
               <Link href={'/user_signup'}>Sign up</Link>
             </button>
           </div>

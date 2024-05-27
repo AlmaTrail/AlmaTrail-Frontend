@@ -39,19 +39,19 @@ const SignupSection = () => {
                     </div> */}
                     <div className="grid gap-2">
                         <Label htmlFor="email" className="text-white">Email</Label>
-                        <Input id="email" type="email" placeholder="m@example.com" />
+                        <Input className="text-[#1d0828]" id="email" type="email" placeholder="m@example.com" />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="password" className="text-white">Password</Label>
-                        <Input id="password" type="password" />
+                        <Input className="text-[#1d0828]" id="password" type="password" />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="password" className="text-white"> Confirm Password</Label>
-                        <Input id="password" type="password" />
+                        <Input className="text-[#1d0828]" id="password" type="password" />
                     </div>
                 </CardContent>
                 <CardFooter>
-                    <Button className="w-full bg-white text-purple-950 hover:bg-purple-950 hover:text-white">Create account</Button>
+                    <Button className="w-full bg-white text-[#1d0828] hover:bg-purple-800 hover:text-white">Create account</Button>
                 </CardFooter>
             </Card>
         </div>
