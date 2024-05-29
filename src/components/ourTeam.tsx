@@ -27,9 +27,9 @@ const teamMembers: TeamMember[] = [
 
 const OurTeam: React.FC = () => {
   return (
-    <section className="py-12 bg-[#1d0828]">
+    <section className="py-12 bg-[#d4b8e2]">
       <div className="container mx-auto px-8 lg:px-16">
-        <h2 className="text-3xl text-white font-bold text-center mb-12">Our Team</h2>
+        <h2 className="text-3xl text-black font-bold text-center mb-12">Our Team</h2>
         <div className="flex flex-wrap justify-center gap-32 mb-12">
           {teamMembers.map((member, index) => (
             <TeamMemberCard key={index} name={member.name} position={member.position} imageUrl={member.imageUrl} />

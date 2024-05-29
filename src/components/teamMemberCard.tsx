@@ -8,7 +8,7 @@ interface TeamMemberCardProps {
 
 const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ name, position, imageUrl }) => {
   return (
-    <div className="bg-white shadow-lg rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 w-64 h-80">
+    <div className="bg-white shadow-lg rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:border-2 border-[#3b0764] w-64 h-80">
       <div className="w-full h-4/5 bg-gray-200 flex items-center justify-center overflow-hidden">
         <img className="w-full h-full object-cover object-center" src={imageUrl} alt={name} />
       </div>
