@@ -3,7 +3,7 @@ import Navbar from "@/components/navbar";
 import WhyUs from "@/components/whyUs";
 import Impact from "@/components/impact";
 import OurTeam from "@/components/ourTeam";
-import WriteUs from '@/components/writeUs';
+import GetInTouch from '@/components/writeUs';
 import FooterSection from "@/components/footerSections";
 export default function AboutUs() {
     return (
@@ -14,7 +14,7 @@ export default function AboutUs() {
         </div>
         <Impact/>
         <OurTeam/>
-        <WriteUs/>
+        <GetInTouch/>
         <FooterSection/>
       </main>
     );
