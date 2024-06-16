@@ -22,7 +22,7 @@ const Navbar = () => {
   const menuItems = [
     {
       name: 'Home',
-      href: '#',
+      href: '/',
     },
     {
       name: 'Benefits',
@@ -34,7 +34,7 @@ const Navbar = () => {
     },
     {
       name: 'About Us',
-      href: '#',
+      href: 'aboutUs',
     },
     {
       name: 'FAQ',
