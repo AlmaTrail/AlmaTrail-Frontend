@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface ImpactItemProps {
   title: string;
@@ -9,13 +10,13 @@ interface ImpactItemProps {
 
 const ImpactItem: React.FC<ImpactItemProps> = ({ title, description, imageUrl, imageFirst }) => {
   return (
-    <div className={`flex flex-col ${imageFirst ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center lg:space-x-8 space-y-4 lg:space-y-0`}>
-      <div className="lg:w-1/3 flex justify-center">
-        <img src={imageUrl} alt={title} className="w-40 h-40 object-cover rounded-xl" />
-      </div>
-      <div className="lg:w-2/3 flex flex-col justify-center text-center lg:text-left h-40">
-        <h3 className="text-xl font-semibold text-[#1d0828] mb-2">{title}</h3>
-        <p className="text-gray-700 font-gilroy-regular overflow-hidden">{description}</p>
+    <div className={`flex flex-col ${imageFirst ? 'lg:flex-row' : 'lg:flex-row-reverse'} justify-around`}>
+      <Image width={200} height={120}
+        src={imageUrl} alt={title}
+        className="rounded-lg" />
+      <div className={` flex flex-col h-40 ${imageFirst ? 'ml-10' : 'ml-0'}`}>
+        <h3 className="w-2/5 text-left text-xl font-semibold text-[#1d0828] mb-3">{title}</h3>
+        <p className="text-left text-gray-700 font-gilroy-regular">{description}</p>
       </div>
     </div>
   );

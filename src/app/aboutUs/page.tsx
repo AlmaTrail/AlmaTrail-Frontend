@@ -1,9 +1,13 @@
 'use client';
 import Navbar from "@/components/navbar";
-import GetInTouch from '@/components/writeUs';
 import FooterSection from "@/components/footerSections";
 import ImpactItem from "@/components/impactItem";
 import TeamMemberCard from "@/components/teamMemberCard";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const teamMembers = [
   {
@@ -49,16 +53,37 @@ const AboutUs = () => {
     <main>
       <div className="h-screen mx-auto bg-[#1d0828] flex justify-center pb-2 items-center relative">
         <Navbar />
-        <div>
+        <div className="mt-8">
           <p className="text-4xl text-white font-gilroy-bold text-center">We are providing the best network for get your doubts clear.</p>
-          <p className="text-4xl text-white font-gilroy-bold text-center m-5">For giving you the better future</p>
-
+          <p className="text-4xl text-white font-gilroy-bold text-center m-5">For giving you the better future.</p>
+          <p className="text-xl text-white font-gilroy-bold text-center">We are providing the best network for get your doubts clear ang get a life man.</p>
+          <div className="flex flex-row justify-around mt-24">
+            <Card className="bg-[#1d0828] b-0 p-6 text-white hover:text-[#1d0828] hover:bg-white">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl font-gilroy-bold">real mentors</CardTitle>
+              </CardHeader>
+            </Card>
+            <Card className="bg-[#1d0828] b-0 p-6 text-white hover:text-[#1d0828] hover:bg-white">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl font-gilroy-bold">real mentors</CardTitle>
+              </CardHeader>
+            </Card><Card className="bg-[#1d0828] b-0 p-6 text-white hover:text-[#1d0828] hover:bg-white">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl font-gilroy-bold">real mentors</CardTitle>
+              </CardHeader>
+            </Card>
+            <Card className="bg-[#1d0828] b-0 p-6 text-white hover:text-[#1d0828] hover:bg-white">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl font-gilroy-bold">real mentors</CardTitle>
+              </CardHeader>
+            </Card>
+          </div>
         </div>
       </div>
       <section className="py-12 flex justify-center items-center">
         <div className="container mx-auto px-8 lg:px-28">
-          <h2 className="text-3xl text-[#1d0828] font-gilroy-bold text-center mb-8">Our Impact</h2>
-          <div className="space-y-12">
+          <h2 className="text-3xl text-[#1d0828] font-gilroy-bold text-center mb-8">Impact we are creating</h2>
+          <div className="space-y-9">
             {impactData.map((item, index) => (
               <ImpactItem
                 key={index}
@@ -81,7 +106,7 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
-      <GetInTouch />
+      {/* <GetInTouch /> */}
       <FooterSection />
     </main>
   );
