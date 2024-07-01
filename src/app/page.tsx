@@ -1,22 +1,26 @@
 'use client';
 import Navbar from '@/components/navbar';
-import Hero from "../../public/images/hero_1.png";
-import Image from "next/image";
-
-import CountrySection from '@/components/countrySection';
 import HeroSection from '@/components/heroSection';
-
-
+import FeatureSection from '@/components/featureSection';
+import UpcomingSection from '@/components/upcomingSection';
+import UniversitiesSection from '../components/universitiesSection';
+import FaqSection from '../components/faq'
+import FooterSection from "../components/footerSections";
+import IntroSection from '@/components/introSection';
+import "./globals.css";
 export default function Home() {
   return (
     <main>
-      <div className="h-screen">
-        <div className="h-3/4 mx-auto bg-[#3b0764] flex justify-center pb-2 items-center relative z-0">
-          <Navbar />
-          <HeroSection />
-        </div>
-        <CountrySection />
+      <div className="h-screen mx-auto bg-[#1d0828] flex justify-center pb-2 items-center relative">
+        <Navbar />
+        <HeroSection />
       </div>
+      <IntroSection />
+      <FeatureSection />
+      {/* <UniversitiesSection /> */}
+      <FaqSection />
+      <UpcomingSection />
+      <FooterSection />
     </main>
   );
 }
