@@ -8,21 +8,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import GetInTouch from "@/components/writeUs";
 
 const teamMembers = [
   {
     name: "Ayush Bansal",
-    position: "Co-Founder",
-    imageUrl: "/images/man.png",
-  },
-  {
-    name: "Harpreet Singh",
-    position: "Co-Founder",
+    position: "Co-Founder, CEO",
     imageUrl: "/images/man.png",
   },
   {
     name: "Gautam Garg",
-    position: "Co-Founder",
+    position: "Co-Founder, CFO",
+    imageUrl: "/images/man.png",
+  },
+  {
+    name: "Harpreet Singh",
+    position: "Co-Founder, COO",
     imageUrl: "/images/man.png",
   }
 ];
@@ -106,7 +107,7 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
-      {/* <GetInTouch /> */}
+      <GetInTouch />
       <FooterSection />
     </main>
   );
