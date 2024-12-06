@@ -16,8 +16,8 @@
 //         <div>
 //             <Card className="bg-white b-0">
 //                 <CardHeader className="space-y-1">
-//                     <CardTitle className="text-2xl text-[#1d0828]">Create an account</CardTitle>
-//                     <CardDescription className="text-[#1d0828]">
+//                     <CardTitle className="text-2xl text-[#F5F5DC]">Create an account</CardTitle>
+//                     <CardDescription className="text-[#F5F5DC]">
 //                         Enter your email below to create your account
 //                     </CardDescription>
 //                 </CardHeader>
@@ -38,15 +38,15 @@
 //                         </div>
 //                     </div> */}
 //                     <div className="grid gap-2">
-//                         <Label htmlFor="email" className="text-[#1d0828]">Email</Label>
-//                         <Input className="text-[#1d0828]" id="email" type="email" placeholder="m@example.com" />
+//                         <Label htmlFor="email" className="text-[#F5F5DC]">Email</Label>
+//                         <Input className="text-[#F5F5DC]" id="email" type="email" placeholder="m@example.com" />
 //                     </div>
 //                     <div className="grid gap-2">
-//                         <Label htmlFor="password" className="text-[#1d0828]">Password</Label>
-//                         <Input className="text-[#1d0828]" id="password" type="password" />
+//                         <Label htmlFor="password" className="text-[#F5F5DC]">Password</Label>
+//                         <Input className="text-[#F5F5DC]" id="password" type="password" />
 //                     </div>
 //                     <div className="grid gap-2">
-//                         <Label htmlFor="password" className="text-[#1d0828]"> Confirm Password</Label>
+//                         <Label htmlFor="password" className="text-[#F5F5DC]"> Confirm Password</Label>
 //                         <Input id="password" type="password" />
 //                     </div>
 //                 </CardContent>
@@ -76,22 +76,22 @@ const SignupSection = () => {
         <div>
             <Card className="bg-white b-0">
                 <CardHeader className="space-y-1">
-                    <CardTitle className="text-2xl text-[#1d0828]">Create an account</CardTitle>
-                    <CardDescription className="text-[#1d0828]">
+                    <CardTitle className="text-2xl text-[#F5F5DC]">Create an account</CardTitle>
+                    <CardDescription className="text-[#F5F5DC]">
                         Enter your email below to create your account
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4">
                     <div className="grid gap-2">
-                        <Label htmlFor="email" className="text-[#1d0828]">Email</Label>
-                        <Input className="custom-input text-[#1d0828]" id="email" type="email" placeholder="m@example.com" />
+                        <Label htmlFor="email" className="text-[#F5F5DC]">Email</Label>
+                        <Input className="custom-input text-[#F5F5DC]" id="email" type="email" placeholder="m@example.com" />
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="password" className="text-[#1d0828]">Password</Label>
-                        <Input className="custom-input text-[#1d0828]" id="password" type="password" />
+                        <Label htmlFor="password" className="text-[#F5F5DC]">Password</Label>
+                        <Input className="custom-input text-[#F5F5DC]" id="password" type="password" />
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="confirm-password" className="text-[#1d0828]">Confirm Password</Label>
+                        <Label htmlFor="confirm-password" className="text-[#F5F5DC]">Confirm Password</Label>
                         <Input className="custom-input" id="confirm-password" type="password" />
                     </div>
                 </CardContent>

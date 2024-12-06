@@ -30,9 +30,9 @@ const FeatureSection = () => {
         },
     ];
     return (
-        <div className="bg-[#1d0828] p-14">
+        <div className="bg-[#F5F5DC] p-14">
             <div className='flex justify-center items-center'>
-                <h2 className='text-center text-4xl font-gilroy-bold text-white'>Perks? HUH ✨</h2>
+                <h2 className='text-center text-4xl font-gilroy-bold text-black'>Perks? HUH ✨</h2>
             </div>
             <div className="max-w-5xl mx-auto px-8">
                 <HoverEffect items={projects} />

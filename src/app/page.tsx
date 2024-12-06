@@ -2,7 +2,7 @@
 import Navbar from '@/components/navbar';
 import HeroSection from '@/components/heroSection';
 import FeatureSection from '@/components/featureSection';
-import UpcomingSection from '@/components/upcomingSection';
+// import UpcomingSection from '@/components/upcomingSection';
 import UniversitiesSection from '../components/universitiesSection';
 import FaqSection from '../components/faq'
 import FooterSection from "../components/footerSections";
@@ -11,7 +11,7 @@ import "./globals.css";
 export default function Home() {
   return (
     <main>
-      <div className="h-screen mx-auto bg-[#1d0828] flex justify-center pb-2 items-center relative">
+      <div className="h-screen mx-auto bg-[#fff] flex justify-center pb-2 items-center relative">
         <Navbar />
         <HeroSection />
       </div>
@@ -19,7 +19,7 @@ export default function Home() {
       <FeatureSection />
       {/* <UniversitiesSection /> */}
       <FaqSection />
-      <UpcomingSection />
+      {/* <UpcomingSection /> */}
       <FooterSection />
     </main>
   );

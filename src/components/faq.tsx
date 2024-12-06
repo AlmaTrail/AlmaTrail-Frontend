@@ -1,96 +1,88 @@
-import { useState } from "react";
-
-import { PaperPlaneIcon } from "@radix-ui/react-icons";
-
-const QNA = [
-  {
-    question: "What kind of time commitment is required to be a peer?",
-    answer: "AlmaTrail offers flexibility. You can choose the level of engagement that suits you, with estimated time commitments outlined. \n\nWe recommend X hours per week for effective mentorship.",
-  },
-  {
-    question: "What qualifications do I need to be a mentor?",
-    answer: "You should be a current student (or recent graduate) at a university abroad.\n\nPassion for international education and a willingness to share your knowledge and experiences are key...",
-  },
-  {
-    question: "How do I register to be a mentor on AlmaTrail?",
-    answer: "Visit our website and click on the \"Unlock your inner yoda\" button. You'll be directed to a registration form",
-  },
-  {
-    question: "What happens after I register?",
-    answer: "Once you register, your application will be reviewed by our team.\n\nIf selected, you'll complete a short onboarding process to familiarize yourself with the platform and best practices for mentoring.",
-  },
-];
+import { useState } from 'react';
 
 const FaqSection = () => {
-  const [selected, setSelected] = useState(0);
-  const [isFeedback, setIsFeedback] = useState(false);
-  const [feedback, setFeedback] = useState("");
+  const [activeIndex, setActiveIndex] = useState(null);
 
-  const handleSelect = (index: number) => {
-    setIsFeedback(false);
-    setSelected(index);
-    setFeedback(QNA[index].answer);
+  const faqItems = [
+    {
+      question: "What products does Fripy offer?",
+      answer:
+        "Fripy specializes in delivering high-quality mobile accessories, including screen protectors and back cases, directly to your doorstep. Our collection is designed to provide protection and style for a wide range of smartphone models."
+    },
+    {
+      question: "Does Fripy offer same-day delivery?",
+      answer:
+        "Yes, we pride ourselves on delivering all our products on the same day you place your order! Simply order before our daily cut-off time, and we will ensure your mobile accessories reach your doorstep within hours."
+    },
+    {
+      question: "How is Fripy different from others?",
+      answer:
+        "With Fripy, you don not need to commit to a purchase before trying the product. We offer a unique *try-before-you-pay* option—select a variety of products, try them out yourself, and pay only for the ones you choose at the time of delivery."
+    },
+    {
+      question: "Which areas does Fripy deliver to?",
+      answer:
+        "Currently, Fripy delivers to most locations across India. If you are unsure whether we deliver to your area, you can check by entering your pin code on our website at checkout."
+    },
+    {
+      question: "What is the warranty on Fripy products?",
+      answer:
+        "All products purchased from Fripy come with a standard 6-month warranty, covering any manufacturing defects. For specific warranty details on individual products, please refer to the product page or contact our customer support."
+    },
+    {
+      question: "Does Fripy offer a care plan for mobile accessories?",
+      answer:
+        "Yes, Fripy offers an optional care plan for certain mobile accessories, such as screen protectors and back cases. This plan includes free replacements for accidental damages within the first 6 months. You can opt for this plan during checkout."
+    },
+  ];
+  
+
+  const toggleAccordion = (index: any) => {
+    setActiveIndex(activeIndex === index ? null : index);
   };
+
   return (
-    <div className="bg-[#1d0828] flex justify-center items-center pb-16">
-      <div className="rounded-2xl p-4 w-11/12 bg-white">
-        <p className="flex justify-center text-4xl text-[#1d0828] pt-4 font-gilroy-bold">Frequently Asked Questions</p>
-        <div className="flex justify-center p-8 w-full gap-8">
-          <div className="w-full flex flex-col gap-2">
-            {QNA.map((qna, index) => (
-              <div
-                key={index}
-                className={`flex items-center w-full p-3 rounded-2xl cursor-pointer border-solid border-2 border-[#1d0828] ${selected === index && !isFeedback ? "bg-[#281742] text-white" : "bg-white"
-                  }`}
-                onClick={() => handleSelect(index)}
-              >
-                <p className="font-gilroy-regular">{qna.question}</p>
-                <div className="flex-grow">
-                  <div className="w-3 h-3 rounded-3xl bg-white ml-auto"></div>
-                </div>
-              </div>
-            ))}
-            <div
-              className={`flex justify-between items-center w-full p-3 rounded-2xl cursor-pointer border-solid border-2 border-[#1d0828] ${isFeedback ? "bg-[#281742] text-white border-solid border-2 border-[white]" : "bg-white"
-                }`}
-              onClick={() => {
-                setIsFeedback(true);
-                setFeedback("");
-              }}
+    <div className='bg-[#fff]'>
+    <div className="container mx-auto p-4 max-w-1xl">
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">Frequently Asked Questions (FAQ)</h2>
+      <div className="accordion">
+        {faqItems.map((item, index) => (
+          <div key={index} className="accordion-item border-b">
+            <button
+              onClick={() => toggleAccordion(index)}
+              className={`w-full text-left p-4 flex justify-between items-center focus:outline-none transition-colors duration-200 ${
+                activeIndex === index ? 'text-[#E07B39]' : 'text-gray-400'
+              } hover:text-[#E07B39]`}
+              aria-expanded={activeIndex === index}
             >
-              <p className="cursor-pointer">Feedback</p>
-              <div className="flex-grow">
-                <div className="w-3 h-3 rounded-3xl bg-white ml-auto"></div>
-              </div>
+              <span className="accordion-title text-lg">{item.question}</span>
+              <span
+                className={`icon transition-transform duration-200 ${
+                  activeIndex === index ? 'rotate-180 text-[#E07B39]' : 'rotate-0 text-gray-400'
+                }`}
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 9l6 6 6-6" />
+                </svg>
+              </span>
+            </button>
+            <div
+              className={`accordion-content overflow-hidden transition-all duration-300 ${
+                activeIndex === index ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
+              }`}
+            >
+              <p className="p-4 text-gray-600">{item.answer}</p>
             </div>
           </div>
-          <div className="w-2/3">
-            <div className="flex flex-col border-2 border-white bg-[#281742] p-4 rounded-xl">
-            <div className="w-3 h-3 rounded-3xl bg-white"></div>
-              <textarea
-                value={isFeedback ? feedback : QNA[selected].answer}
-                disabled={!isFeedback}
-                className={`w-full mt-3 font-gilroy-regular ${isFeedback ? 'bg-white rounded-xl text-[#1d0828] p-1' : 'bg-transparent text-white'}`}
-                rows={10}
-                onChange={(e) => setFeedback(e.target.value)}
-              />
-              {isFeedback && (
-                <div className="flex justify-start items-center w-full gap-3 pt-2">
-                  <button
-                    className="btn-save text-black shadow-md bg-white p-3 ml-auto rounded-md"
-                    onClick={() => {
-                      QNA[selected].answer = feedback;
-                      setIsFeedback(false);
-                    }}
-                  >
-                    <PaperPlaneIcon/>
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
+    </div>
     </div>
   );
 };
