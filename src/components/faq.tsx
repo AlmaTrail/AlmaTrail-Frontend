@@ -32,7 +32,7 @@ const FaqSection = () => {
     setFeedback(QNA[index].answer);
   };
   return (
-    <div className="bg-[#1d0828] flex justify-center items-center pb-16">
+    <div id="faq" className="bg-[#1d0828] flex justify-center items-center pb-16">
       <div className="rounded-2xl p-4 w-11/12 bg-white">
         <p className="flex justify-center text-4xl text-[#1d0828] pt-4 font-gilroy-bold">Frequently Asked Questions</p>
         <div className="flex justify-center p-8 w-full gap-8">

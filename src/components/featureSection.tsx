@@ -30,7 +30,7 @@ const FeatureSection = () => {
         },
     ];
     return (
-        <div className="bg-[#1d0828] p-14">
+        <div id="benefits-section" className="bg-[#1d0828] p-14">
             <div className='flex justify-center items-center'>
                 <h2 className='text-center text-4xl font-gilroy-bold text-white'>Perks? HUH ✨</h2>
             </div>

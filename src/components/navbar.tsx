@@ -22,23 +22,23 @@ const Navbar = () => {
   const menuItems = [
     {
       name: 'Home',
-      href: '#',
+      href: '',
     },
     {
       name: 'Benefits',
-      href: '#',
+      href: '#benefits-section',
     },
     {
       name: 'Universities',
-      href: '#',
+      href: '/universities',
     },
     {
       name: 'About Us',
-      href: '#',
+      href: '/about',
     },
     {
       name: 'FAQ',
-      href: '#',
+      href: '#faq',
     },
   ];
 
