@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 // Navbar.js
 import { useState } from 'react';
 
@@ -46,6 +47,7 @@ const Navbar = () => {
     <div className="bg-white rounded-full py-2 fixed top-5 z-10">
       <div className="mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
         <div className="flex items-center mr-40 lg:mr-80">
+          <Image src="/android-chrome-192x192.png" alt="AlmaTrail Logo" width={24} height={24} className="mr-2" />
           <span className="text-black bg-auto font-gilroy-bold">AlmaTrail</span>
         </div>
         <div className="hidden lg:flex lg:items-center">
