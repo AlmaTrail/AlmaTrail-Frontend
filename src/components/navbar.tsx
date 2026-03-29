@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-import SignupSection from './signupSection';
+import AuthContainer from './AuthContainer';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -65,11 +65,10 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="hidden lg:flex">
-          {/* <Link href={'/user_signup'}>Sign Up</Link> */}
           <Dialog>
-            <DialogTrigger className='py-1 px-5 ml-5 bg-[#1d0828] rounded-md text-white font-gilroy-bold shadow-sm transition duration-200 hover:bg-white hover:text-[#3b0764] border-2 border-transparent hover:border-[#3b0764]'>Sign Up</DialogTrigger>
+            <DialogTrigger className='py-1 px-5 ml-5 bg-[#1d0828] rounded-md text-white font-gilroy-bold shadow-sm transition duration-200 hover:bg-white hover:text-[#3b0764] border-2 border-transparent hover:border-[#3b0764]'>Log In</DialogTrigger>
             <DialogContent className='m-0 p-0 rounded-xl'>
-              <SignupSection />
+              <AuthContainer />
             </DialogContent>
           </Dialog>
         </div>
@@ -92,9 +91,14 @@ const Navbar = () => {
                 </li>
               ))}
             </ul>
-            <button className="w-full bg-[#1d0828] rounded-md py-2 text-white font-gilroy-bold shadow-sm transition duration-200 hover:bg-white hover:text-[#1d0828] border-2 border-transparent hover:border-[#1d0828]">
-              <Link href={'/user_signup'}>Sign up</Link>
-            </button>
+            <Dialog>
+              <DialogTrigger className="w-full bg-[#1d0828] rounded-md py-2 text-white font-gilroy-bold shadow-sm transition duration-200 hover:bg-white hover:text-[#1d0828] border-2 border-transparent hover:border-[#1d0828]">
+                Log In
+              </DialogTrigger>
+              <DialogContent className='m-0 p-0 rounded-xl'>
+                <AuthContainer />
+              </DialogContent>
+            </Dialog>
           </div>
         )}
       </div>
