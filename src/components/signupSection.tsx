@@ -26,7 +26,7 @@ const SignupSection = () => {
                             Email
                         </Label>
                         <Input 
-                            className="custom-input text-[#1d0828] border border-gray-400 !border-black !bg-white p-2 focus:!outline-none focus:!border-black focus:!ring-1 focus:!ring-black rounded-md" 
+                            className="custom-input text-[#1d0828] bg-white" 
                             id="email" 
                             type="email" 
                             placeholder="john@example.com" 
@@ -37,7 +37,7 @@ const SignupSection = () => {
                             Password
                         </Label>
                         <Input 
-                            className="custom-input text-[#1d0828] border border-gray-400 !border-black !bg-white p-2 focus:!outline-none focus:!border-black focus:!ring-1 focus:!ring-black rounded-md" 
+                            className="custom-input text-[#1d0828] bg-white" 
                             id="password" 
                             type="password" 
                         />
@@ -47,14 +47,14 @@ const SignupSection = () => {
                             Confirm Password
                         </Label>
                         <Input 
-                            className="custom-input text-[#1d0828] border border-gray-400 !border-black !bg-white p-2 focus:!outline-none focus:!border-black focus:!ring-1 focus:!ring-black rounded-md" 
+                            className="custom-input text-[#1d0828] bg-white" 
                             id="confirm-password" 
                             type="password" 
                         />
                     </div>
                 </CardContent>
                 <CardFooter>
-                    <Button className="w-full bg-white text-purple-950 hover:bg-purple-950 hover:text-white">
+                    <Button className="w-full bg-white text-purple-950 border border-purple-950 hover:bg-purple-950 hover:text-white">
                         Create account
                     </Button>
                 </CardFooter>
