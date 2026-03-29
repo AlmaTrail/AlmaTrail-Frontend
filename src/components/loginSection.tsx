@@ -4,7 +4,6 @@ import { Button } from "./ui/button";
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
@@ -14,11 +13,9 @@ import { Label } from "./ui/label";
 import { DialogClose } from "./ui/dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
-const SignupSection = ({ onSwitchToLogin }) => {
+const LoginSection = ({ onSwitchToSignup }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [passwordError, setPasswordError] = useState(false);
     const [emailError, setEmailError] = useState(false);
 
     const validateEmail = (email) => {
@@ -34,37 +31,10 @@ const SignupSection = ({ onSwitchToLogin }) => {
     };
 
     const handleEmailBlur = () => {
-        if (!validateEmail(email)) {
+        if (email && !validateEmail(email)) {
             setEmailError(true);
         }
     };
-
-    const validatePasswords = () => {
-        if (password !== confirmPassword) {
-            setPasswordError(true);
-        } else {
-            setPasswordError(false);
-        }
-    };
-
-    const handlePasswordBlur = () => {
-        if (confirmPassword) {
-            validatePasswords();
-        }
-    };
-
-    const handleConfirmPasswordChange = (e) => {
-        setConfirmPassword(e.target.value);
-        if (passwordError) {
-            setPasswordError(false);
-        }
-    };
-
-    const handleConfirmPasswordBlur = () => {
-        validatePasswords();
-    };
-
-    const isButtonDisabled = !email || !password || !confirmPassword || password !== confirmPassword || !validateEmail(email);
 
     return (
         <div className="relative">
@@ -75,10 +45,7 @@ const SignupSection = ({ onSwitchToLogin }) => {
             </DialogClose>
             <Card className="bg-white b-0">
                 <CardHeader className="space-y-1">
-                    <CardTitle className="text-2xl text-[#1d0828]">Create an account</CardTitle>
-                    <CardDescription className="text-[#1d0828]">
-                        Enter your email below to create your account
-                    </CardDescription>
+                    <CardTitle className="text-2xl text-[#1d0828]">Log In</CardTitle>
                 </CardHeader>
                 <CardContent className="grid gap-4">
                     <div className="grid gap-2">
@@ -94,7 +61,7 @@ const SignupSection = ({ onSwitchToLogin }) => {
                             onChange={handleEmailChange}
                             onBlur={handleEmailBlur}
                         />
-                        {emailError && <p className="text-red-500 text-xs">Please enter a valid email address.</p>}
+                         {emailError && <p className="text-red-500 text-xs">Please enter a valid email address.</p>}
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="password" className="text-[#1d0828]">
@@ -106,39 +73,24 @@ const SignupSection = ({ onSwitchToLogin }) => {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            onBlur={handlePasswordBlur}
                         />
                     </div>
-                    <div className="grid gap-2">
-                        <Label htmlFor="confirm-password" className={passwordError ? "text-red-500" : "text-[#1d0828]"}>
-                            Confirm Password
-                        </Label>
-                        <Input 
-                            className={`custom-input text-[#1d0828] bg-white ${passwordError ? "border-red-500" : ""}`}
-                            id="confirm-password" 
-                            type="password"
-                            value={confirmPassword}
-                            onChange={handleConfirmPasswordChange}
-                            onBlur={handleConfirmPasswordBlur}
-                        />
-                        {passwordError && <p className="text-red-500 text-xs">Passwords do not match.</p>}
-                    </div>
-                     <div className="text-sm text-gray-600 mt-2">
-                        Already have an account?{" "}
+                    <div className="text-sm text-gray-600 mt-2">
+                        New to AlmaTrail?{" "}
                         <button
-                            onClick={onSwitchToLogin}
+                            onClick={onSwitchToSignup}
                             className="text-purple-950 hover:underline"
                         >
-                            Log in
+                            Sign up
                         </button>
                     </div>
                 </CardContent>
                 <CardFooter>
                     <Button 
                         className="w-full bg-white text-purple-950 border border-purple-950 hover:bg-purple-950 hover:text-white"
-                        disabled={isButtonDisabled}
+                        disabled={!email || !password || emailError}
                     >
-                        Create account
+                        Log In
                     </Button>
                 </CardFooter>
             </Card>
@@ -146,4 +98,4 @@ const SignupSection = ({ onSwitchToLogin }) => {
     )
 }
 
-export default SignupSection;
+export default LoginSection;

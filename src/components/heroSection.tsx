@@ -8,7 +8,7 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import SignupSection from "./signupSection";
+import AuthContainer from "./AuthContainer";
 
 const HeroSection = () => {
   return (
@@ -30,10 +30,10 @@ const HeroSection = () => {
           </button>
           <Dialog>
             <DialogTrigger className="py-2 w-full sm:my-2 hover:bg-white rounded-md hover:text-[#1d0828] font-gilroy-bold shadow-sm transition duration-200 bg-[#1d0828] text-white border-2 border-white">
-              Sign up
+              Log In
             </DialogTrigger>
             <DialogContent className='m-0 p-0 rounded-xl'>
-              <SignupSection />
+              <AuthContainer />
             </DialogContent>
           </Dialog>
         </div>
