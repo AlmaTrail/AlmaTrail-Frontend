@@ -13,17 +13,17 @@ import { Label } from "./ui/label";
 import { DialogClose } from "./ui/dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
-const LoginSection = ({ onSwitchToSignup }) => {
+const LoginSection = ({ onSwitchToSignup }: { onSwitchToSignup: () => void }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState(false);
 
-    const validateEmail = (email) => {
+    const validateEmail = (email: string) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
     };
 
-    const handleEmailChange = (e) => {
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
         if (emailError) {
             setEmailError(false);
