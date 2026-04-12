@@ -20,6 +20,8 @@ const SignupSection = ({ onSwitchToLogin }) => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordError, setPasswordError] = useState(false);
     const [emailError, setEmailError] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [apiError, setApiError] = useState("");
 
     const validateEmail = (email) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -65,6 +67,48 @@ const SignupSection = ({ onSwitchToLogin }) => {
     };
 
     const isButtonDisabled = !email || !password || !confirmPassword || password !== confirmPassword || !validateEmail(email);
+
+    const handleSignup = async () => {
+        setIsLoading(true);
+        setApiError("");
+        try {
+            const endpoint = process.env.NEXT_PUBLIC_SIGNUP_ENDPOINT || "http://localhost:8080/auth/signup";
+            const response = await fetch(endpoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            if (!response.ok) {
+                const text = await response.text();
+                let errorMessage = "Signup failed";
+                try {
+                    const errorData = JSON.parse(text);
+                    errorMessage = errorData.message || errorMessage;
+                } catch (e) {
+                    errorMessage = text || errorMessage;
+                }
+                setApiError(errorMessage);
+                return;
+            }
+
+            const data = await response.json();
+            console.log("Signup successful:", data);
+            
+            alert("Signup successful! Please log in.");
+            if (onSwitchToLogin) {
+                onSwitchToLogin();
+            }
+
+        } catch (error) {
+            console.error("Error during signup:", error);
+            setApiError("An unexpected error occurred. Please try again.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <div className="relative">
@@ -133,12 +177,14 @@ const SignupSection = ({ onSwitchToLogin }) => {
                         </button>
                     </div>
                 </CardContent>
-                <CardFooter>
+                <CardFooter className="flex-col items-start gap-2">
+                    {apiError && <p className="text-red-500 text-sm">{apiError}</p>}
                     <Button 
                         className="w-full bg-white text-purple-950 border border-purple-950 hover:bg-purple-950 hover:text-white"
-                        disabled={isButtonDisabled}
+                        disabled={isButtonDisabled || isLoading}
+                        onClick={handleSignup}
                     >
-                        Create account
+                        {isLoading ? "Creating account..." : "Create account"}
                     </Button>
                 </CardFooter>
             </Card>
