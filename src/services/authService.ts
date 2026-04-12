@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = process.env.USER_BASE_URL; // Replace with your backend API base URL
+const baseUrl = process.env.NEXT_PUBLIC_USER_BASE_URL; // Replace with your backend API base URL
 
 export const registerUser = async (userData: any) => {
   try {

@@ -94,7 +94,13 @@ const SignupSection = ({ onSwitchToLogin }) => {
                 return;
             }
 
-            const data = await response.json();
+            const responseText = await response.text();
+            let data;
+            try {
+                data = JSON.parse(responseText);
+            } catch (e) {
+                data = responseText;
+            }
             console.log("Signup successful:", data);
             
             alert("Signup successful! Please log in.");
