@@ -1,4 +1,5 @@
 "use client";
+import api from "@/lib/api";
 import React, { useState } from "react";
 import { Button } from "./ui/button";
 import {
@@ -12,11 +13,13 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { DialogClose } from "./ui/dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
+import axios from "axios";
 
 const LoginSection = ({ onSwitchToSignup }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState(false);
+    const [loginError, setLoginError] = useState("");
 
     const validateEmail = (email) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -28,11 +31,43 @@ const LoginSection = ({ onSwitchToSignup }) => {
         if (emailError) {
             setEmailError(false);
         }
+        if (loginError) {
+            setLoginError("");
+        }
+    };
+
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value);
+        if (loginError) {
+            setLoginError("");
+        }
     };
 
     const handleEmailBlur = () => {
         if (email && !validateEmail(email)) {
             setEmailError(true);
+        }
+    };
+
+    const handleLogin = async () => {
+        try {
+            const response = await api.post("/auth/login", {
+                email,
+                password,
+            });
+            console.log("Login successful:", response.data);
+            // Attach the entire JWT response to the HTTP sessions cache (sessionStorage)
+            if (response.data) {
+                sessionStorage.setItem("jwt", JSON.stringify(response.data));
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                setLoginError(error.response?.data?.message || "Invalid credentials");
+                console.error("Login failed:", error.response.data);
+            } else {
+                setLoginError("An unexpected error occurred. Please try again.");
+                console.error("An error occurred during login:", error);
+            }
         }
     };
 
@@ -72,8 +107,9 @@ const LoginSection = ({ onSwitchToSignup }) => {
                             id="password" 
                             type="password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={handlePasswordChange}
                         />
+                        {loginError && <p className="text-red-500 text-xs mt-1">{loginError}</p>}
                     </div>
                     <div className="text-sm text-gray-600 mt-2">
                         New to AlmaTrail?{" "}
@@ -89,6 +125,7 @@ const LoginSection = ({ onSwitchToSignup }) => {
                     <Button 
                         className="w-full bg-white text-purple-950 border border-purple-950 hover:bg-purple-950 hover:text-white"
                         disabled={!email || !password || emailError}
+                        onClick={handleLogin}
                     >
                         Log In
                     </Button>

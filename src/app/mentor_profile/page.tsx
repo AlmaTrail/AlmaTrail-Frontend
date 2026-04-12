@@ -1,327 +1,506 @@
-'use client';
-import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { Save, Linkedin, GraduationCap } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
-import ProfilePhotoUpload from "@/components/profilePhotoUpload";
-import DocumentUpload from "@/components/documentUpload";
-import SchedulePicker, { type WeeklySchedule } from "@/components/schedulePicker";
+"use client";
+import { useState, useEffect } from 'react';
+import { 
+  Copy, 
+  MapPin, 
+  PlusCircle, 
+  X, 
+  Plus, 
+  Info,
+  ChevronDown,
+  Calendar
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import ProfilePhotoUpload from '@/components/profilePhotoUpload';
+import DocumentUpload from '@/components/documentUpload';
+import SchedulePicker, { WeeklySchedule } from '@/components/schedulePicker';
+import timezoneData from '@/data/timezone.json';
+// import "../globals.css";
 
-const ProfileCompletion = ({ percentage }: { percentage: number }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-card rounded-xl border border-border p-4 shadow-sm"
-    >
-      <h3 className="text-sm font-semibold text-foreground mb-2">Profile Completion</h3>
-      <div className="flex items-center gap-3">
-        <div className="w-full bg-secondary rounded-full h-2">
-          <motion.div
-            className="bg-primary h-2 rounded-full"
-            initial={{ width: 0 }}
-            animate={{ width: `${percentage}%` }}
-            transition={{ ease: "easeInOut" }}
-          ></motion.div>
-        </div>
-        <span className="text-xs font-medium text-muted-foreground">{`${Math.round(percentage)}%`}</span>
-      </div>
-    </motion.div>
-  );
-};
-
-const Index = () => {
-  const router = useRouter();
-  const [photo, setPhoto] = useState<string | null>(null);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [university, setUniversity] = useState("");
-  const [bio, setBio] = useState("");
-  const [dob, setDob] = useState("");
-  const [linkedin, setLinkedin] = useState("");
-  const [documents, setDocuments] = useState<{ name: string; url: string }[]>([]);
-  const [schedule, setSchedule] = useState<WeeklySchedule>({});
-  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
-  const [completion, setCompletion] = useState(0);
-
-  const initialState = useRef({
-    photo,
-    name,
-    email,
-    university,
-    bio,
-    dob,
-    linkedin,
-    documents,
-    schedule,
-  });
+export default function App() {
+  const [userDetails, setUserDetails] = useState<any>(null);
 
   useEffect(() => {
-    initialState.current = {
-      photo,
-      name,
-      email,
-      university,
-      bio,
-      dob,
-      linkedin,
-      documents,
-      schedule,
+    const fetchUserDetails = async () => {
+      try {
+        const endpoint = process.env.NEXT_PUBLIC_USERS_ME_ENDPOINT;
+        if (!endpoint) throw new Error("NEXT_PUBLIC_USERS_ME_ENDPOINT is not defined");
+        
+        const storedJwt = sessionStorage.getItem("jwt");
+        let token = "";
+        if (storedJwt) {
+          try {
+            const parsedJwt = JSON.parse(storedJwt);
+            // Extract the token, adjust property name if your backend returns it differently
+            token = parsedJwt.token || parsedJwt.jwt || parsedJwt.accessToken || "";
+          } catch (e) {
+            console.error("Error parsing JWT from session storage", e);
+          }
+        }
+
+        const headers: HeadersInit = {};
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+
+        const response = await fetch(endpoint, { headers });
+        
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
+        }
+        
+        const data = await response.json();
+        console.log("User Details:", data);
+        setUserDetails(data);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
     };
+    fetchUserDetails();
   }, []);
 
-  useEffect(() => {
-    const fields = [
-      photo !== null,
-      name.trim() !== '',
-      email.trim() !== '',
-      university.trim() !== '',
-      bio.trim() !== '',
-      dob !== '',
-      linkedin.trim() !== '',
-      documents.length > 0,
-      Object.keys(schedule).length > 0,
-    ];
-    const completedCount = fields.filter(Boolean).length;
-    const percentage = (completedCount / fields.length) * 100;
-    setCompletion(percentage);
-  }, [photo, name, email, university, bio, dob, linkedin, documents, schedule]);
+  const [workExperiences, setWorkExperiences] = useState([{ id: 1 }]);
+  const [selectedKyc, setSelectedKyc] = useState<'id' | 'passport'>('passport');
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
+  const [kycDocuments, setKycDocuments] = useState<{name: string, url: string}[]>([]);
+  const [schedule, setSchedule] = useState<WeeklySchedule>({
+    Monday: [{ start: '17:00', end: '18:00' }, { start: '19:00', end: '21:00' }],
+    Tuesday: [{ start: '08:00', end: '09:00' }],
+  });
 
-  const hasChanges = () => {
-    return (
-      initialState.current.photo !== photo ||
-      initialState.current.name !== name ||
-      initialState.current.email !== email ||
-      initialState.current.university !== university ||
-      initialState.current.bio !== bio ||
-      initialState.current.dob !== dob ||
-      initialState.current.linkedin !== linkedin ||
-      JSON.stringify(initialState.current.documents) !== JSON.stringify(documents) ||
-      JSON.stringify(initialState.current.schedule) !== JSON.stringify(schedule)
-    );
+  const addWorkExperience = () => {
+    setWorkExperiences([...workExperiences, { id: Date.now() }]);
   };
 
-  const handleCancel = () => {
-    if (hasChanges()) {
-      setIsCancelDialogOpen(true);
-    } else {
-      router.push("/");
+  const removeWorkExperience = (id: number) => {
+    if (workExperiences.length > 1) {
+      setWorkExperiences(workExperiences.filter(exp => exp.id !== id));
     }
   };
 
-  const handleSave = () => {
-    console.log({
-      photo,
-      name,
-      email,
-      university,
-      bio,
-      dob,
-      linkedin,
-      documents,
-      schedule,
-    });
-    toast.success("Profile saved", {
-      description: "Your mentor profile has been updated successfully.",
-    });
-    initialState.current = {
-      photo,
-      name,
-      email,
-      university,
-      bio,
-      dob,
-      linkedin,
-      documents,
-      schedule,
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    
+    const personalDetails = {
+      firstName: formData.get('firstName') || '',
+      lastName: formData.get('lastName') || '',
+      email: formData.get('email') || '',
+      course: formData.get('course') || '',
+      dob: formData.get('dob') || '',
+      country: formData.get('country') || '',
+      timezone: formData.get('timezone') || '',
+      linkedin: formData.get('linkedin') || ''
     };
+
+    const shortBio = formData.get('shortBio') || '';
+
+    // Build work history array
+    const workHistory = workExperiences.map(exp => ({
+      id: exp.id,
+      company: formData.get(`company_${exp.id}`) || '',
+      role: formData.get(`role_${exp.id}`) || '',
+      startDate: formData.get(`startDate_${exp.id}`) || '',
+      endDate: formData.get(`endDate_${exp.id}`) || '',
+      present: formData.get(`present_${exp.id}`) === 'on'
+    }));
+
+    const payload = {
+      data: {
+        personalDetails,
+        shortBio,
+        profilePhoto,
+        workHistory,
+        schedule,
+        kycDocuments,
+        user: userDetails?.id
+      }
+    };
+
+    try {
+      const storedJwt = sessionStorage.getItem("jwt");
+      let token = "";
+      if (storedJwt) {
+        try {
+          const parsedJwt = JSON.parse(storedJwt);
+          token = parsedJwt.token || parsedJwt.jwt || parsedJwt.accessToken || "";
+        } catch (e) {
+          console.error("Error parsing JWT from session storage", e);
+        }
+      }
+
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json'
+      };
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      const endpoint = process.env.NEXT_PUBLIC_MENTORS_ENDPOINT;
+      if (!endpoint) throw new Error("NEXT_PUBLIC_MENTORS_ENDPOINT is not defined");
+
+      const hasMentorRole = 
+        userDetails?.role?.name?.toLowerCase() === 'mentor' || 
+        (typeof userDetails?.role === 'string' && userDetails.role.toLowerCase() === 'mentor') ||
+        (Array.isArray(userDetails?.roles) && userDetails.roles.some((r: any) => 
+          (typeof r === 'string' && r.toLowerCase() === 'mentor') || 
+          (r?.name?.toLowerCase() === 'mentor')
+        ));
+
+      const mentorId = userDetails?.mentor?.id || userDetails?.mentorId || userDetails?.id;
+
+      const isUpdate = hasMentorRole && mentorId;
+      const url = isUpdate ? `${endpoint}/${mentorId}` : endpoint;
+      const method = isUpdate ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
+        headers,
+        body: JSON.stringify(payload)
+      });
+      
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
+      }
+      
+      const result = await response.json();
+      console.log("Successfully saved mentor profile:", result);
+      alert("Profile saved successfully!");
+    } catch (error) {
+      console.error("Error saving mentor profile:", error);
+      alert("Failed to save profile. Please try again.");
+    }
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <GraduationCap className="w-6 h-6 text-primary" />
-            <h1 className="text-lg font-bold text-foreground">Mentor Profile</h1>
-          </div>
+    <div className="min-h-screen flex flex-col">
+      {/* Top Navigation Bar */}
+      <header className="fixed top-0 w-full z-50 glass-header border-b border-outline-variant/20">
+        <div className="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+          <span className="text-2xl font-bold tracking-tighter text-primary font-headline">Almatrail</span>
           <div className="flex items-center gap-4">
-            <Button
-              variant="outline"
-              className="text-red-500 border-red-500 hover:bg-red-500 hover:text-white"
-              onClick={handleCancel}
-            >
-              Cancel
-            </Button>
-            <Dialog open={isCancelDialogOpen} onOpenChange={setIsCancelDialogOpen}>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Are you sure you want to exit?</DialogTitle>
-                  <DialogDescription>
-                    You have unsaved changes that will be lost.
-                  </DialogDescription>
-                </DialogHeader>
-                <DialogFooter>
-                  <Button
-                    className="w-full bg-[#1d0828] text-white font-gilroy-bold shadow-sm transition duration-200 hover:bg-white hover:text-[#3b0764] border-2 border-transparent hover:border-[#3b0764]"
-                    onClick={() => {
-                      handleSave();
-                      setIsCancelDialogOpen(false);
-                    }}
-                  >
-                    Save changes
-                  </Button>
-                  <Link href={'/'} className="w-full">
-                    <Button variant="outline" className="w-full mb-2 text-red-500 border-red-500 hover:bg-red-500 hover:text-white">
-                      Exit
-                    </Button>
-                  </Link>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-            <Button
-              onClick={handleSave}
-              className="gap-2 bg-[#1d0828] text-white font-gilroy-bold shadow-sm transition duration-200 hover:bg-white hover:text-[#3b0764] border-2 border-transparent hover:border-[#3b0764]"
-            >
-              <Save className="w-4 h-4" />
-              Save Profile
-            </Button>
+            <span className="text-xs font-semibold text-on-surface-variant tracking-wider uppercase hidden sm:block">
+              Mentor Onboarding
+            </span>
+            <div className="h-8 w-8 rounded-full overflow-hidden ring-2 ring-primary/10">
+              <img 
+                alt="Professional headshot" 
+                className="w-full h-full object-cover" 
+                src="https://picsum.photos/seed/mentor/100/100"
+                referrerPolicy="no-referrer"
+              />
+            </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 py-8 space-y-8">
-        <ProfileCompletion percentage={completion} />
-        {/* Photo + Basic Info */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-card rounded-xl border border-border p-6 shadow-sm"
-        >
-          <h2 className="text-base font-semibold text-foreground mb-6">Personal Information</h2>
-          <div className="flex flex-col sm:flex-row gap-6">
-            <ProfilePhotoUpload photo={photo} onPhotoChange={setPhoto} />
-            <div className="flex-1 space-y-4">
+      <main className="pt-24 pb-32 px-4 max-w-4xl mx-auto w-full">
+        <form className="space-y-12" onSubmit={handleSubmit}>
+          {/* Section 1: Personal Details */}
+          <motion.section 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gray-100 p-8 md:p-12 rounded-xl shadow-[0_32px_64px_-12px_rgba(25,27,34,0.04)]"
+          >
+            <div className="flex flex-col md:flex-row md:items-start justify-between mb-8 gap-4">
               <div>
-                <label className="text-sm font-medium text-foreground mb-1.5 block">
-                  Name
-                </label>
-                <Input
-                  placeholder="e.g. John Doe"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                <h2 className="text-2xl font-bold font-headline text-on-surface tracking-tight">Personal Details</h2>
+                <p className="text-on-surface-variant font-body mt-2">Introduce yourself to the Almatrail scholarly community.</p>
+              </div>
+              <button type="button" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary-fixed text-on-primary-fixed font-bold text-sm hover:bg-primary-fixed/80 transition-all self-start">
+                <Copy size={18} />
+                <span>Copy Profile URL</span>
+              </button>
+            </div>
+
+            <div className="mb-8 flex justify-center md:justify-start">
+              <ProfilePhotoUpload photo={profilePhoto} onPhotoChange={setProfilePhoto} />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+              <div className="flex flex-col gap-2">
+                <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">First Name</label>
+                <input 
+                  name="firstName"
+                  className="bg-surface-container-low border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 rounded-lg p-3 font-body text-on-surface transition-all outline-none" 
+                  placeholder="e.g. Julian" 
+                  type="text"
                 />
               </div>
-              <div>
-                <label className="text-sm font-medium text-foreground mb-1.5 block">
-                  Email
-                </label>
-                <Input
+              <div className="flex flex-col gap-2">
+                <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">Last Name</label>
+                <input 
+                  name="lastName"
+                  className="bg-surface-container-low border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 rounded-lg p-3 font-body text-on-surface transition-all outline-none" 
+                  placeholder="e.g. Thorne" 
+                  type="text"
+                />
+              </div>
+              <div className="flex flex-col gap-2 md:col-span-2">
+                <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">Institutional Email</label>
+                <input 
+                  name="email"
+                  className="bg-surface-container-low border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 rounded-lg p-3 font-body text-on-surface transition-all outline-none" 
+                  placeholder="j.thorne@university.edu" 
                   type="email"
-                  placeholder="e.g. john.doe@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              <div>
-                <label className="text-sm font-medium text-foreground mb-1.5 block">
-                  University
-                </label>
-                <Input
-                  placeholder="e.g. Stanford University"
-                  value={university}
-                  onChange={(e) => setUniversity(e.target.value)}
+              <div className="flex flex-col gap-2">
+                <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">Course Completed / In-Progress</label>
+                <input 
+                  name="course"
+                  className="bg-surface-container-low border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 rounded-lg p-3 font-body text-on-surface transition-all outline-none" 
+                  placeholder="e.g. MS in Computer Science" 
+                  type="text"
                 />
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-foreground mb-1.5 block">
-                    Date of Birth
-                  </label>
-                  <Input
+              <div className="flex flex-col gap-2">
+                <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">Date of Birth</label>
+                <div className="relative group">
+                  <input 
+                    name="dob"
+                    className="w-full bg-surface-container-low border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 rounded-lg p-3 pl-10 font-body text-on-surface transition-all outline-none appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer" 
                     type="date"
-                    value={dob}
-                    onChange={(e) => setDob(e.target.value)}
                   />
+                  <Calendar size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors pointer-events-none" />
                 </div>
-                <div>
-                  <label className="text-sm font-medium text-foreground mb-1.5 block">
-                    <span className="flex items-center gap-1.5">
-                      <Linkedin className="w-3.5 h-3.5 text-primary" />
-                      LinkedIn Profile
-                    </span>
-                  </label>
-                  <Input
-                    placeholder="https://linkedin.com/in/yourprofile"
-                    value={linkedin}
-                    onChange={(e) => setLinkedin(e.target.value)}
+              </div>
+              <div className="flex flex-col gap-2 md:col-span-1">
+                <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">Country</label>
+                <div className="relative">
+                  <input 
+                    name="country"
+                    className="w-full bg-surface-container-low border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 rounded-lg p-3 font-body text-on-surface transition-all pl-10 outline-none" 
+                    placeholder="London, United Kingdom" 
+                    type="text"
                   />
+                  <MapPin size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
                 </div>
+              </div>
+              <div className="flex flex-col gap-2 md:col-span-1">
+                <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">Timezone</label>
+                <div className="relative">
+                  <select 
+                    name="timezone"
+                    className="w-full bg-surface-container-low border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 rounded-lg p-3 font-body text-on-surface transition-all outline-none appearance-none" 
+                    defaultValue=""
+                  >
+                    <option value="" disabled>Select your timezone</option>
+                    {timezoneData.map((country, idx) => (
+                      <optgroup key={idx} label={country.name}>
+                        {country.timezones.map((tz, tzIdx) => (
+                          <option key={tzIdx} value={tz.zone}>
+                            {tz.name} ({tz.utc_offset})
+                          </option>
+                        ))}
+                      </optgroup>
+                    ))}
+                  </select>
+                  <ChevronDown size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" />
+                </div>
+              </div>
+              <div className="flex flex-col gap-2 md:col-span-2">
+                <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">LinkedIn Profile Link</label>
+                <input 
+                  name="linkedin"
+                  className="bg-surface-container-low border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 rounded-lg p-3 font-body text-on-surface transition-all outline-none" 
+                  placeholder="https://linkedin.com/in/username" 
+                  type="url"
+                />
               </div>
             </div>
+          </motion.section>
+
+          {/* Section 2: Bio About Me */}
+          <motion.section 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="bg-gray-100 p-8 md:p-12 rounded-xl shadow-[0_32px_64px_-12px_rgba(25,27,34,0.04)]"
+          >
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold font-headline text-on-surface tracking-tight">Bio About Me</h2>
+              <p className="text-on-surface-variant font-body mt-2">Tell students about your background, experience, and what makes you a great mentor.</p>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">Short Bio</label>
+              <textarea 
+                name="shortBio"
+                className="bg-surface-container-low border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 rounded-lg p-4 font-body text-on-surface min-h-[120px] transition-all outline-none resize-none" 
+                placeholder="Write a brief introduction about yourself..."
+              ></textarea>
+            </div>
+          </motion.section>
+
+          {/* Section 3: Work History */}
+          <motion.section 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-gray-100 p-8 md:p-12 rounded-xl"
+          >
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold font-headline text-on-surface tracking-tight">Work History</h2>
+              <p className="text-on-surface-variant font-body mt-2">Detail your professional journey.</p>
+            </div>
+            <div className="space-y-12">
+              <AnimatePresence mode="popLayout">
+                {workExperiences.map((exp, index) => (
+                  <motion.div 
+                    key={exp.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className="relative"
+                  >
+                    {index > 0 && (
+                      <button 
+                        type="button"
+                        onClick={() => removeWorkExperience(exp.id)}
+                        className="absolute -top-4 -right-4 p-1 rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-error transition-colors shadow-sm"
+                      >
+                        <X size={16} />
+                      </button>
+                    )}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                      <div className="flex flex-col gap-2">
+                        <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">Company / Organization</label>
+                        <input 
+                          name={`company_${exp.id}`}
+                          className="bg-surface-container-lowest border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-3 font-body text-on-surface transition-all outline-none" 
+                          placeholder="e.g. Tech University Research" 
+                          type="text"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">Role</label>
+                        <input 
+                          name={`role_${exp.id}`}
+                          className="bg-surface-container-lowest border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-3 font-body text-on-surface transition-all outline-none" 
+                          placeholder="e.g. Principal Investigator" 
+                          type="text"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-2">
+                          <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">Start Date</label>
+                          <div className="relative group">
+                            <input 
+                              name={`startDate_${exp.id}`}
+                              className="w-full bg-surface-container-lowest border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-3 pl-10 font-body text-on-surface transition-all outline-none appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer" 
+                              type="date"
+                            />
+                            <Calendar size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors pointer-events-none" />
+                          </div>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">End Date</label>
+                          <div className="relative group">
+                            <input 
+                              name={`endDate_${exp.id}`}
+                              className="w-full bg-surface-container-lowest border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-3 pl-10 font-body text-on-surface transition-all outline-none appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer" 
+                              type="date"
+                            />
+                            <Calendar size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors pointer-events-none" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 md:pt-8">
+                        <input 
+                          name={`present_${exp.id}`}
+                          className="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary/20 cursor-pointer" 
+                          id={`present-check-${exp.id}`} 
+                          type="checkbox"
+                        />
+                        <label className="text-sm font-medium text-on-surface cursor-pointer" htmlFor={`present-check-${exp.id}`}>
+                          I currently work here
+                        </label>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+              <button 
+                type="button"
+                onClick={addWorkExperience}
+                className="flex items-center gap-2 text-primary font-bold text-sm hover:underline transition-all"
+              >
+                <PlusCircle size={20} />
+                <span>Add another work experience</span>
+              </button>
+            </div>
+          </motion.section>
+
+          {/* Section 4: Weekly Availability */}
+          <motion.section 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-gray-100 p-8 md:p-12 rounded-xl shadow-[0_32px_64px_-12px_rgba(25,27,34,0.04)]"
+          >
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold font-headline text-on-surface tracking-tight">Weekly Availability</h2>
+              <p className="text-on-surface-variant font-body mt-2">Set your standard mentoring hours (UTC+0).</p>
+            </div>
+            <SchedulePicker schedule={schedule} onChange={setSchedule} />
+          </motion.section>
+
+          {/* Section 5: KYC Verification */}
+          <motion.section 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-gray-100 p-8 md:p-12 rounded-xl shadow-[0_32px_64px_-12px_rgba(25,27,34,0.04)]"
+          >
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold font-headline text-on-surface tracking-tight">KYC Verification</h2>
+              <p className="text-on-surface-variant font-body mt-2">Upload documents supporting the fact that you graduated or are studying in the university mentioned by you.</p>
+            </div>
+            <div className="flex flex-col">
+              <DocumentUpload 
+                documents={kycDocuments} 
+                onAdd={(doc) => setKycDocuments([...kycDocuments, doc])} 
+                onRemove={(i) => setKycDocuments(kycDocuments.filter((_, index) => index !== i))}
+                title="Upload University Documents"
+              />
+            </div>
+            <div className="mt-6 p-4 rounded-lg bg-tertiary-fixed/30 flex gap-4 items-start">
+              <Info className="text-tertiary shrink-0" size={20} />
+              <p className="text-xs text-on-surface-variant font-body leading-relaxed">
+                Your documents are encrypted and stored in compliance with academic privacy standards. Only Almatrail verification curators have access to this data.
+              </p>
+            </div>
+          </motion.section>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col md:flex-row-reverse items-center justify-between gap-6 pt-8 border-t border-outline-variant/20">
+            <button type="submit" className="w-full md:w-auto px-10 py-4 rounded-lg bg-gradient-to-r from-primary to-primary-container text-white font-headline font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-primary/20">
+              Save & Continue
+            </button>
+            <button type="button" className="w-full md:w-auto px-10 py-4 rounded-lg bg-surface-container-high text-on-surface-variant font-headline font-semibold text-lg hover:bg-surface-container-highest active:scale-[0.98] transition-all">
+              Cancel
+            </button>
           </div>
-        </motion.section>
-
-        {/* Bio */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-card rounded-xl border border-border p-6 shadow-sm"
-        >
-          <h2 className="text-base font-semibold text-foreground mb-4">Bio</h2>
-          <Textarea
-            placeholder="Tell students about yourself, your experience, and what you can help with..."
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            rows={5}
-            className="resize-none"
-          />
-          <p className="text-xs text-muted-foreground mt-2">{bio.length}/500 characters</p>
-        </motion.section>
-
-        {/* Documents */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-card rounded-xl border border-border p-6 shadow-sm"
-        >
-          <h2 className="text-base font-semibold text-foreground mb-4">Verification</h2>
-          <DocumentUpload
-            documents={documents}
-            onAdd={(doc) => setDocuments((prev) => [...prev, doc])}
-            onRemove={(i) => setDocuments((prev) => prev.filter((_, idx) => idx !== i))}
-          />
-        </motion.section>
-
-        {/* Schedule */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-card rounded-xl border border-border p-6 shadow-sm"
-        >
-          <h2 className="text-base font-semibold text-foreground mb-4">Teaching Schedule</h2>
-          <SchedulePicker schedule={schedule} onChange={setSchedule} />
-        </motion.section>
+        </form>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-surface-container-low py-12 px-8 mt-auto">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-8 max-w-7xl mx-auto">
+          <span className="font-headline font-bold text-on-surface text-lg">Almatrail Editorial Mentorship</span>
+          <div className="flex flex-wrap justify-center gap-6">
+            <a className="text-on-surface-variant font-body text-sm hover:text-primary underline underline-offset-4 transition-colors" href="#">Honor Code</a>
+            <a className="text-on-surface-variant font-body text-sm hover:text-primary underline underline-offset-4 transition-colors" href="#">Academic Privacy</a>
+            <a className="text-on-surface-variant font-body text-sm hover:text-primary underline underline-offset-4 transition-colors" href="#">Curator Terms</a>
+          </div>
+          <p className="text-on-surface-variant font-body text-sm tracking-wide">
+            © 2026 Almatrail Editorial Mentorship. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </div>
   );
-};
-
-export default Index;
+}
