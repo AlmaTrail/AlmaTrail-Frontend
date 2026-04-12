@@ -33,8 +33,10 @@ export default function RootLayout({
           richColors
           position="top-right"
           closeButton
-          classNames={{
-            closeButton: "sonner-close-button",
+          toastOptions={{
+            classNames: {
+              closeButton: "sonner-close-button",
+            }
           }}
         />
       </body>

@@ -14,7 +14,7 @@ import { Label } from "./ui/label";
 import { DialogClose } from "./ui/dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
-const SignupSection = ({ onSwitchToLogin }) => {
+const SignupSection = ({ onSwitchToLogin }: { onSwitchToLogin?: () => void }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -23,12 +23,12 @@ const SignupSection = ({ onSwitchToLogin }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [apiError, setApiError] = useState("");
 
-    const validateEmail = (email) => {
+    const validateEmail = (email: string) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
     };
 
-    const handleEmailChange = (e) => {
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
         if (emailError) {
             setEmailError(false);
@@ -55,7 +55,7 @@ const SignupSection = ({ onSwitchToLogin }) => {
         }
     };
 
-    const handleConfirmPasswordChange = (e) => {
+    const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setConfirmPassword(e.target.value);
         if (passwordError) {
             setPasswordError(false);
