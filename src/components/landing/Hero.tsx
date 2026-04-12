@@ -1,6 +1,8 @@
 "use client";
 import { motion } from 'framer-motion';
 import { BadgeCheck } from 'lucide-react';
+import { useRouter } from "next/navigation";
+import { Button } from '../ui/button';
 
 const mentors = [
   {
@@ -25,6 +27,7 @@ const mentors = [
 ];
 
 export default function Hero() {
+  const router = useRouter();
   return (
     <header className="pt-32 pb-20 px-6 max-w-7xl mx-auto">
       <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -51,13 +54,12 @@ export default function Hero() {
             <motion.button 
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              onClick={() => router.push("/explore")}
               className="bg-primary text-white px-8 py-4 rounded-xl font-display font-bold text-lg shadow-xl shadow-primary/20"
             >
               Get Guidance
             </motion.button>
-            <button className="bg-surface-container-low text-on-surface px-8 py-4 rounded-xl font-display font-bold text-lg hover:bg-outline-variant transition-all">
-              Explore Mentors
-            </button>
+            <Button onClick={() => router.push("/explore")} variant="hero-outline" size="xl">Explore Mentors</Button>
           </div>
         </motion.div>
 

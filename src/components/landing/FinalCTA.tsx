@@ -1,10 +1,13 @@
 "use client";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
-const FinalCTA = () => (
-  <section className="bg-background py-20 lg:py-28">
-    <div className="container mx-auto px-4 lg:px-8 text-center">
+const FinalCTA = () => {
+  const router = useRouter();
+  return (
+    <section className="bg-background py-20 lg:py-28">
+      <div className="container mx-auto px-4 lg:px-8 text-center">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -17,6 +20,7 @@ const FinalCTA = () => (
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           <Button
             size="xl"
+              onClick={() => router.push("/explore")}
             className="bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all"
             >
             Get Guidance
@@ -27,5 +31,6 @@ const FinalCTA = () => (
     </div>
   </section>
 );
+};
 
 export default FinalCTA;
