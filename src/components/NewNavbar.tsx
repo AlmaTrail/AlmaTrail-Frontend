@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import AuthForm from "./AuthForm";
 import AuthSuccess from "./AuthSuccess";
+import Cookies from "js-cookie";
 
 const navLinks = ["Explore Mentors", "How it Works", "For Mentors", "Resources"];
 
@@ -30,7 +31,7 @@ const Navbar = () => {
 
   // Check token on load
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     if (token) setIsLoggedIn(true);
   }, []);
 
@@ -95,7 +96,7 @@ const Navbar = () => {
                   >
                     <button
                       onClick={() => {
-                        localStorage.removeItem("token");
+                        Cookies.remove("token");
                         setIsLoggedIn(false);
                         setProfileOpen(false);
                         window.location.reload();
@@ -149,7 +150,7 @@ const Navbar = () => {
                   <button
                     className="flex-1 py-2 border rounded-xl"
                     onClick={() => {
-                      localStorage.removeItem("token");
+                      Cookies.remove("token");
                       setIsLoggedIn(false);
                       window.location.reload();
                     }}

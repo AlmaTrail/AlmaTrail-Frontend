@@ -11,6 +11,7 @@ import {
   Calendar
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Cookies from 'js-cookie';
 import ProfilePhotoUpload from '@/components/profilePhotoUpload';
 import DocumentUpload from '@/components/documentUpload';
 import SchedulePicker, { WeeklySchedule } from '@/components/schedulePicker';
@@ -26,17 +27,7 @@ export default function App() {
         const endpoint = process.env.NEXT_PUBLIC_USERS_ME_ENDPOINT;
         if (!endpoint) throw new Error("NEXT_PUBLIC_USERS_ME_ENDPOINT is not defined");
         
-        const storedJwt = sessionStorage.getItem("jwt");
-        let token = "";
-        if (storedJwt) {
-          try {
-            const parsedJwt = JSON.parse(storedJwt);
-            // Extract the token, adjust property name if your backend returns it differently
-            token = parsedJwt.token || parsedJwt.jwt || parsedJwt.accessToken || "";
-          } catch (e) {
-            console.error("Error parsing JWT from session storage", e);
-          }
-        }
+        const token = Cookies.get("token") || "";
 
         const headers: HeadersInit = {};
         if (token) {
@@ -119,16 +110,7 @@ export default function App() {
     };
 
     try {
-      const storedJwt = sessionStorage.getItem("jwt");
-      let token = "";
-      if (storedJwt) {
-        try {
-          const parsedJwt = JSON.parse(storedJwt);
-          token = parsedJwt.token || parsedJwt.jwt || parsedJwt.accessToken || "";
-        } catch (e) {
-          console.error("Error parsing JWT from session storage", e);
-        }
-      }
+      const token = Cookies.get("token") || "";
 
       const headers: HeadersInit = {
         'Content-Type': 'application/json'

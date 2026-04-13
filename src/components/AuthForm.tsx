@@ -3,6 +3,7 @@
 import { useState, FormEvent } from "react";
 import { Mail, Lock, ArrowRight, Github } from "lucide-react";
 import { motion } from "framer-motion";
+import Cookies from "js-cookie";
 
 interface AuthFormProps {
   type: "login" | "signup";
@@ -53,7 +54,7 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
       const token = await res.text();
 
       // ✅ Store token
-      localStorage.setItem("token", token);
+      Cookies.set("token", token, { expires: 7 });
 
       console.log(`${type.toUpperCase()} SUCCESS`);
 
