@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { Mail, Lock, ArrowRight, Github } from "lucide-react";
+import { Mail, Lock, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import Cookies from "js-cookie";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { googleLoginUser } from "@/services/authService";
 
 interface AuthFormProps {
   type: "login" | "signup";
@@ -17,6 +19,23 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const handleGoogleSuccess = async (credentialResponse: CredentialResponse) => {
+    if (!credentialResponse.credential) return;
+    setError("");
+    setLoading(true);
+    try {
+      const data = await googleLoginUser(credentialResponse.credential);
+      if (data.token) {
+        Cookies.set("token", data.token, { expires: 7 });
+      }
+      onSuccess?.();
+    } catch (err: any) {
+      setError(err.message || "Google authentication failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -188,16 +207,13 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
       </div>
 
       {/* Social */}
-      <div className="grid grid-cols-2 gap-3">
-        <button className="flex items-center justify-center gap-2 py-2 border border-border rounded-xl hover:bg-muted transition text-sm">
-          <img src="https://www.google.com/favicon.ico" className="w-4 h-4" />
-          Google
-        </button>
-
-        <button className="flex items-center justify-center gap-2 py-2 border border-border rounded-xl hover:bg-muted transition text-sm">
-          <Github className="w-4 h-4" />
-          GitHub
-        </button>
+      <div className="flex justify-center w-full">
+        <GoogleLogin
+          onSuccess={handleGoogleSuccess}
+          onError={() => {
+            setError("Google Login Failed");
+          }}
+        />
       </div>
 
       {/* Switch */}
