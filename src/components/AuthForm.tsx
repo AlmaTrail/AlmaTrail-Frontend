@@ -7,35 +7,63 @@ import { motion } from "framer-motion";
 interface AuthFormProps {
   type: "login" | "signup";
   onSwitch: () => void;
+  onSuccess?: () => void; // ✅ optional
 }
 
-export default function AuthForm({ type, onSwitch }: AuthFormProps) {
+export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
 
-    // ✅ Validation (only for signup)
+    // ✅ Signup validation
     if (type === "signup" && password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
 
-    try {
-      if (type === "login") {
-        // 👉 Replace with your login API
-        console.log("LOGIN:", { email, password });
+    setLoading(true);
 
-      } else {
-        // 👉 Replace with your signup API
-        console.log("SIGNUP:", { email, password, confirmPassword });
+    try {
+      const endpoint =
+        type === "login"
+          ? process.env.NEXT_PUBLIC_LOGIN_ENDPOINT
+          : process.env.NEXT_PUBLIC_SIGNUP_ENDPOINT;
+
+      const res = await fetch(endpoint!, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      // ❌ If failed
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(errText || "Request failed");
       }
-    } catch (err) {
-      setError("Something went wrong. Try again.");
+
+      // ✅ Get JWT (string)
+      const token = await res.text();
+
+      // ✅ Store token
+      localStorage.setItem("token", token);
+
+      console.log(`${type.toUpperCase()} SUCCESS`);
+
+      // ✅ Trigger success in parent (Navbar)
+      onSuccess?.();
+
+    } catch (err: any) {
+      setError(err.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -93,7 +121,7 @@ export default function AuthForm({ type, onSwitch }: AuthFormProps) {
           </div>
         </div>
 
-        {/* Confirm Password (only signup) */}
+        {/* Confirm Password */}
         {type === "signup" && (
           <div className="space-y-2">
             <label className="text-xs font-medium uppercase text-muted-foreground ml-1">
@@ -132,9 +160,16 @@ export default function AuthForm({ type, onSwitch }: AuthFormProps) {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           type="submit"
-          className="w-full bg-primary text-primary-foreground rounded-xl py-3 font-medium flex items-center justify-center gap-2 hover:opacity-90 transition"
+          disabled={loading}
+          className="w-full bg-primary text-primary-foreground rounded-xl py-3 font-medium flex items-center justify-center gap-2 hover:opacity-90 transition disabled:opacity-60"
         >
-          {type === "login" ? "Sign In" : "Create Account"}
+          {loading
+            ? type === "login"
+              ? "Signing in..."
+              : "Creating account..."
+            : type === "login"
+            ? "Sign In"
+            : "Create Account"}
           <ArrowRight size={18} />
         </motion.button>
       </form>

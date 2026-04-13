@@ -1,24 +1,30 @@
 "use client";
-import React, { useState } from "react";
+
+import { useState } from "react";
 import LoginSection from "./loginSection";
 import SignupSection from "./signupSection";
+import AuthSuccess from "./AuthSuccess";
 
-const AuthContainer = () => {
-  const [isLogin, setIsLogin] = useState(true);
+export default function AuthContainer() {
+  const [view, setView] = useState<"login" | "signup" | "success">("login");
 
-  const switchToSignup = () => {
-    setIsLogin(false);
-  };
-
-  const switchToLogin = () => {
-    setIsLogin(true);
-  };
-
-  if (isLogin) {
-    return <LoginSection onSwitchToSignup={switchToSignup} />;
-  } else {
-    return <SignupSection onSwitchToLogin={switchToLogin} />;
+  if (view === "login") {
+    return (
+      <LoginSection
+        onSwitch={() => setView("signup")}
+        onSuccess={() => setView("success")}
+      />
+    );
   }
-};
 
-export default AuthContainer;
+  if (view === "signup") {
+    return (
+      <SignupSection
+        onSwitch={() => setView("login")}
+        onSuccess={() => setView("success")}
+      />
+    );
+  }
+
+  return <AuthSuccess />;
+}

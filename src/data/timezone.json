@@ -1,117 +1,64 @@
 [
   {
-    "name": "United States",
-    "code": "US",
+    "name": "Americas & Pacific (West)",
+    "code": "AMER_PAC_W",
     "timezones": [
-      {
-        "name": "Eastern Time",
-        "zone": "America/New_York",
-        "utc_offset": "-05:00"
-      },
-      {
-        "name": "Central Time",
-        "zone": "America/Chicago",
-        "utc_offset": "-06:00"
-      },
-      {
-        "name": "Mountain Time",
-        "zone": "America/Denver",
-        "utc_offset": "-07:00"
-      },
-      {
-        "name": "Pacific Time",
-        "zone": "America/Los_Angeles",
-        "utc_offset": "-08:00"
-      },
-      {
-        "name": "Alaska Time",
-        "zone": "America/Anchorage",
-        "utc_offset": "-09:00"
-      },
-      {
-        "name": "Hawaii-Aleutian Time",
-        "zone": "Pacific/Honolulu",
-        "utc_offset": "-10:00"
-      }
+      { "name": "Baker Island Time", "zone": "Etc/GMT+12", "utc_offset": "-12:00" },
+      { "name": "Niue Time", "zone": "Pacific/Niue", "utc_offset": "-11:00" },
+      { "name": "Hawaii-Aleutian Standard Time", "zone": "Pacific/Honolulu", "utc_offset": "-10:00" },
+      { "name": "Marquesas Islands Time", "zone": "Pacific/Marquesas", "utc_offset": "-09:30" },
+      { "name": "Alaska Standard Time", "zone": "America/Anchorage", "utc_offset": "-09:00" },
+      { "name": "Pacific Standard Time", "zone": "America/Los_Angeles", "utc_offset": "-08:00" },
+      { "name": "Mountain Standard Time", "zone": "America/Denver", "utc_offset": "-07:00" },
+      { "name": "Central Standard Time", "zone": "America/Chicago", "utc_offset": "-06:00" },
+      { "name": "Eastern Standard Time", "zone": "America/New_York", "utc_offset": "-05:00" },
+      { "name": "Atlantic Standard Time", "zone": "America/Halifax", "utc_offset": "-04:00" },
+      { "name": "Newfoundland Standard Time", "zone": "America/St_Johns", "utc_offset": "-03:30" },
+      { "name": "Argentina Standard Time", "zone": "America/Argentina/Buenos_Aires", "utc_offset": "-03:00" },
+      { "name": "South Georgia Time", "zone": "Atlantic/South_Georgia", "utc_offset": "-02:00" },
+      { "name": "Azores Standard Time", "zone": "Atlantic/Azores", "utc_offset": "-01:00" }
     ]
   },
   {
-    "name": "Canada",
-    "code": "CA",
+    "name": "Europe & Africa",
+    "code": "EU_AF",
     "timezones": [
-      {
-        "name": "Eastern Time",
-        "zone": "America/Toronto",
-        "utc_offset": "-05:00"
-      },
-      {
-        "name": "Central Time",
-        "zone": "America/Winnipeg",
-        "utc_offset": "-06:00"
-      },
-      {
-        "name": "Mountain Time",
-        "zone": "America/Edmonton",
-        "utc_offset": "-07:00"
-      },
-      {
-        "name": "Pacific Time",
-        "zone": "America/Vancouver",
-        "utc_offset": "-08:00"
-      },
-      {
-        "name": "Atlantic Time",
-        "zone": "America/Halifax",
-        "utc_offset": "-04:00"
-      },
-      {
-        "name": "Newfoundland Time",
-        "zone": "America/St_Johns",
-        "utc_offset": "-03:30"
-      }
+      { "name": "Greenwich Mean Time", "zone": "Europe/London", "utc_offset": "+00:00" },
+      { "name": "Central European Time", "zone": "Europe/Paris", "utc_offset": "+01:00" },
+      { "name": "Eastern European Time", "zone": "Europe/Athens", "utc_offset": "+02:00" },
+      { "name": "Moscow Standard Time", "zone": "Europe/Moscow", "utc_offset": "+03:00" }
     ]
   },
   {
-    "name": "Australia",
-    "code": "AU",
+    "name": "Asia",
+    "code": "AS",
     "timezones": [
-      {
-        "name": "Australian Eastern Time",
-        "zone": "Australia/Sydney",
-        "utc_offset": "+10:00"
-      },
-      {
-        "name": "Australian Central Time",
-        "zone": "Australia/Adelaide",
-        "utc_offset": "+09:30"
-      },
-      {
-        "name": "Australian Western Time",
-        "zone": "Australia/Perth",
-        "utc_offset": "+08:00"
-      }
+      { "name": "Iran Standard Time", "zone": "Asia/Tehran", "utc_offset": "+03:30" },
+      { "name": "Gulf Standard Time", "zone": "Asia/Dubai", "utc_offset": "+04:00" },
+      { "name": "Afghanistan Time", "zone": "Asia/Kabul", "utc_offset": "+04:30" },
+      { "name": "Pakistan Standard Time", "zone": "Asia/Karachi", "utc_offset": "+05:00" },
+      { "name": "India Standard Time", "zone": "Asia/Kolkata", "utc_offset": "+05:30" },
+      { "name": "Nepal Time", "zone": "Asia/Kathmandu", "utc_offset": "+05:45" },
+      { "name": "Bangladesh Time", "zone": "Asia/Dhaka", "utc_offset": "+06:00" },
+      { "name": "Myanmar Time", "zone": "Asia/Yangon", "utc_offset": "+06:30" },
+      { "name": "Indochina Time", "zone": "Asia/Bangkok", "utc_offset": "+07:00" },
+      { "name": "China Standard Time", "zone": "Asia/Shanghai", "utc_offset": "+08:00" },
+      { "name": "Japan Standard Time", "zone": "Asia/Tokyo", "utc_offset": "+09:00" }
     ]
   },
   {
-    "name": "United Kingdom",
-    "code": "GB",
+    "name": "Australia & Pacific (East)",
+    "code": "AU_PAC_E",
     "timezones": [
-      {
-        "name": "Greenwich Mean Time",
-        "zone": "Europe/London",
-        "utc_offset": "+00:00"
-      }
-    ]
-  },
-  {
-    "name": "Germany",
-    "code": "DE",
-    "timezones": [
-      {
-        "name": "Central European Time",
-        "zone": "Europe/Berlin",
-        "utc_offset": "+01:00"
-      }
+      { "name": "Australian Central Western Standard Time", "zone": "Australia/Eucla", "utc_offset": "+08:45" },
+      { "name": "Australian Central Standard Time", "zone": "Australia/Adelaide", "utc_offset": "+09:30" },
+      { "name": "Australian Eastern Standard Time", "zone": "Australia/Sydney", "utc_offset": "+10:00" },
+      { "name": "Lord Howe Standard Time", "zone": "Australia/Lord_Howe", "utc_offset": "+10:30" },
+      { "name": "Solomon Islands Time", "zone": "Pacific/Guadalcanal", "utc_offset": "+11:00" },
+      { "name": "New Zealand Standard Time", "zone": "Pacific/Auckland", "utc_offset": "+12:00" },
+      { "name": "Chatham Standard Time", "zone": "Pacific/Chatham", "utc_offset": "+12:45" },
+      { "name": "Tonga Time", "zone": "Pacific/Tongatapu", "utc_offset": "+13:00" },
+      { "name": "Line Islands Time", "zone": "Pacific/Kiritimati", "utc_offset": "+14:00" }
     ]
   }
 ]
