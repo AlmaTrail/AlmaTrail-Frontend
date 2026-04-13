@@ -6,9 +6,10 @@ interface DocumentUploadProps {
   documents: { name: string; url: string }[];
   onAdd: (doc: { name: string; url: string }) => void;
   onRemove: (index: number) => void;
+  title?: string;
 }
 
-const DocumentUpload = ({ documents, onAdd, onRemove }: DocumentUploadProps) => {
+const DocumentUpload = ({ documents, onAdd, onRemove, title = "College Admission Documents" }: DocumentUploadProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +26,7 @@ const DocumentUpload = ({ documents, onAdd, onRemove }: DocumentUploadProps) => 
   return (
     <div className="space-y-3">
       <label className="text-sm font-medium text-foreground">
-        College Admission Documents
+        {title}
       </label>
       <div
         onClick={() => fileInputRef.current?.click()}

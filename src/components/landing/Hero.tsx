@@ -59,7 +59,7 @@ export default function Hero() {
             >
               Get Guidance
             </motion.button>
-            <Button onClick={() => router.push("/explore")} variant="hero-outline" size="xl">Explore Mentors</Button>
+            <Button onClick={() => router.push("/mentor_profile")} variant="hero-outline" size="xl">Become a Mentor</Button>
           </div>
         </motion.div>
 
