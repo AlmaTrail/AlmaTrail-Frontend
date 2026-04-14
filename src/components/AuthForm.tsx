@@ -26,8 +26,10 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
     setLoading(true);
     try {
       const data = await googleLoginUser(credentialResponse.credential);
-      if (data.token) {
-        Cookies.set("token", data.token, { expires: 7 });
+      // Handle both: raw string token OR { token: "..." } object
+      const token = typeof data === "string" ? data : data?.token;
+      if (token) {
+        Cookies.set("token", token, { expires: 7 });
       }
       onSuccess?.();
     } catch (err: any) {
@@ -69,13 +71,20 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
         throw new Error(errText || "Request failed");
       }
 
-      // ✅ Get JWT (string)
-      const token = await res.text();
-
-      // ✅ Store token
-      Cookies.set("token", token, { expires: 7 });
-
-      console.log(`${type.toUpperCase()} SUCCESS`);
+      // ✅ Handle response
+      if (type === "login") {
+        const text = await res.text();
+        try {
+          // Try parsing as JSON: { token: "..." }
+          const data = JSON.parse(text);
+          const token = data.token || text;
+          Cookies.set("token", token, { expires: 7 });
+        } catch {
+          // Response is a raw token string
+          Cookies.set("token", text, { expires: 7 });
+        }
+      }
+      // Signup returns plain text — no token to store
 
       // ✅ Trigger success in parent (Navbar)
       onSuccess?.();
