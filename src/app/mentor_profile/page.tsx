@@ -82,43 +82,49 @@ export default function App() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    
-    const personalDetails = {
-      firstName: formData.get('firstName') || '',
-      lastName: formData.get('lastName') || '',
-      email: formData.get('email') || '',
-      course: formData.get('course') || '',
-      dob: formData.get('dob') || '',
-      country: formData.get('country') || '',
-      timezone: formData.get('timezone') || '',
-      linkedin: formData.get('linkedin') || ''
-    };
+    const submitData = new FormData();
 
-    const shortBio = formData.get('shortBio') || '';
+    // Personal Details
+    const personalDetailsFields = ['firstName', 'lastName', 'email', 'course', 'dob', 'country', 'timezone', 'linkedin'];
+    personalDetailsFields.forEach(field => {
+      const val = formData.get(field);
+      if (val) submitData.append(`personalDetails.${field}`, val.toString());
+    });
+
+    const shortBio = formData.get('shortBio');
+    if (shortBio) submitData.append('shortBio', shortBio.toString());
 
     // Build work history array
-    const workHistory = workExperiences.map(exp => ({
-      id: exp.id,
-      company: formData.get(`company_${exp.id}`) || '',
-      role: formData.get(`role_${exp.id}`) || '',
-      startDate: formData.get(`startDate_${exp.id}`) || '',
-      endDate: formData.get(`endDate_${exp.id}`) || '',
-      present: formData.get(`present_${exp.id}`) === 'on'
-    }));
+    workExperiences.forEach((exp, index) => {
+      submitData.append(`workHistory[${index}].id`, exp.id.toString());
+      submitData.append(`workHistory[${index}].company`, (formData.get(`company_${exp.id}`) || '').toString());
+      submitData.append(`workHistory[${index}].role`, (formData.get(`role_${exp.id}`) || '').toString());
+      submitData.append(`workHistory[${index}].startDate`, (formData.get(`startDate_${exp.id}`) || '').toString());
+      submitData.append(`workHistory[${index}].endDate`, (formData.get(`endDate_${exp.id}`) || '').toString());
+    });
 
-    const payload = {
-      data: {
-        personalDetails,
-        shortBio,
-        profilePhoto,
-        workHistory,
-        schedule,
-        kycDocuments,
-        user: userDetails?.id
-      }
-    };
+    // Schedule
+    Object.entries(schedule).forEach(([day, slots]) => {
+      slots.forEach((slot, index) => {
+        submitData.append(`schedule[${day}][${index}].start`, slot.start);
+        submitData.append(`schedule[${day}][${index}].end`, slot.end);
+      });
+    });
 
     try {
+      if (profilePhoto) {
+        const res = await fetch(profilePhoto);
+        const blob = await res.blob();
+        submitData.append('profilePhoto', blob, 'profile.jpg');
+      }
+
+      for (let i = 0; i < kycDocuments.length; i++) {
+        const doc = kycDocuments[i];
+        const res = await fetch(doc.url);
+        const blob = await res.blob();
+        submitData.append('kycDocuments', blob, doc.name);
+      }
+
       const storedJwt = sessionStorage.getItem("jwt");
       let token = "";
       if (storedJwt) {
@@ -130,9 +136,7 @@ export default function App() {
         }
       }
 
-      const headers: HeadersInit = {
-        'Content-Type': 'application/json'
-      };
+      const headers: HeadersInit = {};
       if (token) {
         headers["Authorization"] = `Bearer ${token}`;
       }
@@ -157,7 +161,7 @@ export default function App() {
       const response = await fetch(url, {
         method,
         headers,
-        body: JSON.stringify(payload)
+        body: submitData
       });
       
       if (!response.ok) {
