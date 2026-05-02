@@ -61,7 +61,7 @@ export default function ExplorePage() {
   const matchedMentors = mentorsData.filter(m => 
     m.name.toLowerCase().includes(lowerQuery) || 
     m.program.toLowerCase().includes(lowerQuery) ||
-    matchedUniversityIds.includes(m.universityId)
+    matchedUniversityIds.map(String).includes(String(m.universityId))
   );
 
   const getMentorUniName = (uniId: string) => {

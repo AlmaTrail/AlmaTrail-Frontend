@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import { useState, FormEvent } from "react";
 import { Mail, Lock, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
@@ -29,11 +30,11 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
       // Handle both: raw string token OR { token: "..." } object
       const token = typeof data === "string" ? data : data?.token;
       if (token) {
-        Cookies.set("token", token, { expires: 7 });
+        Cookies.set("token", token, { expires: 7, path: "/" });
       }
       onSuccess?.();
     } catch (err: any) {
-      setError(err.message || "Google authentication failed");
+      setError(err.response?.data || err.message || "Google authentication failed");
     } finally {
       setLoading(false);
     }
@@ -57,40 +58,24 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
           ? process.env.NEXT_PUBLIC_LOGIN_ENDPOINT
           : process.env.NEXT_PUBLIC_SIGNUP_ENDPOINT;
 
-      const res = await fetch(endpoint!, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+      const response = await axios.post(endpoint!, {
+        email,
+        password,
       });
 
-      // ❌ If failed
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(errText || "Request failed");
-      }
+      // ✅ Handle response (both login and signup now return AuthResponse JSON)
+      const data = response.data;
+      const token = typeof data === "string" ? data : data?.token;
 
-      // ✅ Handle response
-      if (type === "login") {
-        const text = await res.text();
-        try {
-          // Try parsing as JSON: { token: "..." }
-          const data = JSON.parse(text);
-          const token = data.token || text;
-          Cookies.set("token", token, { expires: 7 });
-        } catch {
-          // Response is a raw token string
-          Cookies.set("token", text, { expires: 7 });
-        }
+      if (token) {
+        Cookies.set("token", token, { expires: 7, path: "/" });
       }
-      // Signup returns plain text — no token to store
 
       // ✅ Trigger success in parent (Navbar)
       onSuccess?.();
 
     } catch (err: any) {
-      setError(err.message || "Something went wrong");
+      setError(err.response?.data || err.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
