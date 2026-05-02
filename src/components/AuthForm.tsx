@@ -29,12 +29,15 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
     setLoading(true);
     try {
       const data = await googleLoginUser(credentialResponse.credential);
-      // Handle both: raw string token OR { token: "..." } object
+      // ✅ Handle both: raw string token OR { token: "..." } object
       const token = typeof data === "string" ? data : data?.token;
+      
       if (token) {
         Cookies.set("token", token, { expires: 7, path: "/" });
+        onSuccess?.();
+      } else {
+        throw new Error("Token not found in response");
       }
-      onSuccess?.();
     } catch (err: any) {
       setError(
         err.response?.data || err.message || "Google authentication failed",
@@ -67,8 +70,9 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
         password,
       });
 
-      // ✅ axios gives data directly
-      const token = response.data;
+      // ✅ Backend returns { token: "...", email: "..." }
+      const data = response.data;
+      const token = typeof data === "string" ? data : data?.token;
 
       if (!token) {
         throw new Error("Token not received");

@@ -9,12 +9,13 @@ export interface UniversityCard {
 }
 
 export interface UniversityMentor {
+  id: number;
   name: string;
-  role: string;
-  image: string;
-  tags: string[];
-  quote: string;
-  online: boolean;
+  profilePicUrl: string;
+  bio: string;
+  halfHourSessionPrice: number;
+  oneHourSessionPrice: number;
+  country: string;
 }
 
 export interface UniversityDetail extends UniversityCard {
