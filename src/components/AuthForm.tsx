@@ -21,7 +21,9 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleGoogleSuccess = async (credentialResponse: CredentialResponse) => {
+  const handleGoogleSuccess = async (
+    credentialResponse: CredentialResponse,
+  ) => {
     if (!credentialResponse.credential) return;
     setError("");
     setLoading(true);
@@ -34,7 +36,9 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
       }
       onSuccess?.();
     } catch (err: any) {
-      setError(err.response?.data || err.message || "Google authentication failed");
+      setError(
+        err.response?.data || err.message || "Google authentication failed",
+      );
     } finally {
       setLoading(false);
     }
@@ -44,7 +48,7 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
     e.preventDefault();
     setError("");
 
-    // ✅ Signup validation
+    // Signup validation
     if (type === "signup" && password !== confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -63,23 +67,16 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
         password,
       });
 
-      // ❌ If failed
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(errText || "Request failed");
-      }
+      // ✅ axios gives data directly
+      const token = response.data;
 
-      // ✅ Handle response
-      const token = await res.text();
       if (!token) {
         throw new Error("Token not received");
       }
 
-      Cookies.set("token", token, { expires: 7 });
+      Cookies.set("token", token, { expires: 7, path: "/" });
 
-      // ✅ Trigger success in parent (Navbar)
       onSuccess?.();
-
     } catch (err: any) {
       setError(err.response?.data || err.message || "Something went wrong");
     } finally {
@@ -89,7 +86,6 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
 
   return (
     <div className="space-y-6">
-      
       {/* Heading */}
       <div className="space-y-1 text-center">
         <h2 className="text-2xl font-semibold tracking-tight">
@@ -104,14 +100,16 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
-        
         {/* Email */}
         <div className="space-y-2">
           <label className="text-xs font-medium uppercase text-muted-foreground ml-1">
             Email
           </label>
           <div className="relative">
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/60" size={18} />
+            <Mail
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/60"
+              size={18}
+            />
             <input
               type="email"
               required
@@ -129,7 +127,10 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
             Password
           </label>
           <div className="relative">
-            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/60" size={18} />
+            <Lock
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/60"
+              size={18}
+            />
             <input
               type="password"
               required
@@ -148,7 +149,10 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
               Confirm Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/60" size={18} />
+              <Lock
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/60"
+                size={18}
+              />
               <input
                 type="password"
                 required
@@ -164,16 +168,17 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
         {/* Forgot */}
         {type === "login" && (
           <div className="flex justify-end">
-            <button type="button" className="text-sm text-primary hover:underline">
+            <button
+              type="button"
+              className="text-sm text-primary hover:underline"
+            >
               Forgot password?
             </button>
           </div>
         )}
 
         {/* Error */}
-        {error && (
-          <p className="text-sm text-red-500 text-center">{error}</p>
-        )}
+        {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
         {/* Submit */}
         <motion.button
@@ -188,8 +193,8 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
               ? "Signing in..."
               : "Creating account..."
             : type === "login"
-            ? "Sign In"
-            : "Create Account"}
+              ? "Sign In"
+              : "Create Account"}
           <ArrowRight size={18} />
         </motion.button>
       </form>

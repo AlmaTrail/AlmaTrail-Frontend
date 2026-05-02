@@ -8,7 +8,6 @@ export default function AuthSuccess() {
 
   return (
     <div className="flex flex-col items-center justify-center text-center space-y-6 py-6">
-      
       {/* Title */}
       <h2 className="text-2xl font-semibold">🎉 Success!</h2>
 
@@ -19,7 +18,6 @@ export default function AuthSuccess() {
 
       {/* Buttons */}
       <div className="flex gap-4 w-full">
-        
         {/* Explore */}
         <motion.button
           whileHover={{ scale: 1.03 }}

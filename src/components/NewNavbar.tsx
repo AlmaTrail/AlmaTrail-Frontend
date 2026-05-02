@@ -7,7 +7,12 @@ import AuthForm from "./AuthForm";
 import AuthSuccess from "./AuthSuccess";
 import Cookies from "js-cookie";
 
-const navLinks = ["Explore Mentors", "How it Works", "For Mentors", "Resources"];
+const navLinks = [
+  "Explore Mentors",
+  "How it Works",
+  "For Mentors",
+  "Resources",
+];
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -55,9 +60,11 @@ const Navbar = () => {
     <>
       <nav className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-lg">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 lg:px-8">
-          
           {/* Logo */}
-          <a href="/" className="font-display text-xl font-bold text-foreground tracking-tight">
+          <a
+            href="/"
+            className="font-display text-xl font-bold text-foreground tracking-tight"
+          >
             Almatrail
           </a>
 
