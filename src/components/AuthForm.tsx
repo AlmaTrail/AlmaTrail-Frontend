@@ -72,19 +72,12 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
       }
 
       // ✅ Handle response
-      if (type === "login") {
-        const text = await res.text();
-        try {
-          // Try parsing as JSON: { token: "..." }
-          const data = JSON.parse(text);
-          const token = data.token || text;
-          Cookies.set("token", token, { expires: 7 });
-        } catch {
-          // Response is a raw token string
-          Cookies.set("token", text, { expires: 7 });
-        }
+      const token = await res.text();
+      if (!token) {
+        throw new Error("Token not received");
       }
-      // Signup returns plain text — no token to store
+
+      Cookies.set("token", token, { expires: 7 });
 
       // ✅ Trigger success in parent (Navbar)
       onSuccess?.();
