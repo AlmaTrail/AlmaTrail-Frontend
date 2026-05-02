@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, Search, Loader2 } from "lucide-react";
@@ -10,6 +11,7 @@ import {
 } from "@/services/universityService";
 
 const MentorMatchSection = () => {
+  const router = useRouter();
   const [universities, setUniversities] = useState<string[]>([]);
   const [courses, setCourses] = useState<string[]>([]);
   const [specializations, setSpecializations] = useState<string[]>([]);
@@ -72,6 +74,13 @@ const MentorMatchSection = () => {
       setMentorCount(null);
     }
   }, [selectedUniversity, selectedCourse, selectedSpecialization]);
+
+  const handleFindMentors = () => {
+    if (selectedUniversity) {
+      // Redirect to explore page with the university as a search query
+      router.push(`/explore?search=${encodeURIComponent(selectedUniversity)}`);
+    }
+  };
 
   return (
     <section className="bg-surface py-20 lg:py-28">
@@ -150,7 +159,11 @@ const MentorMatchSection = () => {
               </div>
             </div>
 
-            <div className="mt-4 rounded-xl bg-primary/10 py-6 text-center">
+            <button 
+              onClick={handleFindMentors}
+              disabled={loadingCount || mentorCount === 0}
+              className="mt-4 w-full rounded-xl bg-primary/10 py-6 text-center hover:bg-primary/20 transition-colors group disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               {loadingCount ? (
                 <div className="flex justify-center items-center py-2">
                   <Loader2 className="w-8 h-8 text-primary animate-spin" />
@@ -158,10 +171,10 @@ const MentorMatchSection = () => {
               ) : (
                 <p className="text-2xl font-bold text-primary">{mentorCount !== null ? mentorCount : "-"}</p>
               )}
-              <p className="text-sm text-primary/80">
-                  mentors found matching your criteria
+              <p className="text-sm text-primary/80 group-hover:text-primary transition-colors">
+                  mentors found matching your criteria — <span className="font-bold underline">View All</span>
               </p>
-            </div>
+            </button>
           </motion.div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { getTopUniversities } from '@/services/universityService';
 import { UniversityCard } from '@/types/university';
@@ -23,7 +24,20 @@ const mentorsData = [
 ];
 
 export default function ExplorePage() {
-  const [searchQuery, setSearchQuery] = useState('');
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <Loader2 className="w-12 h-12 text-indigo-600 animate-spin" />
+      </div>
+    }>
+      <ExploreContent />
+    </Suspense>
+  );
+}
+
+function ExploreContent() {
+  const searchParams = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [activeType, setActiveType] = useState('All');
   const [universitiesData, setUniversitiesData] = useState<UniversityCard[]>([]);
   const [loading, setLoading] = useState(true);
