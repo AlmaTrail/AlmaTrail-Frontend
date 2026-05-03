@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import { useState, FormEvent } from "react";
 import { Mail, Lock, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
@@ -20,20 +21,27 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleGoogleSuccess = async (credentialResponse: CredentialResponse) => {
+  const handleGoogleSuccess = async (
+    credentialResponse: CredentialResponse,
+  ) => {
     if (!credentialResponse.credential) return;
     setError("");
     setLoading(true);
     try {
       const data = await googleLoginUser(credentialResponse.credential);
-      // Handle both: raw string token OR { token: "..." } object
+      // ✅ Handle both: raw string token OR { token: "..." } object
       const token = typeof data === "string" ? data : data?.token;
+      
       if (token) {
-        Cookies.set("token", token, { expires: 7 });
+        Cookies.set("token", token, { expires: 7, path: "/" });
+        onSuccess?.();
+      } else {
+        throw new Error("Token not found in response");
       }
-      onSuccess?.();
     } catch (err: any) {
-      setError(err.message || "Google authentication failed");
+      setError(
+        err.response?.data || err.message || "Google authentication failed",
+      );
     } finally {
       setLoading(false);
     }
@@ -43,7 +51,7 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
     e.preventDefault();
     setError("");
 
-    // ✅ Signup validation
+    // Signup validation
     if (type === "signup" && password !== confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -57,40 +65,24 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
           ? process.env.NEXT_PUBLIC_LOGIN_ENDPOINT
           : process.env.NEXT_PUBLIC_SIGNUP_ENDPOINT;
 
-      const res = await fetch(endpoint!, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+      const response = await axios.post(endpoint!, {
+        email,
+        password,
       });
 
-      // ❌ If failed
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(errText || "Request failed");
+      // ✅ Backend returns { token: "...", email: "..." }
+      const data = response.data;
+      const token = typeof data === "string" ? data : data?.token;
+
+      if (!token) {
+        throw new Error("Token not received");
       }
 
-      // ✅ Handle response
-      if (type === "login") {
-        const text = await res.text();
-        try {
-          // Try parsing as JSON: { token: "..." }
-          const data = JSON.parse(text);
-          const token = data.token || text;
-          Cookies.set("token", token, { expires: 7 });
-        } catch {
-          // Response is a raw token string
-          Cookies.set("token", text, { expires: 7 });
-        }
-      }
-      // Signup returns plain text — no token to store
+      Cookies.set("token", token, { expires: 7, path: "/" });
 
-      // ✅ Trigger success in parent (Navbar)
       onSuccess?.();
-
     } catch (err: any) {
-      setError(err.message || "Something went wrong");
+      setError(err.response?.data || err.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -98,7 +90,6 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
 
   return (
     <div className="space-y-6">
-      
       {/* Heading */}
       <div className="space-y-1 text-center">
         <h2 className="text-2xl font-semibold tracking-tight">
@@ -113,14 +104,16 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
-        
         {/* Email */}
         <div className="space-y-2">
           <label className="text-xs font-medium uppercase text-muted-foreground ml-1">
             Email
           </label>
           <div className="relative">
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/60" size={18} />
+            <Mail
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/60"
+              size={18}
+            />
             <input
               type="email"
               required
@@ -138,7 +131,10 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
             Password
           </label>
           <div className="relative">
-            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/60" size={18} />
+            <Lock
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/60"
+              size={18}
+            />
             <input
               type="password"
               required
@@ -157,7 +153,10 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
               Confirm Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/60" size={18} />
+              <Lock
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/60"
+                size={18}
+              />
               <input
                 type="password"
                 required
@@ -173,16 +172,17 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
         {/* Forgot */}
         {type === "login" && (
           <div className="flex justify-end">
-            <button type="button" className="text-sm text-primary hover:underline">
+            <button
+              type="button"
+              className="text-sm text-primary hover:underline"
+            >
               Forgot password?
             </button>
           </div>
         )}
 
         {/* Error */}
-        {error && (
-          <p className="text-sm text-red-500 text-center">{error}</p>
-        )}
+        {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
         {/* Submit */}
         <motion.button
@@ -197,8 +197,8 @@ export default function AuthForm({ type, onSwitch, onSuccess }: AuthFormProps) {
               ? "Signing in..."
               : "Creating account..."
             : type === "login"
-            ? "Sign In"
-            : "Create Account"}
+              ? "Sign In"
+              : "Create Account"}
           <ArrowRight size={18} />
         </motion.button>
       </form>

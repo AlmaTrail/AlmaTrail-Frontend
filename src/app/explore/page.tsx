@@ -1,5 +1,11 @@
 "use client";
-import React, { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import React, { useState, useEffect, Suspense } from 'react';
+import Link from 'next/link';
+import { getTopUniversities } from '@/services/universityService';
+import { UniversityCard } from '@/types/university';
+import ExploreFooterNav from '@/components/ExploreFooterNav';
+import { Loader2 } from 'lucide-react';
 
 const countriesData = [
   { id: 'c_usa', code: 'USA', name: 'United States', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBFzRH4_c-rUMSB6REvNp55U1RAfGY6Mc7-VEWdZDVBj3lwVRNRs4L3jw_15IOOW0Qnd5Wkfs3ri-NI4Wlr3unu-uFQqNRTV8xprReAutgAJHZix_E6f280lInTA8vW1S4BBh-MdMeK_1cfWuG-XVId_1Rwug2qJKbi4HLgrbAjsPVcP1QZYMr0JPFBvomNICzBtA19XxBe7TEwVSPNen-Ft7ZLH5-xnNOb5ugkaRhjjmIFkh9IntQiCAx8jtrYJkY2b1Mw5cUZ6Q' },
@@ -7,15 +13,6 @@ const countriesData = [
   { id: 'c_ger', code: 'Germany', name: 'Germany', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDwAsjKs6YJQ25y6mHYMainWV-UdOg1whYDAoCuOnfWswH4Cd76U96Oe6Hq6xeX5k2i3Q2MtC0FxlAuO834Rrx4PASCmH1IMh2-gJb3JkKRoI0FlA2rqJOXdOybAGv_TGf9hxk_voQuvz5AWoWJdBQqq0332leY5Uo2Z6yxlsFOeo1fuLrS384l3FswyN0vrcRqFOtuffLmv2He41JQiHRcr3wFHUcuatTa45IZAppk1ujJC0l0mWuYUs3BcYgEY6_KOFDYuf8MqA' },
   { id: 'c_can', code: 'Canada', name: 'Canada', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuANXj84yzSLWauQBWGuCfYMn-JpKvNuxvYd_F8Zx2ZpD3DCEr2_NlNsjYJ2ZusxcNfHC9YInGeZGBVEtn0yFwNJPTTsdJBCwf9krEDN5g5mGJIgG6pLGDbLCQ69Y6SRc56Kr6ij2lHXzZiY_-wCPrQBj03fpBa6yvdMmBjfnx_uJOtZ3zxpyhom-hOvQaVDXP5wwELXkl-T5fUzTEFKxDvkietWD-gIB-ne2_oHoD7lJfwzJw8X1z7yDUE42cvkSyc-fQXXXWwGMQ' },
   { id: 'c_aus', code: 'AUS', name: 'Australia', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDwAsjKs6YJQ25y6mHYMainWV-UdOg1whYDAoCuOnfWswH4Cd76U96Oe6Hq6xeX5k2i3Q2MtC0FxlAuO834Rrx4PASCmH1IMh2-gJb3JkKRoI0FlA2rqJOXdOybAGv_TGf9hxk_voQuvz5AWoWJdBQqq0332leY5Uo2Z6yxlsFOeo1fuLrS384l3FswyN0vrcRqFOtuffLmv2He41JQiHRcr3wFHUcuatTa45IZAppk1ujJC0l0mWuYUs3BcYgEY6_KOFDYuf8MqA' },
-];
-
-const universitiesData = [
-  { id: 'u_stanford', countryId: 'c_usa', name: 'Stanford University', tag: 'Top for AI', loc: 'Stanford, CA, USA', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCelKbb6MdF7UO5eTzXyAfUXUG2HajJ8wgUrJuxwICojId0aRAFmfa5ixkzkCcM3GMzPi5wOQ4ZY3zBQpKhu8OPrhF79BfonaxbpvdLDXYHMQX5uZe_iVVEV8ipgTjq4R5UaLyikThWKS0fwrPJMBDcZqGiUDTRgYAkxkh4ZE0vclKzLVJFmQF8TnEcrX6v14hG8PYLYg8_q4bDXyEpktIQA8dac0fRnH-hNkoJiq8ehX1UH2vlLruyiZIkign2sHPdwqltJ1NC-w' },
-  { id: 'u_cmu', countryId: 'c_usa', name: 'Carnegie Mellon', tag: 'Research Hub', loc: 'Pittsburgh, PA, USA', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuANp6ngGvi_XXMl-p6kgu6mRZhwXBczdvIszmQ2NeFCabidzOhr_ew7AF0BS6WVTymD9Rdmt8A1ruqiK3YBe6J1yNZ904qz5Ikj6Xg_kZ13Rl7_BiP8BIKXVboipTg1rNIK6uifc7SnJiT6pHYLDXULClLDwQ3-xU-iEWrqSqbWBMXRWU6OW8giRJ5JBuxsk-68MIkIrSSAaexPgtu8U3ZE6sFjUX-1vdxZrXiW5KDh21oTBbJWfqmutJOY40uaBtNpcDm18nJC7Q' },
-  { id: 'u_oxford', countryId: 'c_uk', name: 'Oxford University', tag: 'Top for STEM', loc: 'Oxford, UK', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDJENBfh2OgO-0Z_5hCdmda2Ynik8cxs-9gj86MPy2QFFs1ny78W9rbO6Ja2ZIhRXmBFBC4Vr_0qBJYgodcamVYqZNqjoNDbN-wBMXMQIk_PVsoIMloEWqFp00Y0xtS_RhChmxmL-CIX8pJxkHRGFsR7GyRAIuR7Tg402BEvvVq3pFTDesJSCzkDtWpZqdz8ydtJTlVBp4Vwgfi2cFy6NJHxm2odUL6Dya6XuVXS3C4SfzCFpEgWDwAO6NneqpvtVksq82Dc66Pvw' },
-  { id: 'u_mit', countryId: 'c_usa', name: 'MIT', tag: 'Engineering Elite', loc: 'Cambridge, MA, USA', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDpAAlRa5exK9tw9H-tnYPOXJy76AfIr4f8Cfg2h3EOv7qkkPjWHZoJ8x1T9LqXCKJgRn4rhcjynFhbnAh3NlVB0hw_QAe5oqn7VIj1vSa3HQD1fxy8Fkgz3JPP7PnECUMWY9n-xticiurmnigDSV3qCT4S0TKjUA4jZMcSRdd9vI85wa4ldl_vBUc6_Ebbf6y8nLrm6oX4pzr8hVQbo6nbc7q5eQVs1vt8vSowHyLJXCFXXr9am82OjYqcisLcVGmB-nMvDl1d0g' },
-  { id: 'u_cambridge', countryId: 'c_uk', name: 'Cambridge University', tag: 'Heritage & Science', loc: 'Cambridge, UK', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCelKbb6MdF7UO5eTzXyAfUXUG2HajJ8wgUrJuxwICojId0aRAFmfa5ixkzkCcM3GMzPi5wOQ4ZY3zBQpKhu8OPrhF79BfonaxbpvdLDXYHMQX5uZe_iVVEV8ipgTjq4R5UaLyikThWKS0fwrPJMBDcZqGiUDTRgYAkxkh4ZE0vclKzLVJFmQF8TnEcrX6v14hG8PYLYg8_q4bDXyEpktIQA8dac0fRnH-hNkoJiq8ehX1UH2vlLruyiZIkign2sHPdwqltJ1NC-w' },
-  { id: 'u_utoronto', countryId: 'c_can', name: 'University of Toronto', tag: 'Top in Canada', loc: 'Toronto, Canada', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuANp6ngGvi_XXMl-p6kgu6mRZhwXBczdvIszmQ2NeFCabidzOhr_ew7AF0BS6WVTymD9Rdmt8A1ruqiK3YBe6J1yNZ904qz5Ikj6Xg_kZ13Rl7_BiP8BIKXVboipTg1rNIK6uifc7SnJiT6pHYLDXULClLDwQ3-xU-iEWrqSqbWBMXRWU6OW8giRJ5JBuxsk-68MIkIrSSAaexPgtu8U3ZE6sFjUX-1vdxZrXiW5KDh21oTBbJWfqmutJOY40uaBtNpcDm18nJC7Q' }
 ];
 
 const mentorsData = [
@@ -27,12 +24,33 @@ const mentorsData = [
 ];
 
 export default function ExplorePage() {
-  const [searchQuery, setSearchQuery] = useState('');
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <Loader2 className="w-12 h-12 text-indigo-600 animate-spin" />
+      </div>
+    }>
+      <ExploreContent />
+    </Suspense>
+  );
+}
+
+function ExploreContent() {
+  const searchParams = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [activeType, setActiveType] = useState('All');
+  const [universitiesData, setUniversitiesData] = useState<UniversityCard[]>([]);
+  const [loading, setLoading] = useState(true);
   
   // UI States for Pagination
   const [showAllCountries, setShowAllCountries] = useState(false);
   const [uniPage, setUniPage] = useState(0);
+
+  useEffect(() => {
+    getTopUniversities()
+      .then(setUniversitiesData)
+      .finally(() => setLoading(false));
+  }, []);
 
   const lowerQuery = searchQuery.trim().toLowerCase();
   const isSearching = lowerQuery.length > 0;
@@ -48,7 +66,7 @@ export default function ExplorePage() {
   const matchedUniversities = universitiesData.filter(u => 
     u.name.toLowerCase().includes(lowerQuery) || 
     u.tag.toLowerCase().includes(lowerQuery) || 
-    u.loc.toLowerCase().includes(lowerQuery) ||
+    u.location.toLowerCase().includes(lowerQuery) ||
     matchedCountryIds.includes(u.countryId)
   );
   const matchedUniversityIds = matchedUniversities.map(u => u.id);
@@ -57,11 +75,12 @@ export default function ExplorePage() {
   const matchedMentors = mentorsData.filter(m => 
     m.name.toLowerCase().includes(lowerQuery) || 
     m.program.toLowerCase().includes(lowerQuery) ||
-    matchedUniversityIds.includes(m.universityId)
+    matchedUniversityIds.map(String).includes(String(m.universityId))
   );
 
   const getMentorUniName = (uniId: string) => {
-    const uni = universitiesData.find(u => u.id === uniId);
+    // This part might need adjustment if university IDs are numbers from API
+    const uni = universitiesData.find(u => String(u.id) === uniId);
     return uni ? uni.name.replace(' University', '') : 'Unknown';
   };
 
@@ -80,7 +99,7 @@ export default function ExplorePage() {
         }
       `}} />
 
-      <main className="pb-24">
+      <main className="pb-32">
         {/* Section 1: Hero-style Global Search */}
         <section className="relative py-24 px-8 flex flex-col items-center justify-center overflow-hidden">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,_#e0e7ff_0%,_transparent_40%),radial-gradient(circle_at_bottom_left,_#f1f5f9_0%,_transparent_40%)] opacity-50"></div>
@@ -178,6 +197,7 @@ export default function ExplorePage() {
         )}
 
         {/* Section 3: Top Universities */}
+        <div id="universities"></div>
         {(showUniversities && (!isSearching || matchedUniversities.length > 0)) && (
           <section className="bg-slate-200 py-24 px-8 rounded-t-[3rem]">
             <div className="max-w-7xl mx-auto">
@@ -186,7 +206,7 @@ export default function ExplorePage() {
                   <h2 className="text-3xl font-bold tracking-tight text-slate-900">{isSearching ? "Universities" : "Top Universities"}</h2>
                   {!isSearching && <p className="text-slate-600 mt-2 max-w-lg">Curated lists of prestigious institutions across the globe with high acceptance for international scholars.</p>}
                 </div>
-                {!isSearching && (
+                {!isSearching && universitiesData.length > 4 && (
                   <div className="flex gap-2">
                     <button 
                       onClick={() => setUniPage(p => Math.max(0, p - 1))}
@@ -205,24 +225,31 @@ export default function ExplorePage() {
                   </div>
                 )}
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {(isSearching ? matchedUniversities : universitiesData.slice(uniPage * 4, (uniPage + 1) * 4)).map(uni => (
-                  <div key={uni.id} className="bg-white rounded-2xl overflow-hidden group shadow-sm hover:shadow-2xl transition-all duration-300">
-                    <div className="h-40 overflow-hidden">
-                      <img className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt={uni.name} src={uni.img} />
-                    </div>
-                    <div className="p-6">
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="px-3 py-1 bg-indigo-100 text-indigo-800 text-[10px] font-bold uppercase rounded-full tracking-wider">{uni.tag}</span>
+              
+              {loading ? (
+                <div className="flex justify-center py-20">
+                  <Loader2 className="w-12 h-12 text-indigo-600 animate-spin" />
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                  {(isSearching ? matchedUniversities : universitiesData.slice(uniPage * 4, (uniPage + 1) * 4)).map(uni => (
+                    <Link href={`/university/${uni.id}`} key={uni.id} className="bg-white rounded-2xl overflow-hidden group shadow-sm hover:shadow-2xl transition-all duration-300 block">
+                      <div className="h-40 overflow-hidden">
+                        <img className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt={uni.name} src={uni.cardImage} />
                       </div>
-                      <h3 className="text-xl font-bold text-slate-900">{uni.name}</h3>
-                      <p className="text-slate-500 text-sm mt-1 flex items-center gap-1">
-                        <span className="material-symbols-outlined text-sm">location_on</span> {uni.loc}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                      <div className="p-6">
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="px-3 py-1 bg-indigo-100 text-indigo-800 text-[10px] font-bold uppercase rounded-full tracking-wider">{uni.tag}</span>
+                        </div>
+                        <h3 className="text-xl font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">{uni.name}</h3>
+                        <p className="text-slate-500 text-sm mt-1 flex items-center gap-1">
+                          <span className="material-symbols-outlined text-sm">location_on</span> {uni.location}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
           </section>
         )}
@@ -253,7 +280,7 @@ export default function ExplorePage() {
                       {[...Array(5)].map((_, i) => (
                          <span key={i} className="material-symbols-outlined text-[16px]" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
                       ))}
-                      <span className="text-slate-600 text-xs ml-1 font-semibold">{mentor.rating}</span>
+                      <span className="text-slate-600 text-xs ml-1 font-semibold">5.0</span>
                     </div>
                     <div className="bg-slate-100 py-2 px-4 rounded-full inline-block mb-6">
                       <span className="text-slate-900 text-xs font-semibold">Helped {mentor.students} students</span>
@@ -266,6 +293,8 @@ export default function ExplorePage() {
           </section>
         )}
       </main>
+      
+      <ExploreFooterNav />
     </div>
   );
 }
