@@ -97,24 +97,48 @@ export default function App() {
       present: formData.get(`present_${exp.id}`) === 'on'
     }));
 
-    const payload = {
-      data: {
-        personalDetails,
-        shortBio,
-        profilePhoto,
-        workHistory,
-        schedule,
-        kycDocuments,
-        user: userDetails?.id
+    const submitFormData = new FormData();
+    submitFormData.append('personalDetails.firstName', personalDetails.firstName);
+    submitFormData.append('personalDetails.lastName', personalDetails.lastName);
+    submitFormData.append('personalDetails.email', personalDetails.email);
+    submitFormData.append('personalDetails.course', personalDetails.course);
+    submitFormData.append('personalDetails.dob', personalDetails.dob);
+    submitFormData.append('personalDetails.country', personalDetails.country);
+    submitFormData.append('personalDetails.timezone', personalDetails.timezone);
+    submitFormData.append('personalDetails.linkedin', personalDetails.linkedin);
+
+    submitFormData.append('shortBio', shortBio);
+    submitFormData.append('course', personalDetails.course);
+
+    workHistory.forEach((exp, index) => {
+      submitFormData.append(`workHistory[${index}].company`, exp.company);
+      submitFormData.append(`workHistory[${index}].role`, exp.role);
+      submitFormData.append(`workHistory[${index}].startDate`, exp.startDate);
+      submitFormData.append(`workHistory[${index}].endDate`, exp.endDate);
+      submitFormData.append(`workHistory[${index}].present`, exp.present.toString());
+    });
+
+    Object.entries(schedule).forEach(([day, slots]) => {
+      (slots as Array<{start: string, end: string}>).forEach((slot, index) => {
+        submitFormData.append(`schedule['${day}'][${index}].start`, slot.start);
+        submitFormData.append(`schedule['${day}'][${index}].end`, slot.end);
+      });
+    });
+
+    if (profilePhoto && typeof profilePhoto === 'object') {
+      submitFormData.append('profilePhoto', profilePhoto as any);
+    }
+
+    kycDocuments.forEach((doc) => {
+      if (doc.url && typeof doc.url === 'object') {
+        submitFormData.append('kycDocuments', doc.url as any);
       }
-    };
+    });
 
     try {
       const token = Cookies.get("token") || "";
 
-      const headers: HeadersInit = {
-        'Content-Type': 'application/json'
-      };
+      const headers: HeadersInit = {};
       if (token) {
         headers["Authorization"] = `Bearer ${token}`;
       }
@@ -139,7 +163,7 @@ export default function App() {
       const response = await fetch(url, {
         method,
         headers,
-        body: JSON.stringify(payload)
+        body: submitFormData
       });
       
       if (!response.ok) {
