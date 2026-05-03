@@ -11,7 +11,7 @@ export default function App() {
     <div className="min-h-screen flex flex-col">
       {/* <Navbar /> */}
       
-      <main className="flex-grow max-w-7xl mx-auto px-6 py-16 w-full">
+      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-16 w-full">
         {/* Header Section */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -28,13 +28,13 @@ export default function App() {
         </motion.div>
 
         {/* Main Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start w-full">
           {/* Left Column: Profile & Calendar */}
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="lg:col-span-5 flex flex-col gap-10"
+            className="lg:col-span-5 flex flex-col gap-6"
           >
             <MentorCard />
             <CalendarCard />
