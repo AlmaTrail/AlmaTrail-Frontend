@@ -1,4 +1,11 @@
-export default function MentorCard() {
+interface MentorCardProps {
+  firstName: string;
+  lastName: string;
+  halfHourPrice: number;
+  oneHourPrice: number;
+}
+
+export default function MentorCard({ firstName, lastName, halfHourPrice, oneHourPrice }: MentorCardProps) {
   return (
     <div className="bg-surface-container-lowest p-6 rounded-2xl ambient-glow transition-all hover:scale-[1.01]">
       
@@ -7,7 +14,7 @@ export default function MentorCard() {
         <div className="relative">
           <img
             src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&h=200&auto=format&fit=crop"
-            alt="Elena Rodriguez"
+            alt={`${firstName} ${lastName}`}
             className="w-20 h-20 rounded-full object-cover ring-4 ring-surface-container-low"
             referrerPolicy="no-referrer"
           />
@@ -18,7 +25,7 @@ export default function MentorCard() {
 
         <div>
           <h2 className="font-headline text-2xl font-bold text-on-surface">
-            Elena Rodriguez
+            {firstName} {lastName}
           </h2>
           <p className="text-on-surface-variant font-medium">
             Senior Editorial Mentor
@@ -34,16 +41,16 @@ export default function MentorCard() {
       {/* Bottom Section */}
       <div className="space-y-2 pt-4 border-t border-outline-variant/15">
         <div className="flex justify-between items-center">
-          <span className="text-on-surface-variant text-sm">Session Type</span>
+          <span className="text-on-surface-variant text-sm">30 Minutes</span>
           <span className="font-semibold text-on-surface">
-            1:1 Strategic Review
+            ${halfHourPrice}
           </span>
         </div>
 
         <div className="flex justify-between items-center">
-          <span className="text-on-surface-variant text-sm">Base Rate</span>
+          <span className="text-on-surface-variant text-sm">60 Minutes</span>
           <span className="font-bold text-on-surface text-lg">
-            $120.00 / hr
+            ${oneHourPrice}
           </span>
         </div>
       </div>

@@ -6,11 +6,35 @@ import "react-day-picker/dist/style.css";
 import { addDays, startOfToday, format } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-export default function CalendarCard() {
+interface CalendarCardProps {
+  schedule: {
+    [key: string]: Array<{
+      start: string;
+      end: string;
+    }>;
+  };
+  onDateSelect: (date: Date | null) => void;
+  selectedDate: Date | null;
+}
+
+const dayMap: { [key: string]: string } = {
+  "0": "SUNDAY",
+  "1": "MONDAY",
+  "2": "TUESDAY",
+  "3": "WEDNESDAY",
+  "4": "THURSDAY",
+  "5": "FRIDAY",
+  "6": "SATURDAY"
+};
+
+export default function CalendarCard({ schedule, onDateSelect, selectedDate }: CalendarCardProps) {
   const today = startOfToday();
   const maxDate = addDays(today, 30);
 
-  const [selected, setSelected] = useState<Date | undefined>(today);
+  const isDateAvailable = (date: Date) => {
+    const dayName = dayMap[date.getDay().toString()];
+    return schedule && schedule[dayName] && schedule[dayName].length > 0;
+  };
 
   return (
     <div className="bg-surface-container-low p-5 rounded-2xl w-full">
@@ -22,13 +46,14 @@ export default function CalendarCard() {
       {/* Calendar */}
       <DayPicker
         mode="single"
-        selected={selected}
-        onSelect={setSelected}
+        selected={selectedDate || undefined}
+        onSelect={(date) => onDateSelect(date || null)}
         fromDate={today}
         toDate={maxDate}
         fixedWeeks
         captionLayout="buttons"
         className="mx-auto max-w-sm"
+        disabled={(date) => !isDateAvailable(date)}
         components={{
           IconLeft: (props) => <ChevronLeft {...props} size={18} />,
           IconRight: (props) => <ChevronRight {...props} size={18} />,
@@ -64,9 +89,9 @@ export default function CalendarCard() {
       />
 
       {/* Selected Date */}
-      {selected && (
+      {selectedDate && (
         <p className="mt-3 text-sm text-muted-foreground text-center">
-          Selected: {format(selected, "EEE, MMM d yyyy")}
+          Selected: {format(selectedDate, "EEE, MMM d yyyy")}
         </p>
       )}
     </div>

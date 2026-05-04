@@ -1,5 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import { 
   Star, 
   CheckCircle2, 
@@ -13,12 +15,120 @@ import {
   Mail, 
   ShieldCheck,
   Bell,
-  Settings
+  Settings,
+  Loader
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+interface MentorData {
+  avgRating: number | null;
+  bio: string;
+  country: string;
+  course: string | null;
+  courses: Array<{
+    college: string;
+    courseMajor: string;
+    courseName: string;
+    endDate: string | null;
+    id: number;
+    startDate: string | null;
+  }>;
+  dateOfBirth: string;
+  halfHourSessionPrice: number;
+  id: number;
+  kycStatus: string | null;
+  linkedinUrl: string;
+  oneHourSessionPrice: number;
+  profileUrl: string;
+  specialization: string | null;
+  superpowers: string | null;
+  timezone: string;
+  totalSessions: number | null;
+  university: string;
+  user: {
+    email: string;
+    emailVerified: boolean;
+    firstName: string;
+    id: number;
+    lastName: string;
+    roles: string[];
+  };
+  workHistories: Array<{
+    company: string;
+    endDate: string;
+    id: number;
+    location: string | null;
+    roleName: string;
+    startDate: string;
+  }>;
+}
+
 export default function MentorProfile() {
   const router = useRouter();
+  const params = useParams();
+  const mentorId = params.id as string;
+  const [mentorData, setMentorData] = useState<MentorData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedDuration, setSelectedDuration] = useState<30 | 60>(30);
+
+  useEffect(() => {
+    const fetchMentorData = async () => {
+      try {
+        setLoading(true);
+        const endpoint = `${process.env.NEXT_PUBLIC_MENTORS_ENDPOINT}/${mentorId}`;
+        const response = await fetch(endpoint);
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch mentor data: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        setMentorData(data);
+      } catch (err) {
+        console.error("Error fetching mentor data:", err);
+        setError(err instanceof Error ? err.message : "Failed to load mentor data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (mentorId) {
+      fetchMentorData();
+    }
+  }, [mentorId]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-surface font-body text-on-surface flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader className="animate-spin" size={40} />
+          <p className="text-on-surface-variant">Loading mentor profile...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !mentorData) {
+    return (
+      <div className="min-h-screen bg-surface font-body text-on-surface flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-lg font-bold text-error mb-4">{error || "Mentor not found"}</p>
+          <button 
+            onClick={() => router.back()}
+            className="px-6 py-2 bg-primary text-on-primary rounded-lg font-bold"
+          >
+            Go Back
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const fullName = `${mentorData.user.firstName} ${mentorData.user.lastName}`;
+  const firstCourse = mentorData.courses?.[0];
+  const rating = mentorData.avgRating || 4.8;
+  const selectedPrice = selectedDuration === 30 ? mentorData.halfHourSessionPrice : mentorData.oneHourSessionPrice;
   return (
     <div className="min-h-screen bg-surface font-body text-on-surface">
       {/* Top Navigation Bar */}
@@ -59,9 +169,12 @@ export default function MentorProfile() {
               <div className="relative">
                 <div className="w-32 h-32 md:w-44 md:h-44 rounded-full p-1 bg-gradient-to-tr from-primary to-primary-container">
                   <img 
-                    alt="Elena Rodriguez" 
+                    alt={fullName} 
                     className="w-full h-full rounded-full object-cover border-4 border-surface" 
-                    src="https://picsum.photos/seed/elena-rodriguez/400/400"
+                    src={mentorData.profileUrl || `https://picsum.photos/seed/${mentorData.user.id}/400/400`}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = `https://picsum.photos/seed/${mentorData.user.id}/400/400`;
+                    }}
                     referrerPolicy="no-referrer"
                   />
                 </div>
@@ -72,34 +185,44 @@ export default function MentorProfile() {
               </div>
               <div className="flex-1 space-y-3">
                 <div className="flex flex-wrap items-center gap-3">
-                  <h1 className="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Elena Rodriguez</h1>
-                  <div className="flex items-center gap-1.5 px-3 py-1 bg-primary-fixed text-on-primary-fixed text-[10px] font-bold uppercase tracking-wider rounded-full">
-                    <CheckCircle2 size={12} className="fill-current" />
-                    Verified Mentor
-                  </div>
-                  <div className="flex items-center gap-1.5 px-3 py-1 bg-secondary-fixed text-on-secondary-fixed-variant text-[10px] font-bold uppercase tracking-wider rounded-full">
-                    KYC
-                  </div>
+                  <h1 className="text-4xl font-headline font-extrabold tracking-tight text-on-surface">{fullName}</h1>
+                  {mentorData.kycStatus && (
+                    <div className="flex items-center gap-1.5 px-3 py-1 bg-primary-fixed text-on-primary-fixed text-[10px] font-bold uppercase tracking-wider rounded-full">
+                      <CheckCircle2 size={12} className="fill-current" />
+                      Verified Mentor
+                    </div>
+                  )}
+                  {mentorData.kycStatus && (
+                    <div className="flex items-center gap-1.5 px-3 py-1 bg-secondary-fixed text-on-secondary-fixed-variant text-[10px] font-bold uppercase tracking-wider rounded-full">
+                      KYC
+                    </div>
+                  )}
                 </div>
-                <p className="text-xl font-headline font-semibold text-primary">Senior Software Engineer at Google</p>
+                <p className="text-xl font-headline font-semibold text-primary">{mentorData.user.roles.includes("MENTOR") ? "Mentor" : "User"}</p>
                 <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-on-surface-variant font-medium">
-                  <div className="flex items-center gap-2">
-                    <img 
-                      alt="Stanford Logo" 
-                      className="w-5 h-5 object-contain" 
-                      src="https://picsum.photos/seed/stanford/40/40"
-                      referrerPolicy="no-referrer"
-                    />
-                    <span>Stanford University</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <School size={18} />
-                    <span>M.S. Computer Science, 2018</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin size={18} />
-                    <span>Mountain View, CA</span>
-                  </div>
+                  {mentorData.university && (
+                    <div className="flex items-center gap-2">
+                      <img 
+                        alt={mentorData.university} 
+                        className="w-5 h-5 object-contain" 
+                        src="https://picsum.photos/seed/university/40/40"
+                        referrerPolicy="no-referrer"
+                      />
+                      <span>{mentorData.university}</span>
+                    </div>
+                  )}
+                  {firstCourse && (
+                    <div className="flex items-center gap-2">
+                      <School size={18} />
+                      <span>{firstCourse.courseName} {firstCourse.courseMajor}, {firstCourse.endDate || "In Progress"}</span>
+                    </div>
+                  )}
+                  {mentorData.country && (
+                    <div className="flex items-center gap-2">
+                      <MapPin size={18} />
+                      <span>{mentorData.country}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </section>
@@ -107,9 +230,9 @@ export default function MentorProfile() {
             {/* Stats Bento Grid */}
             <section className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
                     {[
-                        { label: "Rating", value: "4.8", icon: <Star size={20} className="fill-current" />, color: "text-primary" },
+                        { label: "Rating", value: rating.toFixed(1), icon: <Star size={20} className="fill-current" />, color: "text-primary" },
                         { label: "Reviews", value: "124" },
-                        { label: "Sessions", value: "450+" },
+                        { label: "Sessions", value: mentorData.totalSessions ? `${mentorData.totalSessions}+` : "0" },
                         { label: "Resp. Time", value: "< 2h" }
                     ].map((stat, i) => (
                   <div key={i} className="bg-surface-container-low p-6 rounded-xl space-y-1">
@@ -124,12 +247,14 @@ export default function MentorProfile() {
 
             {/* About Section */}
             <section className="space-y-4">
-              <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-primary">About Elena</h2>
+              <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-primary">About {mentorData.user.firstName}</h2>
               <div className="relative">
                 <p className="text-lg leading-relaxed text-on-surface-variant max-w-3xl">
-                  Passionate about scaling distributed systems and helping early-career engineers navigate the complexities of Big Tech. With over 6 years at Google, I've mentored 50+ interns and new grads, focusing on technical excellence and career strategic planning. My journey from a first-generation student to a Senior Engineer has taught me that the right guidance can change everything.
+                  {mentorData.bio}
                 </p>
-                <button className="mt-2 text-primary font-bold hover:underline underline-offset-4 decoration-2 transition-all">Read More</button>
+                {mentorData.bio && mentorData.bio.length > 300 && (
+                  <button className="mt-2 text-primary font-bold hover:underline underline-offset-4 decoration-2 transition-all">Read More</button>
+                )}
               </div>
             </section>
 
@@ -160,39 +285,43 @@ export default function MentorProfile() {
                 <div className="space-y-6">
                   <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Work History</h2>
                   <div className="space-y-8">
-                    {[
-                      { title: "Senior Software Engineer", sub: "Google • 2021 — Present" },
-                      { title: "Software Engineer II", sub: "Google • 2018 — 2021" }
-                    ].map((job, i) => (
-                      <div key={i} className="flex gap-4">
-                        <div className="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0 text-on-surface-variant">
-                          <Briefcase size={20} />
+                    {mentorData.workHistories && mentorData.workHistories.length > 0 ? (
+                      mentorData.workHistories.map((job) => (
+                        <div key={job.id} className="flex gap-4">
+                          <div className="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0 text-on-surface-variant">
+                            <Briefcase size={20} />
+                          </div>
+                          <div className="space-y-1">
+                            <p className="font-headline font-bold text-on-surface leading-tight">{job.roleName}</p>
+                            <p className="text-sm text-on-surface-variant">
+                              {job.company} • {new Date(job.startDate).getFullYear()} — {job.endDate ? new Date(job.endDate).getFullYear() : "Present"}
+                            </p>
+                          </div>
                         </div>
-                        <div className="space-y-1">
-                          <p className="font-headline font-bold text-on-surface leading-tight">{job.title}</p>
-                          <p className="text-sm text-on-surface-variant">{job.sub}</p>
-                        </div>
-                      </div>
-                    ))}
+                      ))
+                    ) : (
+                      <p className="text-on-surface-variant">No work history available</p>
+                    )}
                   </div>
                 </div>
                 <div className="space-y-6">
                   <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Education</h2>
                   <div className="space-y-8">
-                    {[
-                      { title: "M.S. Computer Science", sub: "Stanford University • 2018" },
-                      { title: "B.S. Software Engineering", sub: "UC Berkeley • 2016" }
-                    ].map((edu, i) => (
-                      <div key={i} className="flex gap-4">
+                    {firstCourse ? (
+                      <div className="flex gap-4">
                         <div className="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0 text-on-surface-variant">
                           <School size={20} />
                         </div>
                         <div className="space-y-1">
-                          <p className="font-headline font-bold text-on-surface leading-tight">{edu.title}</p>
-                          <p className="text-sm text-on-surface-variant">{edu.sub}</p>
+                          <p className="font-headline font-bold text-on-surface leading-tight">{firstCourse.courseName} {firstCourse.courseMajor}</p>
+                          <p className="text-sm text-on-surface-variant">
+                            {firstCourse.college || mentorData.university} • {firstCourse.endDate ? new Date(firstCourse.endDate).getFullYear() : (firstCourse.startDate ? new Date(firstCourse.startDate).getFullYear() : "N/A")}
+                          </p>
                         </div>
                       </div>
-                    ))}
+                    ) : (
+                      <p className="text-on-surface-variant">No education details available</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -202,21 +331,38 @@ export default function MentorProfile() {
           {/* Right Column: Booking Panel (Sticky) */}
           <aside className="w-full lg:w-96 lg:sticky lg:top-28">
             <div className="bg-surface-container-lowest p-8 rounded-2xl ambient-shadow border border-outline-variant/10 space-y-8">
-              <div className="flex justify-between items-end">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">Price per session</p>
-                  <h3 className="text-3xl font-headline font-black text-on-surface">$120</h3>
-                </div>
-                <div className="bg-primary-fixed px-3 py-1.5 rounded-lg">
-                  <p className="text-[10px] font-black text-primary uppercase">Top Mentor</p>
-                </div>
+              <div className="bg-primary-fixed px-3 py-1.5 rounded-lg w-fit">
+                <p className="text-[10px] font-black text-primary uppercase">Top Mentor</p>
               </div>
 
               <div className="space-y-4">
                 <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Select Duration</p>
                 <div className="grid grid-cols-2 gap-3">
-                  <button className="px-4 py-3 rounded-xl border-2 border-primary text-primary font-bold text-sm bg-blue-50/50 transition-all">30 Minutes</button>
-                  <button className="px-4 py-3 rounded-xl border-2 border-outline-variant/20 text-on-surface-variant font-bold text-sm hover:border-primary/50 transition-all">60 Minutes</button>
+                  <button 
+                    onClick={() => setSelectedDuration(30)}
+                    className={`px-4 py-3 rounded-xl border-2 font-bold text-sm transition-all ${
+                      selectedDuration === 30 
+                        ? 'border-primary text-primary bg-blue-50/50' 
+                        : 'border-outline-variant/20 text-on-surface-variant hover:border-primary/50'
+                    }`}
+                  >
+                    30 Minutes
+                  </button>
+                  <button 
+                    onClick={() => setSelectedDuration(60)}
+                    className={`px-4 py-3 rounded-xl border-2 font-bold text-sm transition-all ${
+                      selectedDuration === 60 
+                        ? 'border-primary text-primary bg-blue-50/50' 
+                        : 'border-outline-variant/20 text-on-surface-variant hover:border-primary/50'
+                    }`}
+                  >
+                    60 Minutes
+                  </button>
+                </div>
+                <div className="pt-2">
+                  <p className="text-lg font-headline font-bold text-on-surface">
+                    Session Cost: <span className="text-2xl font-black">${selectedPrice}</span>
+                  </p>
                 </div>
               </div>
 
@@ -245,14 +391,14 @@ export default function MentorProfile() {
                 <motion.button 
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => router.push("/sessionBooking")}
-                  className="w-full py-4 bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold rounded-xl text-lg transition-all shadow-lg shadow-primary/20"
+                  onClick={() => router.push(`/mentor/${mentorData.id}/book`)}
+                  className="w-full py-4 bg-primary text-white font-bold rounded-xl text-lg transition-all shadow-lg shadow-primary/20 hover:shadow-lg hover:shadow-primary/30"
                 >
                   Book a Session
                 </motion.button>
                 <button className="w-full py-4 bg-surface-container-high text-on-secondary-container font-bold rounded-xl text-lg hover:bg-surface-container-highest transition-all flex items-center justify-center gap-2">
                   <Mail size={20} />
-                  Message Elena
+                  Message {mentorData.user.firstName}
                 </button>
               </div>
 
