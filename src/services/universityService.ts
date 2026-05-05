@@ -1,7 +1,13 @@
 import axios from "axios";
 import { UniversityCard, UniversityDetail } from "@/types/university";
+import Cookies from "js-cookie";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081";
+
+const getAuthHeaders = () => {
+  const token = Cookies.get("token");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
 
 export const getTopUniversities = async (): Promise<UniversityCard[]> => {
   try {
@@ -24,9 +30,11 @@ export const getUniversityById = async (id: string): Promise<UniversityDetail | 
   }
 };
 
-export const getFilterUniversities = async (): Promise<string[]> => {
+export const getFilterUniversities = async (country?: string): Promise<string[]> => {
   try {
-    const response = await axios.get(`${baseUrl}/api/mentors/filters/universities`);
+    const response = await axios.get(`${baseUrl}/universities/names`, {
+      params: country ? { country } : {}
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching universities:", error);
@@ -34,24 +42,44 @@ export const getFilterUniversities = async (): Promise<string[]> => {
   }
 };
 
+export const getFilterCountries = async (): Promise<string[]> => {
+  try {
+    const response = await axios.get(`${baseUrl}/universities/countries`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching countries:", error);
+    return [];
+  }
+};
+
 export const getFilterCourses = async (universityName: string): Promise<string[]> => {
   try {
-    const response = await axios.get(`${baseUrl}/api/mentors/filters/courses`, {
-      params: { universityName }
+    const response = await axios.get(`${baseUrl}/api/course-masters`, {
+      headers: getAuthHeaders()
     });
-    return response.data;
+    // Extract names from the objects returned by the API
+    return response.data.map((course: any) => course.name);
   } catch (error) {
     console.error("Error fetching courses:", error);
     return [];
   }
 };
 
-export const getFilterSpecializations = async (universityName: string, course: string): Promise<string[]> => {
+export const getFilterSpecializations = async (universityName: string, courseName: string): Promise<string[]> => {
   try {
-    const response = await axios.get(`${baseUrl}/api/mentors/filters/specializations`, {
-      params: { universityName, course }
+    // 1. We need to find the course ID first to get its specializations.
+    const courseResponse = await axios.get(`${baseUrl}/api/course-masters`, {
+      headers: getAuthHeaders()
     });
-    return response.data;
+    const course = courseResponse.data.find((c: any) => c.name === courseName);
+    
+    if (!course) return [];
+
+    // 2. Fetch specializations for that course ID
+    const response = await axios.get(`${baseUrl}/api/specialization-masters/by-course/${course.id}`, {
+      headers: getAuthHeaders()
+    });
+    return response.data.map((spec: any) => spec.name);
   } catch (error) {
     console.error("Error fetching specializations:", error);
     return [];
@@ -60,12 +88,63 @@ export const getFilterSpecializations = async (universityName: string, course: s
 
 export const getMatchingMentorCount = async (universityName: string, course: string, specialization: string): Promise<number> => {
   try {
-    const response = await axios.get(`${baseUrl}/api/mentors/search/count`, {
-      params: { universityName, course, specialization }
+    const response = await axios.get(`${baseUrl}/api/search/mentors/count`, {
+      params: { universityName, course, specialization },
+      headers: getAuthHeaders()
     });
     return response.data;
   } catch (error) {
     console.error("Error fetching mentor count:", error);
     return 0;
+  }
+};
+
+export const getMentorCountByLocation = async (country: string, universityName: string): Promise<number> => {
+  try {
+    const response = await axios.get(`${baseUrl}/api/search/mentors/count-by-location`, {
+      params: { country, universityName },
+      headers: getAuthHeaders()
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching mentor count by location:", error);
+    return 0;
+  }
+};
+
+export const getAllMentors = async (): Promise<any[]> => {
+  try {
+    const response = await axios.get(`${baseUrl}/api/mentors`, {
+      headers: getAuthHeaders()
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching mentors:", error);
+    return [];
+  }
+};
+
+export const getExploreInitialData = async (): Promise<{ countries: string[], universities: any[], mentors: any[] }> => {
+  try {
+    const response = await axios.get(`${baseUrl}/api/explore/initial`, {
+      headers: getAuthHeaders()
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching initial explore data:", error);
+    return { countries: [], universities: [], mentors: [] };
+  }
+};
+
+export const getMentorsByCountry = async (country: string): Promise<any[]> => {
+  try {
+    const response = await axios.get(`${baseUrl}/api/search/mentors/by-country`, {
+      params: { country },
+      headers: getAuthHeaders()
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching mentors by country:", error);
+    return [];
   }
 };
