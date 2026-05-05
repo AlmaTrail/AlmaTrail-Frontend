@@ -3,6 +3,11 @@ import { motion } from 'framer-motion';
 import { BadgeCheck } from 'lucide-react';
 import { useRouter } from "next/navigation";
 import { Button } from '../ui/button';
+import { Dialog, DialogContent, DialogClose } from '@/components/ui/dialog';
+import WaitlistForm from '@/components/WaitlistForm';
+import MentorApplicationForm from '@/components/MentorApplicationForm';
+import { useState } from 'react';
+import { Check } from 'lucide-react';
 
 const mentors = [
   {
@@ -28,6 +33,22 @@ const mentors = [
 
 export default function Hero() {
   const router = useRouter();
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
+  const [mentorOpen, setMentorOpen] = useState(false);
+  const [successType, setSuccessType] = useState<"waitlist" | "mentor" | null>(null);
+
+  const handleWaitlistSuccess = () => {
+    setWaitlistOpen(false);
+    setSuccessType("waitlist");
+    setTimeout(() => setSuccessType(null), 5000);
+  };
+
+  const handleMentorSuccess = () => {
+    setMentorOpen(false);
+    setSuccessType("mentor");
+    setTimeout(() => setSuccessType(null), 5000);
+  };
+
   return (
     <header className="pt-32 pb-20 px-6 max-w-7xl mx-auto">
       <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -50,16 +71,46 @@ export default function Hero() {
             Talk to students from your exact target universities and get step-by-step guidance on shortlisting, applications, and admits.
           </p>
           
-          <div className="flex flex-wrap gap-4 pt-4">
-            <motion.button 
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => router.push("/explore")}
-              className="bg-primary text-white px-8 py-4 rounded-xl font-display font-bold text-lg shadow-xl shadow-primary/20"
-            >
-              Get Guidance
-            </motion.button>
-            <Button onClick={() => router.push("/mentor_profile")} variant="hero-outline" size="xl">Become a Mentor</Button>
+          <div className="space-y-4">
+            <div className="flex flex-wrap gap-4 pt-4">
+              <motion.button 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setWaitlistOpen(true)}
+                className="bg-primary text-white px-8 py-4 rounded-xl font-display font-bold text-lg shadow-xl shadow-primary/20"
+              >
+                Join Waitlist
+              </motion.button>
+              <Button 
+                onClick={() => setMentorOpen(true)} 
+                variant="hero-outline" 
+                size="xl"
+              >
+                Become a Mentor
+              </Button>
+            </div>
+
+            {/* Success Message */}
+            {successType && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="flex items-center gap-2 p-4 bg-green-50 border border-green-200 rounded-lg"
+              >
+                <Check className="w-5 h-5 text-green-600" />
+                <span className="text-green-600 font-medium">
+                  {successType === "waitlist" 
+                    ? "Congratulations! You've joined the waitlist. We'll be in touch soon!" 
+                    : "Thank you! Our team will review your application and contact you soon."}
+                </span>
+              </motion.div>
+            )}
+
+            {/* Students Joined */}
+            <p className="text-sm text-on-surface-variant font-medium">
+              ✓ 50+ students already joined the waitlist
+            </p>
           </div>
         </motion.div>
 
@@ -92,6 +143,26 @@ export default function Hero() {
           <div className="absolute -z-10 -right-20 top-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
         </div>
       </div>
+
+      {/* Waitlist Modal */}
+      <Dialog open={waitlistOpen} onOpenChange={setWaitlistOpen}>
+        <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+          <WaitlistForm 
+            onClose={() => setWaitlistOpen(false)}
+            onSuccess={handleWaitlistSuccess}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* Mentor Application Modal */}
+      <Dialog open={mentorOpen} onOpenChange={setMentorOpen}>
+        <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
+          <MentorApplicationForm 
+            onClose={() => setMentorOpen(false)}
+            onSuccess={handleMentorSuccess}
+          />
+        </DialogContent>
+      </Dialog>
     </header>
   );
 }

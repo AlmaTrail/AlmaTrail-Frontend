@@ -1,21 +1,17 @@
 "use client";
 
+import Navbar from "@/components/NewNavbar";
 import Footer from "@/components/footerSections";
 import { motion } from "framer-motion";
 
 export default function AboutUs() {
   return (
     <div className="min-h-screen flex flex-col bg-surface text-on-surface font-body">
-      
+      <Navbar />
       <main className="flex-grow max-w-5xl mx-auto px-6 py-16 w-full">
         
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-12"
-        >
+        <div className="mb-12">
           <p className="text-xs font-bold uppercase tracking-[0.3em] text-outline-variant mb-4">
             About Us
           </p>
@@ -23,9 +19,9 @@ export default function AboutUs() {
             Bridging Students with Real University Insights
           </h1>
           <p className="mt-4 text-on-surface-variant text-lg">
-            Helping students make confident decisions about their future with guidance from those who’ve already been there.
+            Helping students make confident decisions about their future with guidance from those who've already been there.
           </p>
-        </motion.div>
+        </div>
 
         {/* Content */}
         <div className="space-y-12 text-on-surface-variant leading-relaxed text-base">

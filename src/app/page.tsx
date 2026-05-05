@@ -17,7 +17,6 @@ const Index = () => (
     <ProblemSection />
     <JourneySection />
     <MentorMatchSection />
-    <MentorGrid />
     <SocialProof />
     <ComparisonSection />
     <ValueProp />

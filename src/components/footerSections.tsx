@@ -15,8 +15,8 @@ const FooterSection = () => {
         <>
             <footer className="bg-black shadow-lg">
                 <div className="container mx-auto  pt-[2rem] pb-4">
-                    <div className="flex justify-between flex-row items-start md:gap-[5rem] text-left">
-                        <div className="flex flex-col w-1/2 p-0 gap-6">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:gap-[5rem] text-left gap-8 md:gap-0">
+                        <div className="flex flex-col w-full md:w-1/2 p-0 gap-6">
                             <h1 className="text-6xl sm:text-4xl text-white font-gilroy-semibold">AlmaTrail</h1>
                             <p className="text-[15px] font-medium text-white font-gilroy-semibold">
                                 Make your dreams come true
@@ -34,29 +34,9 @@ const FooterSection = () => {
                                     );
                                 })}
                             </div>
-                            <p className="text-[16px] font-medium text-white font-gilroy-semibold">
-                                Privacy Policy | © {new Date().getFullYear()} AlmaTrail <br />{" "}
-                            </p>
                         </div>
 
-                        <div className="flex flex-col gap-5 relative sm:hidden">
-                            <Link href="/" className="text-[16px] text-white font-gilroy-semibold">
-                                Home
-                            </Link>
-
-                            <p className="text-[16px] text-white font-gilroy-semibold">
-                                Universities
-                            </p>
-
-                            <p className="text-[16px] text-white font-gilroy-semibold">
-                                Mentors
-                            </p>
-                            <p className="text-[16px] text-white font-gilroy-semibold">
-                                Careers
-                            </p>
-
-                        </div>
-                        <div className="flex flex-col gap-5">
+                        <div className="flex flex-col gap-5 w-full md:w-auto">
                             <Link href="/privacy" className="text-[16px] text-white font-gilroy-semibold">
                                 Privacy Policy
                             </Link>
@@ -73,6 +53,11 @@ const FooterSection = () => {
                                 About Us
                             </Link>
                         </div>
+                    </div>
+                    <div className="w-full md:w-auto text-center md:text-left">
+                        <p className="text-[16px] font-medium text-white font-gilroy-semibold">
+                            © {new Date().getFullYear()} AlmaTrail
+                        </p>
                     </div>
                 </div>
             </footer>

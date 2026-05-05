@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Navbar from "@/components/NewNavbar";
 import Footer from "@/components/footerSections";
 import { motion } from "framer-motion";
 
@@ -24,16 +25,11 @@ export default function ContactUs() {
 
   return (
     <div className="min-h-screen flex flex-col bg-surface text-on-surface font-body">
-      
+      <Navbar />
       <main className="flex-grow max-w-3xl mx-auto px-6 py-16 w-full">
         
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-12 text-center"
-        >
+        <div className="mb-12 text-center">
           <p className="text-xs font-bold uppercase tracking-[0.3em] text-outline-variant mb-4">
             Contact
           </p>
@@ -43,14 +39,11 @@ export default function ContactUs() {
           <p className="mt-4 text-on-surface-variant text-lg">
             Have a question, feedback, or need help? We’d love to hear from you.
           </p>
-        </motion.div>
+        </div>
 
         {/* Form */}
-        <motion.form
+        <form
           onSubmit={handleSubmit}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
           className="space-y-6 bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/10 ambient-shadow"
         >
           {/* Name */}
@@ -104,7 +97,7 @@ export default function ContactUs() {
           <p className="text-xs text-center text-on-surface-variant">
             This will open your email client to send the message.
           </p>
-        </motion.form>
+        </form>
 
         {/* Direct Email */}
         <div className="mt-10 text-center text-on-surface-variant">
