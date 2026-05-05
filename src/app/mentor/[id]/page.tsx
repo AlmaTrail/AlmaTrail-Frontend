@@ -26,7 +26,7 @@ interface MentorData {
   country: string;
   course: string | null;
   courses: Array<{
-    college: string;
+    college: string | null;
     courseMajor: string;
     courseName: string;
     endDate: string | null;
@@ -39,12 +39,25 @@ interface MentorData {
   kycStatus: string | null;
   linkedinUrl: string;
   oneHourSessionPrice: number;
-  profileUrl: string;
+  profilePicUrl: string;
   specialization: string | null;
   superpowers: string | null;
   timezone: string;
   totalSessions: number | null;
-  university: string;
+  university: {
+    id: number;
+    name: string;
+    cardImage: string;
+    country: string;
+    description: string;
+    globalRank: number;
+    heroImage: string;
+    isTop: boolean;
+    location: string;
+    mentorsCount: number;
+    studentsCount: number;
+    tag: string;
+  };
   user: {
     email: string;
     emailVerified: boolean;
@@ -171,7 +184,7 @@ export default function MentorProfile() {
                   <img 
                     alt={fullName} 
                     className="w-full h-full rounded-full object-cover border-4 border-surface" 
-                    src={mentorData.profileUrl || `https://picsum.photos/seed/${mentorData.user.id}/400/400`}
+                    src={mentorData.profilePicUrl || `https://picsum.photos/seed/${mentorData.user.id}/400/400`}
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = `https://picsum.photos/seed/${mentorData.user.id}/400/400`;
                     }}
@@ -203,12 +216,12 @@ export default function MentorProfile() {
                   {mentorData.university && (
                     <div className="flex items-center gap-2">
                       <img 
-                        alt={mentorData.university} 
+                        alt={mentorData.university.name} 
                         className="w-5 h-5 object-contain" 
                         src="https://picsum.photos/seed/university/40/40"
                         referrerPolicy="no-referrer"
                       />
-                      <span>{mentorData.university}</span>
+                      <span>{mentorData.university.name}</span>
                     </div>
                   )}
                   {firstCourse && (
@@ -315,7 +328,7 @@ export default function MentorProfile() {
                         <div className="space-y-1">
                           <p className="font-headline font-bold text-on-surface leading-tight">{firstCourse.courseName} {firstCourse.courseMajor}</p>
                           <p className="text-sm text-on-surface-variant">
-                            {firstCourse.college || mentorData.university} • {firstCourse.endDate ? new Date(firstCourse.endDate).getFullYear() : (firstCourse.startDate ? new Date(firstCourse.startDate).getFullYear() : "N/A")}
+                            {firstCourse.college || mentorData.university?.name || "Unknown University"} • {firstCourse.endDate ? new Date(firstCourse.endDate).getFullYear() : (firstCourse.startDate ? new Date(firstCourse.startDate).getFullYear() : "N/A")}
                           </p>
                         </div>
                       </div>
