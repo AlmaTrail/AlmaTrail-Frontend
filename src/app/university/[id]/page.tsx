@@ -5,7 +5,6 @@ import { getUniversityById } from '@/services/universityService';
 import { UniversityDetail } from '@/types/university';
 import Navbar from '@/components/NewNavbar';
 import Hero from '@/components/UniversityProfile/hero';
-import MentorsSection from '@/components/UniversityProfile/MentorSection';
 import Footer from '@/components/footerSections';
 import { Loader2 } from 'lucide-react';
 
@@ -69,7 +68,7 @@ export default function UniversityPage() {
       <Navbar />
       <main className="flex-grow">
         <Hero university={university} />
-        <MentorsSection mentors={university.mentors} />
+        {/* Mentors section will be integrated here later */}
       </main>
       <Footer />
     </div>

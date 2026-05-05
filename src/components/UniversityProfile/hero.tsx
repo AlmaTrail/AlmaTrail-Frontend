@@ -52,15 +52,15 @@ export default function Hero({ university }: { university: UniversityDetail }) {
             
             <div className="grid grid-cols-3 gap-6 md:gap-12 border-t border-on-surface/10 pt-8">
               <div>
-                <div className="text-2xl md:text-3xl font-black text-primary">{university.stats.students}</div>
+                <div className="text-2xl md:text-3xl font-black text-primary">{university.studentsCount.toLocaleString()}+</div>
                 <div className="text-[10px] md:text-xs font-bold text-on-surface-variant/70 uppercase tracking-wider">Students</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-black text-primary">{university.stats.mentors}</div>
+                <div className="text-2xl md:text-3xl font-black text-primary">{university.mentorsCount.toLocaleString()}+</div>
                 <div className="text-[10px] md:text-xs font-bold text-on-surface-variant/70 uppercase tracking-wider">Mentors</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-black text-primary">{university.stats.globalRank}</div>
+                <div className="text-2xl md:text-3xl font-black text-primary">#{university.globalRank}</div>
                 <div className="text-[10px] md:text-xs font-bold text-on-surface-variant/70 uppercase tracking-wider">Global Rank</div>
               </div>
             </div>

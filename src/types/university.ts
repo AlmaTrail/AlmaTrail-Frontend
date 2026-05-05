@@ -8,25 +8,15 @@ export interface UniversityCard {
   isTop: boolean;
 }
 
-export interface UniversityMentor {
+export interface UniversityDetail {
   id: number;
   name: string;
-  profilePicUrl: string;
-  bio: string;
-  halfHourSessionPrice: number;
-  oneHourSessionPrice: number;
-  country: string;
-}
-
-export interface UniversityDetail extends UniversityCard {
+  tag: string;
+  location: string;
   country: string;
   heroImage: string;
   description: string;
-  stats: {
-    students: string;
-    mentors: string;
-    globalRank: string;
-  };
-  programs: string[];
-  mentors: UniversityMentor[];
+  globalRank: number;
+  studentsCount: number;
+  mentorsCount: number;
 }

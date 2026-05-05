@@ -1,7 +1,7 @@
 import axios from "axios";
 import { UniversityCard, UniversityDetail } from "@/types/university";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081";
 
 export const getTopUniversities = async (): Promise<UniversityCard[]> => {
   try {
@@ -15,27 +15,9 @@ export const getTopUniversities = async (): Promise<UniversityCard[]> => {
 
 export const getUniversityById = async (id: string): Promise<UniversityDetail | null> => {
   try {
-    const response = await axios.get(`${baseUrl}/universities/${id}`);
-    const data = response.data;
-    
-    // Map backend DTO to frontend interface
-    return {
-      ...data,
-      stats: {
-        students: data.studentsCount ? `${data.studentsCount}+` : "N/A",
-        mentors: data.mentorsCount ? `${data.mentorsCount}+` : "N/A",
-        globalRank: data.globalRank ? `#${data.globalRank}` : "N/A",
-      },
-      programs: data.programs || [], // Fallback since backend doesn't send programs yet
-      mentors: (data.mentors || []).map((m: any) => ({
-        name: m.name,
-        role: "Mentor", // Fallback role
-        image: m.profilePicUrl || `https://ui-avatars.com/api/?name=${m.name}`,
-        tags: m.country ? [m.country] : [], // Fallback tags
-        quote: m.bio || "Happy to help students reach their goals!",
-        online: true
-      }))
-    };
+    const endpoint = process.env.NEXT_PUBLIC_GET_UNIVERSITY_BY_ID || `${baseUrl}/universities`;
+    const response = await axios.get(`${endpoint}/${id}`);
+    return response.data;
   } catch (error) {
     console.error(`Error fetching university ${id}:`, error);
     return null;
