@@ -161,19 +161,26 @@ const MentorMatchSection = () => {
 
             <button 
               onClick={handleFindMentors}
-              disabled={loadingCount || mentorCount === 0}
+              disabled={loadingCount || mentorCount === null || mentorCount === 0}
               className="mt-4 w-full rounded-xl bg-primary/10 py-6 text-center hover:bg-primary/20 transition-colors group disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loadingCount ? (
                 <div className="flex justify-center items-center py-2">
                   <Loader2 className="w-8 h-8 text-primary animate-spin" />
                 </div>
+              ) : mentorCount === null ? (
+                <div className="flex flex-col items-center justify-center gap-1">
+                  <p className="text-xl font-bold text-primary">Find Your Mentor</p>
+                  <p className="text-sm text-primary/80">Select criteria above to see matching mentors</p>
+                </div>
               ) : (
-                <p className="text-2xl font-bold text-primary">{mentorCount !== null ? mentorCount : "-"}</p>
+                <>
+                  <p className="text-2xl font-bold text-primary">{mentorCount}</p>
+                  <p className="text-sm text-primary/80 group-hover:text-primary transition-colors">
+                    mentors found matching your criteria — <span className="font-bold underline">View All</span>
+                  </p>
+                </>
               )}
-              <p className="text-sm text-primary/80 group-hover:text-primary transition-colors">
-                  mentors found matching your criteria — <span className="font-bold underline">View All</span>
-              </p>
             </button>
           </motion.div>
         </div>

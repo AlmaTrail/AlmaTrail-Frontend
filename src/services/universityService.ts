@@ -44,7 +44,7 @@ export const getUniversityById = async (id: string): Promise<UniversityDetail | 
 
 export const getFilterUniversities = async (): Promise<string[]> => {
   try {
-    const response = await axios.get(`${baseUrl}/api/mentors/filters/universities`);
+    const response = await axios.get(`${baseUrl}/universities/names`);
     return response.data;
   } catch (error) {
     console.error("Error fetching universities:", error);
@@ -54,22 +54,27 @@ export const getFilterUniversities = async (): Promise<string[]> => {
 
 export const getFilterCourses = async (universityName: string): Promise<string[]> => {
   try {
-    const response = await axios.get(`${baseUrl}/api/mentors/filters/courses`, {
-      params: { universityName }
-    });
-    return response.data;
+    const response = await axios.get(`${baseUrl}/api/course-masters`);
+    // Extract names from the objects returned by the API
+    return response.data.map((course: any) => course.name);
   } catch (error) {
     console.error("Error fetching courses:", error);
     return [];
   }
 };
 
-export const getFilterSpecializations = async (universityName: string, course: string): Promise<string[]> => {
+export const getFilterSpecializations = async (universityName: string, courseName: string): Promise<string[]> => {
   try {
-    const response = await axios.get(`${baseUrl}/api/mentors/filters/specializations`, {
-      params: { universityName, course }
-    });
-    return response.data;
+    // 1. We need to find the course ID first to get its specializations.
+    // If the backend had a search endpoint this would be easier, but we can fetch all courses and find the ID.
+    const courseResponse = await axios.get(`${baseUrl}/api/course-masters`);
+    const course = courseResponse.data.find((c: any) => c.name === courseName);
+    
+    if (!course) return [];
+
+    // 2. Fetch specializations for that course ID
+    const response = await axios.get(`${baseUrl}/api/specialization-masters/by-course/${course.id}`);
+    return response.data.map((spec: any) => spec.name);
   } catch (error) {
     console.error("Error fetching specializations:", error);
     return [];
@@ -78,7 +83,7 @@ export const getFilterSpecializations = async (universityName: string, course: s
 
 export const getMatchingMentorCount = async (universityName: string, course: string, specialization: string): Promise<number> => {
   try {
-    const response = await axios.get(`${baseUrl}/api/mentors/search/count`, {
+    const response = await axios.get(`${baseUrl}/api/search/mentors/count`, {
       params: { universityName, course, specialization }
     });
     return response.data;
