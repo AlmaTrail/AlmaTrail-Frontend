@@ -13,7 +13,8 @@ const challengeOptions = [
   "SOP / LOR",
   "Visa process",
   "Budget / cost",
-  "Not sure where to start"
+  "Not sure where to start",
+  "All of the above",
 ];
 
 const intakeOptions = [
@@ -22,25 +23,30 @@ const intakeOptions = [
   "Summer 2027",
   "Fall 2027",
   "Spring 2028",
-  "Summer 2028"
+  "Summer 2028",
 ];
 
-export default function WaitlistForm({ onClose, onSuccess }: WaitlistFormProps) {
+export default function WaitlistForm({
+  onClose,
+  onSuccess,
+}: WaitlistFormProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     whatsapp: "",
     targetCountry: "",
     targetIntake: "Fall 2026",
-    biggestChallenge: "Not sure where to start"
+    biggestChallenge: "Not sure where to start",
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     setError("");
   };
 
@@ -48,40 +54,58 @@ export default function WaitlistForm({ onClose, onSuccess }: WaitlistFormProps) 
     e.preventDefault();
     setError("");
 
-    // Validation
     if (!formData.name || !formData.email || !formData.whatsapp) {
       setError("Please fill in all required fields");
       return;
     }
 
-    // Email validation
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       setError("Please enter a valid email");
       return;
     }
 
-    // WhatsApp validation (basic)
-    if (!/^\d{10,}$/.test(formData.whatsapp.replace(/\D/g, ''))) {
+    if (!/^\d{10,}$/.test(formData.whatsapp.replace(/\D/g, ""))) {
       setError("Please enter a valid WhatsApp number");
       return;
     }
 
     setLoading(true);
 
-    // TODO: Replace with actual Google Sheets integration
-    console.log("Waitlist form submitted:", formData);
-    
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await fetch(
+        "https://script.google.com/macros/s/AKfycbzRthk6Rb_g6WJ4o_CickSt-C-K487YhKVhpPwWThGcbqrWG8hokEenN5mvm_G7h_bE/exec",
+        {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            type: "student",
+            name: formData.name,
+            email: formData.email,
+            whatsapp: formData.whatsapp,
+            targetCountry: formData.targetCountry,
+            targetIntake: formData.targetIntake,
+            biggestChallenge: formData.biggestChallenge,
+          }),
+        },
+      );
+
+      // 🔥 DO NOT read response
       onSuccess();
-    }, 1000);
+    } catch (err) {
+      setError("Failed to submit. Please try again.");
+    }
   };
 
   return (
     <div className="space-y-6">
       {/* Heading */}
       <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">Join the Waitlist</h2>
+        <h2 className="text-2xl font-semibold tracking-tight">
+          Join the Waitlist
+        </h2>
         <p className="text-sm text-muted-foreground">
           Be the first to get access to our mentorship platform
         </p>
@@ -185,8 +209,10 @@ export default function WaitlistForm({ onClose, onSuccess }: WaitlistFormProps) 
               onChange={handleChange}
               className="w-full bg-background border border-border rounded-xl py-3 pl-12 pr-10 focus:outline-none focus:ring-2 focus:ring-primary/30 transition appearance-none cursor-pointer"
             >
-              {intakeOptions.map(intake => (
-                <option key={intake} value={intake}>{intake}</option>
+              {intakeOptions.map((intake) => (
+                <option key={intake} value={intake}>
+                  {intake}
+                </option>
               ))}
             </select>
           </div>
@@ -212,8 +238,10 @@ export default function WaitlistForm({ onClose, onSuccess }: WaitlistFormProps) 
               onChange={handleChange}
               className="w-full bg-background border border-border rounded-xl py-3 pl-12 pr-10 focus:outline-none focus:ring-2 focus:ring-primary/30 transition appearance-none cursor-pointer"
             >
-              {challengeOptions.map(challenge => (
-                <option key={challenge} value={challenge}>{challenge}</option>
+              {challengeOptions.map((challenge) => (
+                <option key={challenge} value={challenge}>
+                  {challenge}
+                </option>
               ))}
             </select>
           </div>

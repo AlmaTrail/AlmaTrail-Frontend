@@ -1,7 +1,18 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { Mail, Phone, Building, BookOpen, MapPin, Zap, Link as LinkIcon, AlertCircle, DollarSign, ChevronDown } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  Building,
+  BookOpen,
+  MapPin,
+  Zap,
+  Link as LinkIcon,
+  AlertCircle,
+  DollarSign,
+  ChevronDown,
+} from "lucide-react";
 
 interface MentorApplicationFormProps {
   onClose: () => void;
@@ -13,7 +24,10 @@ const yearOptions = Array.from({ length: 10 }, (_, i) => {
   return year.toString();
 });
 
-export default function MentorApplicationForm({ onClose, onSuccess }: MentorApplicationFormProps) {
+export default function MentorApplicationForm({
+  onClose,
+  onSuccess,
+}: MentorApplicationFormProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,15 +39,19 @@ export default function MentorApplicationForm({ onClose, onSuccess }: MentorAppl
     countryStudying: "",
     canProvideProof: "Yes",
     whyMentor: "",
-    expectedPrice: ""
+    expectedPrice: "",
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     setError("");
   };
 
@@ -41,60 +59,97 @@ export default function MentorApplicationForm({ onClose, onSuccess }: MentorAppl
     e.preventDefault();
     setError("");
 
-    // Validation
-    if (!formData.name || !formData.email || !formData.whatsapp || !formData.currentUniversity || 
-        !formData.course || !formData.countryStudying || !formData.whyMentor || !formData.expectedPrice) {
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.whatsapp ||
+      !formData.currentUniversity ||
+      !formData.course ||
+      !formData.countryStudying ||
+      !formData.whyMentor ||
+      !formData.expectedPrice
+    ) {
       setError("Please fill in all required fields");
       return;
     }
 
-    // Email validation
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       setError("Please enter a valid email");
       return;
     }
 
-    // WhatsApp validation
-    if (!/^\d{10,}$/.test(formData.whatsapp.replace(/\D/g, ''))) {
+    if (!/^\d{10,}$/.test(formData.whatsapp.replace(/\D/g, ""))) {
       setError("Please enter a valid WhatsApp number");
       return;
     }
 
-    // Price validation
-    if (isNaN(Number(formData.expectedPrice)) || Number(formData.expectedPrice) <= 0) {
+    if (
+      isNaN(Number(formData.expectedPrice)) ||
+      Number(formData.expectedPrice) <= 0
+    ) {
       setError("Please enter a valid price");
       return;
     }
 
-    // LinkedIn URL validation (if provided)
-    if (formData.linkedinProfile && !formData.linkedinProfile.includes("linkedin.com")) {
+    if (
+      formData.linkedinProfile &&
+      !formData.linkedinProfile.includes("linkedin.com")
+    ) {
       setError("Please enter a valid LinkedIn URL");
       return;
     }
 
     setLoading(true);
 
-    // TODO: Replace with actual Google Sheets integration
-    console.log("Mentor application submitted:", formData);
-    
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await fetch(
+        "https://script.google.com/macros/s/AKfycbzRthk6Rb_g6WJ4o_CickSt-C-K487YhKVhpPwWThGcbqrWG8hokEenN5mvm_G7h_bE/exec",
+        {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            type: "mentor",
+            name: formData.name,
+            email: formData.email,
+            whatsapp: formData.whatsapp,
+            currentUniversity: formData.currentUniversity,
+            course: formData.course,
+            yearPassout: formData.yearPassout,
+            linkedinProfile: formData.linkedinProfile,
+            countryStudying: formData.countryStudying,
+            canProvideProof: formData.canProvideProof,
+            whyMentor: formData.whyMentor,
+            expectedPrice: formData.expectedPrice,
+          }),
+        },
+      );
+
       onSuccess();
-    }, 1000);
+    } catch (err) {
+      setError("Failed to submit. Please try again.");
+    }
   };
 
   return (
     <div className="space-y-6">
       {/* Heading */}
       <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">Become a Mentor</h2>
+        <h2 className="text-2xl font-semibold tracking-tight">
+          Become a Mentor
+        </h2>
         <p className="text-sm text-muted-foreground">
           Join our community and guide the next generation
         </p>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4 max-h-[70vh] overflow-y-auto pr-2"
+      >
         {/* Name */}
         <div className="space-y-2">
           <label className="text-xs font-medium uppercase text-muted-foreground ml-1">
@@ -158,7 +213,7 @@ export default function MentorApplicationForm({ onClose, onSuccess }: MentorAppl
         {/* Current University */}
         <div className="space-y-2">
           <label className="text-xs font-medium uppercase text-muted-foreground ml-1">
-            Current University *
+            Current/ Passed University *
           </label>
           <div className="relative">
             <Building
@@ -180,7 +235,7 @@ export default function MentorApplicationForm({ onClose, onSuccess }: MentorAppl
         {/* Course */}
         <div className="space-y-2">
           <label className="text-xs font-medium uppercase text-muted-foreground ml-1">
-            Course / Major *
+            Course with Major *
           </label>
           <div className="relative">
             <BookOpen
@@ -193,7 +248,7 @@ export default function MentorApplicationForm({ onClose, onSuccess }: MentorAppl
               required
               value={formData.course}
               onChange={handleChange}
-              placeholder="Computer Science"
+              placeholder="MS Computer Science"
               className="w-full bg-background border border-border rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
             />
           </div>
@@ -209,16 +264,16 @@ export default function MentorApplicationForm({ onClose, onSuccess }: MentorAppl
               className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground/60 pointer-events-none"
               size={18}
             />
-            <select
+            <input
+              type="number"
               name="yearPassout"
               value={formData.yearPassout}
               onChange={handleChange}
-              className="w-full bg-background border border-border rounded-xl py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-primary/30 transition appearance-none cursor-pointer"
-            >
-              {yearOptions.map(year => (
-                <option key={year} value={year}>{year}</option>
-              ))}
-            </select>
+              placeholder="2024"
+              min="1990"
+              max={new Date().getFullYear() + 5}
+              className="w-full bg-background border border-border rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
+            />
           </div>
         </div>
 
@@ -315,7 +370,7 @@ export default function MentorApplicationForm({ onClose, onSuccess }: MentorAppl
         {/* Expected Price */}
         <div className="space-y-2">
           <label className="text-xs font-medium uppercase text-muted-foreground ml-1">
-            Expected Price Per Session (euros per hour) *
+            Expected Price Per Session *
           </label>
           <div className="relative">
             <DollarSign
@@ -330,7 +385,7 @@ export default function MentorApplicationForm({ onClose, onSuccess }: MentorAppl
               onChange={handleChange}
               placeholder="50"
               min="0"
-              step="5"
+              step="1"
               className="w-full bg-background border border-border rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
             />
           </div>
