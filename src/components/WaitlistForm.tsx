@@ -112,7 +112,7 @@ export default function WaitlistForm({
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
         {/* Name */}
         <div className="space-y-2">
           <label className="text-xs font-medium uppercase text-muted-foreground ml-1">
@@ -255,7 +255,7 @@ export default function WaitlistForm({
         )}
 
         {/* Buttons */}
-        <div className="flex gap-3 pt-4">
+        <div className="flex gap-3 pt-4 sticky bottom-0 bg-background">
           <button
             type="button"
             onClick={onClose}
