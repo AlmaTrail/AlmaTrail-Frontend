@@ -57,6 +57,7 @@ export default function MentorApplicationForm({
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
     setError("");
 
     if (
@@ -102,34 +103,39 @@ export default function MentorApplicationForm({
     setLoading(true);
 
     try {
-      await fetch(
-        "https://script.google.com/macros/s/AKfycbzRthk6Rb_g6WJ4o_CickSt-C-K487YhKVhpPwWThGcbqrWG8hokEenN5mvm_G7h_bE/exec",
-        {
-          method: "POST",
-          mode: "no-cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            type: "mentor",
-            name: formData.name,
-            email: formData.email,
-            whatsapp: formData.whatsapp,
-            currentUniversity: formData.currentUniversity,
-            course: formData.course,
-            yearPassout: formData.yearPassout,
-            linkedinProfile: formData.linkedinProfile,
-            countryStudying: formData.countryStudying,
-            canProvideProof: formData.canProvideProof,
-            whyMentor: formData.whyMentor,
-            expectedPrice: formData.expectedPrice,
-          }),
+      const response = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          type: "mentor",
+          name: formData.name,
+          email: formData.email,
+          whatsapp: formData.whatsapp,
+          currentUniversity: formData.currentUniversity,
+          course: formData.course,
+          yearPassout: formData.yearPassout,
+          linkedinProfile: formData.linkedinProfile,
+          countryStudying: formData.countryStudying,
+          canProvideProof: formData.canProvideProof,
+          whyMentor: formData.whyMentor,
+          expectedPrice: formData.expectedPrice,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.error || "Submission failed");
+      }
 
       onSuccess();
-    } catch (err) {
-      setError("Failed to submit. Please try again.");
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || "Failed to submit. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 

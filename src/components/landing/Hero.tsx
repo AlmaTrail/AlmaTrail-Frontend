@@ -82,10 +82,10 @@ export default function Hero() {
               className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg"
             >
               <Check className="w-4 h-4 text-green-600" />
-              <span className="text-green-700 text-sm font-medium">
+              <span className="text-green-600 font-medium">
                 {successType === "waitlist"
-                  ? "You're on the waitlist 🎉"
-                  : "Application submitted successfully"}
+                  ? "Congratulations! You've joined the waitlist. We'll be in touch soon!"
+                  : "Thank you! Our team will review your application and contact you soon."}
               </span>
             </motion.div>
           )}

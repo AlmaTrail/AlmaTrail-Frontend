@@ -52,50 +52,41 @@ export default function WaitlistForm({
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
     setError("");
-
-    if (!formData.name || !formData.email || !formData.whatsapp) {
-      setError("Please fill in all required fields");
-      return;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      setError("Please enter a valid email");
-      return;
-    }
-
-    if (!/^\d{10,}$/.test(formData.whatsapp.replace(/\D/g, ""))) {
-      setError("Please enter a valid WhatsApp number");
-      return;
-    }
-
     setLoading(true);
 
     try {
-      await fetch(
-        "https://script.google.com/macros/s/AKfycbzRthk6Rb_g6WJ4o_CickSt-C-K487YhKVhpPwWThGcbqrWG8hokEenN5mvm_G7h_bE/exec",
-        {
-          method: "POST",
-          mode: "no-cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            type: "student",
-            name: formData.name,
-            email: formData.email,
-            whatsapp: formData.whatsapp,
-            targetCountry: formData.targetCountry,
-            targetIntake: formData.targetIntake,
-            biggestChallenge: formData.biggestChallenge,
-          }),
+      const response = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          type: "student",
+          name: formData.name,
+          email: formData.email,
+          whatsapp: formData.whatsapp,
+          targetCountry: formData.targetCountry,
+          targetIntake: formData.targetIntake,
+          biggestChallenge: formData.biggestChallenge,
+        }),
+      });
 
-      // 🔥 DO NOT read response
+      const data = await response.json();
+
+      console.log("API RESPONSE:", data);
+
+      if (!data.success) {
+        throw new Error(data.error || "Submission failed");
+      }
+
       onSuccess();
-    } catch (err) {
-      setError("Failed to submit. Please try again.");
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -112,7 +103,10 @@ export default function WaitlistForm({
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4 max-h-[70vh] overflow-y-auto pr-2"
+      >
         {/* Name */}
         <div className="space-y-2">
           <label className="text-xs font-medium uppercase text-muted-foreground ml-1">
