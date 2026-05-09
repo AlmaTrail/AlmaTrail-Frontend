@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 interface ProfilePhotoUploadProps {
   photo: string | null;
-  onPhotoChange: (photo: string) => void;
+  onPhotoChange: (photo: string, file: File) => void;
 }
 
 const ProfilePhotoUpload = ({ photo, onPhotoChange }: ProfilePhotoUploadProps) => {
@@ -15,7 +15,7 @@ const ProfilePhotoUpload = ({ photo, onPhotoChange }: ProfilePhotoUploadProps) =
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        onPhotoChange(reader.result as string);
+        onPhotoChange(reader.result as string, file);
       };
       reader.readAsDataURL(file);
     }
