@@ -11,8 +11,8 @@ import {
 
 const MentorMatchSection = () => {
   const router = useRouter();
-  const [countries, setCountries] = useState<string[]>([]);
-  const [universities, setUniversities] = useState<string[]>([]);
+  const [countries, setCountries] = useState<{id: number, name: string}[]>([]);
+  const [universities, setUniversities] = useState<{id: number, name: string}[]>([]);
 
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [selectedUniversity, setSelectedUniversity] = useState<string>("");
@@ -24,19 +24,14 @@ const MentorMatchSection = () => {
     // Initial fetch for countries
     getFilterCountries().then(data => {
       setCountries(data);
-      if (data.length > 0) setSelectedCountry(data[0]);
     });
   }, []);
 
   useEffect(() => {
     if (selectedCountry) {
-      getFilterUniversities(selectedCountry).then(data => {
+      getFilterUniversities(Number(selectedCountry)).then(data => {
         setUniversities(data);
-        if (data.length > 0) {
-          setSelectedUniversity(data[0]);
-        } else {
-          setSelectedUniversity("");
-        }
+        setSelectedUniversity("");
       });
     } else {
       setUniversities([]);
@@ -47,7 +42,7 @@ const MentorMatchSection = () => {
   useEffect(() => {
     if (selectedCountry && selectedUniversity) {
       setLoadingCount(true);
-      getMentorCountByLocation(selectedCountry, selectedUniversity).then(count => {
+      getMentorCountByLocation(Number(selectedCountry), Number(selectedUniversity)).then(count => {
         setMentorCount(count);
         setLoadingCount(false);
       });
@@ -59,11 +54,11 @@ const MentorMatchSection = () => {
   const handleFindMentors = () => {
     let query = "";
     if (selectedCountry && selectedUniversity) {
-      query = `country=${encodeURIComponent(selectedCountry)}&university=${encodeURIComponent(selectedUniversity)}`;
+      query = `countryId=${encodeURIComponent(selectedCountry)}&universityId=${encodeURIComponent(selectedUniversity)}`;
     } else if (selectedCountry) {
-      query = `country=${encodeURIComponent(selectedCountry)}`;
+      query = `countryId=${encodeURIComponent(selectedCountry)}`;
     } else if (selectedUniversity) {
-      query = `university=${encodeURIComponent(selectedUniversity)}`;
+      query = `universityId=${encodeURIComponent(selectedUniversity)}`;
     }
 
     if (query) {
@@ -115,7 +110,7 @@ const MentorMatchSection = () => {
                   className="mt-1.5 w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 >
                   <option value="" disabled>Select Country</option>
-                  {countries.map(country => <option key={country} value={country}>{country}</option>)}
+                  {countries.map(country => <option key={country.id} value={country.id}>{country.name}</option>)}
                 </select>
               </div>
 
@@ -129,7 +124,7 @@ const MentorMatchSection = () => {
                   className="mt-1.5 w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50"
                 >
                   <option value="" disabled>Select University</option>
-                  {universities.map(uni => <option key={uni} value={uni}>{uni}</option>)}
+                  {universities.map(uni => <option key={uni.id} value={uni.id}>{uni.name}</option>)}
                 </select>
               </div>
             </div>
@@ -150,10 +145,7 @@ const MentorMatchSection = () => {
                 </div>
               ) : (
                 <>
-                  <p className="text-2xl font-bold text-primary">{mentorCount}</p>
-                  <p className="text-sm text-primary/80 group-hover:text-primary transition-colors">
-                      mentors found matching your criteria — <span className="font-bold underline">View All</span>
-                  </p>
+                  <p className="text-2xl font-bold text-primary">{mentorCount} matching records</p>
                 </>
               )}
             </button>

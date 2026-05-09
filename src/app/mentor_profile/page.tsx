@@ -16,6 +16,7 @@ import ProfilePhotoUpload from '@/components/profilePhotoUpload';
 import DocumentUpload from '@/components/documentUpload';
 import SchedulePicker, { WeeklySchedule } from '@/components/schedulePicker';
 import timezoneData from '@/data/timezone.json';
+import { getFilterCountries, getFilterUniversities } from '@/services/universityService';
 // import "../globals.css";
 
 export default function App() {
@@ -49,7 +50,21 @@ export default function App() {
       }
     };
     fetchUserDetails();
+
+    getFilterCountries().then(data => setCountries(data));
   }, []);
+
+  const [countries, setCountries] = useState<{id: number, name: string}[]>([]);
+  const [universities, setUniversities] = useState<{id: number, name: string}[]>([]);
+  const [selectedCountryId, setSelectedCountryId] = useState<string>('');
+
+  useEffect(() => {
+    if (selectedCountryId) {
+      getFilterUniversities(Number(selectedCountryId)).then(data => setUniversities(data));
+    } else {
+      setUniversities([]);
+    }
+  }, [selectedCountryId]);
 
   const [workExperiences, setWorkExperiences] = useState([{ id: 1 }]);
   const [selectedKyc, setSelectedKyc] = useState<'id' | 'passport'>('passport');
@@ -80,7 +95,8 @@ export default function App() {
       email: formData.get('email') || '',
       course: formData.get('course') || '',
       dob: formData.get('dob') || '',
-      country: formData.get('country') || '',
+      countryId: formData.get('countryId') || '',
+      universityId: formData.get('universityId') || '',
       timezone: formData.get('timezone') || '',
       linkedin: formData.get('linkedin') || ''
     };
@@ -102,10 +118,11 @@ export default function App() {
     submitFormData.append('personalDetails.lastName', personalDetails.lastName);
     submitFormData.append('personalDetails.email', personalDetails.email);
     submitFormData.append('personalDetails.course', personalDetails.course);
-    submitFormData.append('personalDetails.dob', personalDetails.dob);
-    submitFormData.append('personalDetails.country', personalDetails.country);
-    submitFormData.append('personalDetails.timezone', personalDetails.timezone);
-    submitFormData.append('personalDetails.linkedin', personalDetails.linkedin);
+    submitFormData.append('personalDetails.dob', personalDetails.dob as string);
+    submitFormData.append('personalDetails.countryId', personalDetails.countryId as string);
+    submitFormData.append('personalDetails.universityId', personalDetails.universityId as string);
+    submitFormData.append('personalDetails.timezone', personalDetails.timezone as string);
+    submitFormData.append('personalDetails.linkedin', personalDetails.linkedin as string);
 
     submitFormData.append('shortBio', shortBio);
     submitFormData.append('course', personalDetails.course);
@@ -276,13 +293,36 @@ export default function App() {
               <div className="flex flex-col gap-2 md:col-span-1">
                 <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">Country</label>
                 <div className="relative">
-                  <input 
-                    name="country"
-                    className="w-full bg-surface-container-low border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 rounded-lg p-3 font-body text-on-surface transition-all pl-10 outline-none" 
-                    placeholder="London, United Kingdom" 
-                    type="text"
-                  />
+                  <select 
+                    name="countryId"
+                    className="w-full bg-surface-container-low border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 rounded-lg p-3 font-body text-on-surface transition-all pl-10 outline-none appearance-none" 
+                    value={selectedCountryId}
+                    onChange={(e) => setSelectedCountryId(e.target.value)}
+                  >
+                    <option value="" disabled>Select Country</option>
+                    {countries.map(country => (
+                      <option key={country.id} value={country.id}>{country.name}</option>
+                    ))}
+                  </select>
                   <MapPin size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
+                  <ChevronDown size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" />
+                </div>
+              </div>
+              <div className="flex flex-col gap-2 md:col-span-1">
+                <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">University</label>
+                <div className="relative">
+                  <select 
+                    name="universityId"
+                    className="w-full bg-surface-container-low border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 rounded-lg p-3 font-body text-on-surface transition-all outline-none appearance-none disabled:opacity-50" 
+                    defaultValue=""
+                    disabled={!selectedCountryId || universities.length === 0}
+                  >
+                    <option value="" disabled>Select University</option>
+                    {universities.map(uni => (
+                      <option key={uni.id} value={uni.id}>{uni.name}</option>
+                    ))}
+                  </select>
+                  <ChevronDown size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" />
                 </div>
               </div>
               <div className="flex flex-col gap-2 md:col-span-1">

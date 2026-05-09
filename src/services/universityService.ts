@@ -30,10 +30,11 @@ export const getUniversityById = async (id: string): Promise<UniversityDetail | 
   }
 };
 
-export const getFilterUniversities = async (country?: string): Promise<string[]> => {
+export const getFilterUniversities = async (countryId?: number): Promise<{id: number, name: string}[]> => {
   try {
-    const response = await axios.get(`${baseUrl}/universities/names`, {
-      params: country ? { country } : {}
+    const response = await axios.get(`${baseUrl}/universities/by-country`, {
+      params: countryId ? { countryId } : {},
+      headers: getAuthHeaders()
     });
     return response.data;
   } catch (error) {
@@ -42,9 +43,11 @@ export const getFilterUniversities = async (country?: string): Promise<string[]>
   }
 };
 
-export const getFilterCountries = async (): Promise<string[]> => {
+export const getFilterCountries = async (): Promise<{id: number, name: string}[]> => {
   try {
-    const response = await axios.get(`${baseUrl}/universities/countries`);
+    const response = await axios.get(`${baseUrl}/api/country-masters`, {
+      headers: getAuthHeaders()
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching countries:", error);
@@ -99,10 +102,10 @@ export const getMatchingMentorCount = async (universityName: string, course: str
   }
 };
 
-export const getMentorCountByLocation = async (country: string, universityName: string): Promise<number> => {
+export const getMentorCountByLocation = async (countryId: number, universityId: number): Promise<number> => {
   try {
     const response = await axios.get(`${baseUrl}/api/search/mentors/count-by-location`, {
-      params: { country, universityName },
+      params: { countryId, universityId },
       headers: getAuthHeaders()
     });
     return response.data;
