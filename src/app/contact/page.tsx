@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Footer from "@/components/footerSections";
 import { motion } from "framer-motion";
+import emailjs from '@emailjs/browser';
 
 export default function ContactUs() {
   const [form, setForm] = useState({
@@ -11,15 +12,30 @@ export default function ContactUs() {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Initialize EmailJS with your public key
+  // Replace 'your_public_key' with your actual EmailJS public key
+  emailjs.init('your_public_key');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const subject = encodeURIComponent("New Query from Almatrail");
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`
-    );
-
-    window.location.href = `mailto:support@almatrail.com?subject=${subject}&body=${body}`;
+    try {
+      // Replace with your EmailJS service ID and template ID
+      await emailjs.send(
+        'your_service_id', // Service ID
+        'your_template_id', // Template ID
+        {
+          from_name: form.name,
+          from_email: form.email,
+          message: form.message,
+        }
+      );
+      alert('Message sent successfully!');
+      setForm({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      alert('Failed to send message. Please try again.');
+    }
   };
 
   return (
@@ -95,14 +111,14 @@ export default function ContactUs() {
           {/* Button */}
           <button
             type="submit"
-            className="w-full py-4 bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold rounded-xl text-lg transition-all shadow-lg shadow-primary/20 hover:scale-[1.01]"
+            className="w-full py-4 bg-primary text-white font-bold rounded-xl text-lg transition-all shadow-lg shadow-primary/20 hover:scale-[1.01]"
           >
             Send Message
           </button>
 
           {/* Note */}
           <p className="text-xs text-center text-on-surface-variant">
-            This will open your email client to send the message.
+            Your message will be sent directly to our team.
           </p>
         </motion.form>
 
@@ -110,7 +126,7 @@ export default function ContactUs() {
         <div className="mt-10 text-center text-on-surface-variant">
           <p className="text-sm">Or reach us directly at</p>
           <p className="font-semibold text-primary mt-1">
-            support@almatrail.com
+            adminalmatrail@gmail.com
           </p>
         </div>
       </main>
