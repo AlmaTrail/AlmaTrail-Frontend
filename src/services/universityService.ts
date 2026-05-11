@@ -127,7 +127,7 @@ export const getAllMentors = async (): Promise<any[]> => {
   }
 };
 
-export const getExploreInitialData = async (): Promise<{ countries: string[], universities: any[], mentors: any[] }> => {
+export const getExploreInitialData = async (): Promise<{ countries: {id: number, name: string, code?: string, imgUrl?: string}[], universities: any[], mentors: any[] }> => {
   try {
     const response = await axios.get(`${baseUrl}/api/explore/initial`, {
       headers: getAuthHeaders()
@@ -139,10 +139,10 @@ export const getExploreInitialData = async (): Promise<{ countries: string[], un
   }
 };
 
-export const getMentorsByCountry = async (country: string): Promise<any[]> => {
+export const getMentorsByCountryId = async (countryId: number): Promise<any[]> => {
   try {
     const response = await axios.get(`${baseUrl}/api/search/mentors/by-country`, {
-      params: { country },
+      params: { countryId },
       headers: getAuthHeaders()
     });
     return response.data;
