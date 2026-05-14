@@ -1,138 +1,107 @@
 "use client";
-import api from "@/lib/api";
-import React, { useState } from "react";
-import { Button } from "./ui/button";
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "./ui/card";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { DialogClose } from "./ui/dialog";
-import { Cross2Icon } from "@radix-ui/react-icons";
-import axios from "axios";
+console.log("COMPONENT RENDERED");
+import { useState, FormEvent } from "react";
+import { Mail, Lock, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
-const LoginSection = ({ onSwitchToSignup }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [emailError, setEmailError] = useState(false);
-    const [loginError, setLoginError] = useState("");
+export default function LoginSection({
+  onSwitch,
+  onSuccess,
+}: {
+  onSwitch: () => void;
+  onSuccess: () => void;
+}) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    const validateEmail = (email) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-    };
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-        if (emailError) {
-            setEmailError(false);
-        }
-        if (loginError) {
-            setLoginError("");
-        }
-    };
+    try {
+      const res = await fetch("http://localhost:8080/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
-        if (loginError) {
-            setLoginError("");
-        }
-    };
+      const data = await res.json();
 
-    const handleEmailBlur = () => {
-        if (email && !validateEmail(email)) {
-            setEmailError(true);
-        }
-    };
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed");
+      }
 
-    const handleLogin = async () => {
-        try {
-            const response = await api.post("/auth/login", {
-                email,
-                password,
-            });
-            console.log("Login successful:", response.data);
-            // Attach the entire JWT response to the HTTP sessions cache (sessionStorage)
-            if (response.data) {
-                sessionStorage.setItem("jwt", JSON.stringify(response.data));
-            }
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                setLoginError(error.response?.data?.message || "Invalid credentials");
-                console.error("Login failed:", error.response.data);
-            } else {
-                setLoginError("An unexpected error occurred. Please try again.");
-                console.error("An error occurred during login:", error);
-            }
-        }
-    };
+      // ✅ Store JWT (basic)
+      localStorage.setItem("token", data.token);
 
-    return (
+      onSuccess();
+    } catch (err: any) {
+      setError(err.message || "Invalid credentials");
+    } finally {
+      setLoading(false);
+    }
+    console.log("FORM SUBMITTED");
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* UI SAME */}
+      <div className="space-y-1 text-center">
+        <h2 className="text-2xl font-semibold">Welcome back</h2>
+        <p className="text-sm text-muted-foreground">
+          Sign in to continue your journey
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Email */}
         <div className="relative">
-            <DialogClose asChild>
-                <button className="absolute top-4 right-4">
-                    <Cross2Icon />
-                </button>
-            </DialogClose>
-            <Card className="bg-white b-0">
-                <CardHeader className="space-y-1">
-                    <CardTitle className="text-2xl text-[#1d0828]">Log In</CardTitle>
-                </CardHeader>
-                <CardContent className="grid gap-4">
-                    <div className="grid gap-2">
-                        <Label htmlFor="email" className={emailError ? "text-red-500" : "text-[#1d0828]"}>
-                            Email
-                        </Label>
-                        <Input 
-                            className={`custom-input bg-white ${emailError ? "border-red-500 text-red-500" : "text-[#1d0828]"}`}
-                            id="email" 
-                            type="email" 
-                            placeholder="john@example.com"
-                            value={email}
-                            onChange={handleEmailChange}
-                            onBlur={handleEmailBlur}
-                        />
-                         {emailError && <p className="text-red-500 text-xs">Please enter a valid email address.</p>}
-                    </div>
-                    <div className="grid gap-2">
-                        <Label htmlFor="password" className="text-[#1d0828]">
-                            Password
-                        </Label>
-                        <Input 
-                            className="custom-input text-[#1d0828] bg-white" 
-                            id="password" 
-                            type="password"
-                            value={password}
-                            onChange={handlePasswordChange}
-                        />
-                        {loginError && <p className="text-red-500 text-xs mt-1">{loginError}</p>}
-                    </div>
-                    <div className="text-sm text-gray-600 mt-2">
-                        New to AlmaTrail?{" "}
-                        <button
-                            onClick={onSwitchToSignup}
-                            className="text-purple-950 hover:underline"
-                        >
-                            Sign up
-                        </button>
-                    </div>
-                </CardContent>
-                <CardFooter>
-                    <Button 
-                        className="w-full bg-white text-purple-950 border border-purple-950 hover:bg-purple-950 hover:text-white"
-                        disabled={!email || !password || emailError}
-                        onClick={handleLogin}
-                    >
-                        Log In
-                    </Button>
-                </CardFooter>
-            </Card>
+          <Mail className="absolute left-4 top-1/2 -translate-y-1/2" size={18} />
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full border rounded-xl py-3 pl-12 pr-4"
+          />
         </div>
-    )
-}
 
-export default LoginSection;
+        {/* Password */}
+        <div className="relative">
+          <Lock className="absolute left-4 top-1/2 -translate-y-1/2" size={18} />
+          <input
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full border rounded-xl py-3 pl-12 pr-4"
+          />
+        </div>
+
+        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
+        <motion.button
+            type="submit"
+            onClick={() => console.log("BUTTON CLICKED")}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full bg-primary text-primary-foreground rounded-xl py-3 flex items-center justify-center gap-2"
+            >
+            Sign In new
+        </motion.button>
+      </form>
+
+      <p className="text-center text-sm">
+        Don't have an account?{" "}
+        <button onClick={onSwitch} className="text-primary hover:underline">
+          Sign up
+        </button>
+      </p>
+    </div>
+  );
+}

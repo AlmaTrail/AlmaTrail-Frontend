@@ -3,14 +3,10 @@ import React from "react";
 import Hero from "../../public/images/hero_1.png";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import AuthContainer from "./AuthContainer";
+
 
 const HeroSection = () => {
+
   return (
     <div className="flex flex-col lg:flex-row sm:p-8 lg:justify-between items-center gap-5 lg:mt-8">
       <div className="flex flex-col gap-4 sm:items-left md:justify-center md:items-center lg:gap-8">
@@ -22,20 +18,16 @@ const HeroSection = () => {
         <p className="text-lg font-gilroy-regular sm:text-left md:text-center text-white font-medium mb-0">
           Turn your passion and knowledge into a thriving business.<br />Help your audience get ahead in life.<br />
         </p>
-        <div className="flex sm:flex-col justify-around">
-          <button className="py-2 w-full sm:my-4 bg-white rounded-md text-[#1d0828] font-gilroy-bold shadow-sm transition duration-200 hover:bg-[#1d0828] hover:text-white border-2 border-transparent hover:border-white mr-5">
-            <div >
-              <Link href={'/mentor_form'}>Register Here</Link>
-            </div>
-          </button>
-          <Dialog>
-            <DialogTrigger className="py-2 w-full sm:my-2 hover:bg-white rounded-md hover:text-[#1d0828] font-gilroy-bold shadow-sm transition duration-200 bg-[#1d0828] text-white border-2 border-white">
-              Log In
-            </DialogTrigger>
-            <DialogContent className='m-0 p-0 rounded-xl'>
-              <AuthContainer />
-            </DialogContent>
-          </Dialog>
+        <div className="flex flex-col w-full max-w-3xl mt-8">
+          <div className="flex justify-start">
+            <Link href={'/mentor_form'} className="w-full sm:w-auto">
+              <button className="py-3 px-10 w-full sm:w-auto bg-white rounded-md text-[#1d0828] font-gilroy-bold shadow-sm transition duration-200 hover:bg-[#1d0828] hover:text-white border-2 border-transparent hover:border-white text-lg font-bold">
+                Become a Mentor
+              </button>
+            </Link>
+          </div>
+
+
         </div>
       </div>
       <Image

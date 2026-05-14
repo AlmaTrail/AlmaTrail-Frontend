@@ -7,6 +7,7 @@ const config = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "./node_modules/flowbite-react/dist/**/*.js",
   ],
   prefix: "",
   theme: {
@@ -19,9 +20,10 @@ const config = {
     },
     extend: {
       screens: {
-        sm: { max: "640px" },
-        md: { min: "641px", max: "1023px" }, // Custom md breakpoint from 641px to 1023px
-        lg: { min: "1024px" } // Custom lg breakpoint starting from 1024px
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
       },
       colors: {
         border: "hsl(var(--border))",
@@ -65,7 +67,10 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("flowbite-react/plugin/tailwindcss")
+  ],
 } satisfies Config;
 
 export default config;

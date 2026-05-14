@@ -2,6 +2,7 @@
 import { FaFacebookF } from "react-icons/fa";
 import { AiOutlineTwitter, AiFillYoutube, AiFillLinkedin, AiOutlineInstagram } from "react-icons/ai";
 import { BiLogoPinterestAlt } from "react-icons/bi";
+import Link from "next/link";
 
 const FooterSection = () => {
     const iconsTab = [
@@ -39,35 +40,38 @@ const FooterSection = () => {
                         </div>
 
                         <div className="flex flex-col gap-5 relative sm:hidden">
-                            <p className="text-[16px] text-white font-gilroy-semibold">About Us</p>
+                            <Link href="/" className="text-[16px] text-white font-gilroy-semibold">
+                                Home
+                            </Link>
 
-                            <p className="text-[16px] text-white font-gilroy-semibold">
-                                Mentor Registration
-                            </p>
-
-                            <p className="text-[16px] text-white font-gilroy-semibold">
-                                Feedback
-                            </p>
                             <p className="text-[16px] text-white font-gilroy-semibold">
                                 Universities
                             </p>
 
+                            <p className="text-[16px] text-white font-gilroy-semibold">
+                                Mentors
+                            </p>
+                            <p className="text-[16px] text-white font-gilroy-semibold">
+                                Careers
+                            </p>
+
                         </div>
-                        <div className="flex flex-col gap-5 relative sm:ml-16">
-                            <p className="text-[16px]  text-white font-gilroy-semibold">About Us</p>
+                        <div className="flex flex-col gap-5">
+                            <Link href="/privacy" className="text-[16px] text-white font-gilroy-semibold">
+                                Privacy Policy
+                            </Link>
 
+                            <Link href="/terms" className="text-[16px] text-white font-gilroy-semibold">
+                                Terms & Conditions
+                            </Link>
 
-                            <p className="text-[16px]  text-white font-gilroy-semibold">
-                                Mentor Registration
-                            </p>
+                            <Link href="/contact" className="text-[16px] text-white font-gilroy-semibold">
+                                Contact
+                            </Link>
 
-                            <p className="text-[16px] text-white font-gilroy-semibold">
-                                Feedback
-                            </p>
-                            <p className="text-[16px] text-white font-gilroy-semibold">
-                                Privacy
-                            </p>
-
+                            <Link href="/about" className="text-[16px] text-white font-gilroy-semibold">
+                                About Us
+                            </Link>
                         </div>
                     </div>
                 </div>

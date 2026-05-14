@@ -47,3 +47,15 @@ export const refreshAccessToken = async (refreshToken: any) => {
     throw error; // Re-throw the error for handling in the component
   }
 };
+
+export const googleLoginUser = async (credential: string) => {
+  try {
+    const endpoint = process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENDPOINT || `${baseUrl}/google`;
+    const response = await axios.post(endpoint, {
+      token: credential, // Send the Google token to your backend
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

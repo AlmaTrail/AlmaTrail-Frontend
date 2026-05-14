@@ -1,195 +1,128 @@
 "use client";
-import React, { useState } from "react";
-import { Button } from "./ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "./ui/card";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { DialogClose } from "./ui/dialog";
-import { Cross2Icon } from "@radix-ui/react-icons";
 
-const SignupSection = ({ onSwitchToLogin }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [passwordError, setPasswordError] = useState(false);
-    const [emailError, setEmailError] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [apiError, setApiError] = useState("");
+import { useState, FormEvent } from "react";
+import { Mail, Lock, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
-    const validateEmail = (email) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-    };
+export default function SignupSection({
+  onSwitch,
+  onSuccess,
+}: {
+  onSwitch: () => void;
+  onSuccess: () => void;
+}) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-        if (emailError) {
-            setEmailError(false);
-        }
-    };
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError("");
 
-    const handleEmailBlur = () => {
-        if (!validateEmail(email)) {
-            setEmailError(true);
-        }
-    };
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
 
-    const validatePasswords = () => {
-        if (password !== confirmPassword) {
-            setPasswordError(true);
-        } else {
-            setPasswordError(false);
-        }
-    };
+    setLoading(true);
 
-    const handlePasswordBlur = () => {
-        if (confirmPassword) {
-            validatePasswords();
-        }
-    };
+    try {
+      const res = await fetch(process.env.NEXT_PUBLIC_SIGNUP_ENDPOINT!, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const handleConfirmPasswordChange = (e) => {
-        setConfirmPassword(e.target.value);
-        if (passwordError) {
-            setPasswordError(false);
-        }
-    };
+      const data = await res.json();
 
-    const handleConfirmPasswordBlur = () => {
-        validatePasswords();
-    };
+      if (!res.ok) {
+        throw new Error(data.message || "Signup failed");
+      }
 
-    const isButtonDisabled = !email || !password || !confirmPassword || password !== confirmPassword || !validateEmail(email);
+      // ✅ optional: auto-login after signup
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
 
-    const handleSignup = async () => {
-        setIsLoading(true);
-        setApiError("");
-        try {
-            const endpoint = process.env.NEXT_PUBLIC_SIGNUP_ENDPOINT || "http://localhost:8080/auth/signup";
-            const response = await fetch(endpoint, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password }),
-            });
+      onSuccess();
+    } catch (err: any) {
+      setError(err.message || "Signup failed");
+    } finally {
+      setLoading(false);
+    }
+    console.log("FORM SUBMITTED");
+  };
 
-            if (!response.ok) {
-                const text = await response.text();
-                let errorMessage = "Signup failed";
-                try {
-                    const errorData = JSON.parse(text);
-                    errorMessage = errorData.message || errorMessage;
-                } catch (e) {
-                    errorMessage = text || errorMessage;
-                }
-                setApiError(errorMessage);
-                return;
-            }
+  return (
+    <div className="space-y-6">
+      {/* UI SAME */}
+      <div className="text-center">
+        <h2 className="text-2xl font-semibold">Create your account</h2>
+        <p className="text-sm text-muted-foreground">
+          Start connecting with mentors
+        </p>
+      </div>
 
-            const data = await response.json();
-            console.log("Signup successful:", data);
-            
-            alert("Signup successful! Please log in.");
-            if (onSwitchToLogin) {
-                onSwitchToLogin();
-            }
-
-        } catch (error) {
-            console.error("Error during signup:", error);
-            setApiError("An unexpected error occurred. Please try again.");
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    return (
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Email */}
         <div className="relative">
-            <DialogClose asChild>
-                <button className="absolute top-4 right-4">
-                    <Cross2Icon />
-                </button>
-            </DialogClose>
-            <Card className="bg-white b-0">
-                <CardHeader className="space-y-1">
-                    <CardTitle className="text-2xl text-[#1d0828]">Create an account</CardTitle>
-                    <CardDescription className="text-[#1d0828]">
-                        Enter your email below to create your account
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="grid gap-4">
-                    <div className="grid gap-2">
-                        <Label htmlFor="email" className={emailError ? "text-red-500" : "text-[#1d0828]"}>
-                            Email
-                        </Label>
-                        <Input 
-                            className={`custom-input bg-white ${emailError ? "border-red-500 text-red-500" : "text-[#1d0828]"}`}
-                            id="email" 
-                            type="email" 
-                            placeholder="john@example.com"
-                            value={email}
-                            onChange={handleEmailChange}
-                            onBlur={handleEmailBlur}
-                        />
-                        {emailError && <p className="text-red-500 text-xs">Please enter a valid email address.</p>}
-                    </div>
-                    <div className="grid gap-2">
-                        <Label htmlFor="password" className="text-[#1d0828]">
-                            Password
-                        </Label>
-                        <Input 
-                            className="custom-input text-[#1d0828] bg-white" 
-                            id="password" 
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            onBlur={handlePasswordBlur}
-                        />
-                    </div>
-                    <div className="grid gap-2">
-                        <Label htmlFor="confirm-password" className={passwordError ? "text-red-500" : "text-[#1d0828]"}>
-                            Confirm Password
-                        </Label>
-                        <Input 
-                            className={`custom-input text-[#1d0828] bg-white ${passwordError ? "border-red-500" : ""}`}
-                            id="confirm-password" 
-                            type="password"
-                            value={confirmPassword}
-                            onChange={handleConfirmPasswordChange}
-                            onBlur={handleConfirmPasswordBlur}
-                        />
-                        {passwordError && <p className="text-red-500 text-xs">Passwords do not match.</p>}
-                    </div>
-                     <div className="text-sm text-gray-600 mt-2">
-                        Already have an account?{" "}
-                        <button
-                            onClick={onSwitchToLogin}
-                            className="text-purple-950 hover:underline"
-                        >
-                            Log in
-                        </button>
-                    </div>
-                </CardContent>
-                <CardFooter className="flex-col items-start gap-2">
-                    {apiError && <p className="text-red-500 text-sm">{apiError}</p>}
-                    <Button 
-                        className="w-full bg-white text-purple-950 border border-purple-950 hover:bg-purple-950 hover:text-white"
-                        disabled={isButtonDisabled || isLoading}
-                        onClick={handleSignup}
-                    >
-                        {isLoading ? "Creating account..." : "Create account"}
-                    </Button>
-                </CardFooter>
-            </Card>
+          <Mail className="absolute left-4 top-1/2 -translate-y-1/2" size={18} />
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full border rounded-xl py-3 pl-12 pr-4"
+          />
         </div>
-    )
-}
 
-export default SignupSection;
+        {/* Password */}
+        <div className="relative">
+          <Lock className="absolute left-4 top-1/2 -translate-y-1/2" size={18} />
+          <input
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full border rounded-xl py-3 pl-12 pr-4"
+          />
+        </div>
+
+        {/* Confirm */}
+        <div className="relative">
+          <Lock className="absolute left-4 top-1/2 -translate-y-1/2" size={18} />
+          <input
+            type="password"
+            required
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="w-full border rounded-xl py-3 pl-12 pr-4"
+          />
+        </div>
+
+        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
+        <motion.button
+          type="submit"
+          disabled={loading}
+          whileTap={{ scale: 0.98 }}
+          className="w-full bg-primary text-primary-foreground rounded-xl py-3 flex items-center justify-center gap-2"
+        >
+          {loading ? "Creating..." : "Create Account"}
+          <ArrowRight size={18} />
+        </motion.button>
+      </form>
+
+      <p className="text-center text-sm">
+        Already have an account?{" "}
+        <button onClick={onSwitch} className="text-primary hover:underline">
+          Sign in
+        </button>
+      </p>
+    </div>
+  );
+}
