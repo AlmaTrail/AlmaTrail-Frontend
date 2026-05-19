@@ -20,3 +20,12 @@ export interface UniversityDetail {
   studentsCount: number;
   mentorsCount: number;
 }
+export interface UniversityMentor {
+  id: number;
+  name?: string;
+  profilePicUrl?: string;
+  bio?: string;
+  country?: string;
+  halfHourSessionPrice?: number;
+  oneHourSessionPrice?: number;
+}
