@@ -6,9 +6,9 @@ import { motion } from "framer-motion";
 export default function TermsAndConditions() {
   return (
     <div className="min-h-screen flex flex-col bg-surface text-on-surface font-body">
-      
+
       <main className="flex-grow max-w-5xl mx-auto px-6 py-16 w-full">
-        
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -19,11 +19,13 @@ export default function TermsAndConditions() {
           <p className="text-xs font-bold uppercase tracking-[0.3em] text-outline-variant mb-4">
             Legal
           </p>
+
           <h1 className="text-4xl md:text-5xl font-extrabold font-headline tracking-tight">
             Terms & Conditions
           </h1>
+
           <p className="mt-4 text-on-surface-variant text-lg">
-            Last updated: April 2026
+            Last updated: May 2026
           </p>
         </motion.div>
 
@@ -33,139 +35,264 @@ export default function TermsAndConditions() {
           {/* Intro */}
           <section>
             <p>
-              Welcome to <span className="font-semibold text-on-surface">Almatrail</span>. 
-              By accessing or using our platform, you agree to be bound by these Terms & Conditions. 
-              If you do not agree, please do not use our services.
+              Welcome to{" "}
+              <span className="font-semibold text-on-surface">
+                AlmaTrail
+              </span>.
+              By accessing or using our platform, website, or services,
+              you agree to comply with and be bound by these Terms &
+              Conditions.
+            </p>
+
+            <p className="mt-4">
+              If you do not agree with these terms, please do not use
+              the platform.
             </p>
           </section>
 
-          {/* Use of platform */}
+          {/* Eligibility */}
           <section>
             <h2 className="text-xl font-bold text-on-surface mb-3">
-              1. Use of the Platform
+              1. Eligibility
             </h2>
+
             <ul className="list-disc pl-6 space-y-2">
-              <li>You must be at least 18 years old or have parental consent</li>
-              <li>You agree to provide accurate and complete information</li>
-              <li>You are responsible for maintaining account confidentiality</li>
-              <li>You agree not to misuse the platform or engage in harmful activities</li>
+              <li>
+                You must be at least 18 years old or use the platform
+                with parental or guardian consent
+              </li>
+
+              <li>
+                You agree to provide accurate and complete information
+              </li>
+
+              <li>
+                You are responsible for maintaining the confidentiality
+                of your account
+              </li>
+
+              <li>
+                You are responsible for all activities conducted through
+                your account
+              </li>
             </ul>
           </section>
 
-          {/* Services */}
+          {/* Platform */}
           <section>
             <h2 className="text-xl font-bold text-on-surface mb-3">
-              2. Services Offered
+              2. Platform Services
             </h2>
+
             <p>
-              Almatrail connects students with mentors for informational sessions. 
-              We do not guarantee admission, job placement, or specific outcomes.
+              AlmaTrail is a mentorship platform that connects students
+              and aspiring professionals with mentors for informational
+              and guidance sessions.
+            </p>
+
+            <p className="mt-4">
+              AlmaTrail does not guarantee admissions, internships,
+              scholarships, jobs, visa approvals, or any specific
+              outcomes from mentorship sessions.
             </p>
           </section>
 
-          {/* Booking & payments */}
+          {/* Bookings */}
           <section>
             <h2 className="text-xl font-bold text-on-surface mb-3">
               3. Bookings & Payments
             </h2>
+
             <ul className="list-disc pl-6 space-y-2">
-              <li>All sessions must be booked through the platform</li>
-              <li>Payments are processed via secure third-party providers</li>
-              <li>Prices are determined by mentors and may vary</li>
-              <li>Once booked, sessions are subject to cancellation policies</li>
+              <li>
+                All mentorship sessions must be booked through the platform
+              </li>
+
+              <li>
+                Payments are securely processed through third-party
+                payment providers
+              </li>
+
+              <li>
+                Mentor pricing may vary depending on mentor profile,
+                experience, and session type
+              </li>
+
+              <li>
+                Users agree to pay all applicable fees before confirmation
+                of bookings
+              </li>
             </ul>
           </section>
 
-          {/* Cancellation */}
+          {/* Refunds */}
           <section>
             <h2 className="text-xl font-bold text-on-surface mb-3">
-              4. Cancellation & Refunds
+              4. Cancellation & Refund Policy
             </h2>
+
             <ul className="list-disc pl-6 space-y-2">
-              <li>Users may cancel sessions within the allowed timeframe</li>
-              <li>Refund eligibility depends on timing and circumstances</li>
-              <li>No-shows may not be eligible for refunds</li>
-              <li>Almatrail reserves the right to resolve disputes fairly</li>
+              <li>
+                Cancellation and refund eligibility may depend on the
+                timing of cancellation
+              </li>
+
+              <li>
+                No-shows may not be eligible for refunds
+              </li>
+
+              <li>
+                Refund timelines may vary depending on the payment provider
+              </li>
+
+              <li>
+                AlmaTrail reserves the right to review disputes and make
+                final decisions regarding refunds
+              </li>
             </ul>
           </section>
 
-          {/* Mentor responsibility */}
+          {/* Mentor */}
           <section>
             <h2 className="text-xl font-bold text-on-surface mb-3">
               5. Mentor Responsibility
             </h2>
+
             <p>
-              Mentors are independent individuals. While we verify profiles, 
-              Almatrail is not responsible for the accuracy of advice or outcomes 
-              resulting from mentorship sessions.
+              Mentors on AlmaTrail are independent individuals and are
+              not employees or representatives of AlmaTrail.
+            </p>
+
+            <p className="mt-4">
+              While we may verify certain mentor information, AlmaTrail
+              does not guarantee the accuracy, completeness, or reliability
+              of mentor advice or recommendations.
             </p>
           </section>
 
-          {/* User conduct */}
+          {/* Conduct */}
           <section>
             <h2 className="text-xl font-bold text-on-surface mb-3">
               6. User Conduct
             </h2>
+
             <ul className="list-disc pl-6 space-y-2">
-              <li>Respectful communication is mandatory</li>
-              <li>No harassment, abuse, or inappropriate behavior</li>
-              <li>No sharing of illegal or harmful content</li>
-              <li>Violation may result in account suspension</li>
+              <li>
+                Users must communicate respectfully on the platform
+              </li>
+
+              <li>
+                Harassment, abuse, discrimination, or inappropriate
+                behavior is strictly prohibited
+              </li>
+
+              <li>
+                Users may not upload or share illegal, harmful, or
+                misleading content
+              </li>
+
+              <li>
+                Violations may result in suspension or permanent account
+                termination
+              </li>
             </ul>
           </section>
 
-          {/* Intellectual property */}
+          {/* IP */}
           <section>
             <h2 className="text-xl font-bold text-on-surface mb-3">
               7. Intellectual Property
             </h2>
+
             <p>
-              All content, branding, and materials on Almatrail are owned by us 
-              and may not be copied or reused without permission.
+              All platform content, branding, logos, text, graphics,
+              and software are the property of AlmaTrail and may not
+              be copied, reproduced, or distributed without permission.
             </p>
           </section>
 
-          {/* Limitation of liability */}
+          {/* Privacy */}
           <section>
             <h2 className="text-xl font-bold text-on-surface mb-3">
-              8. Limitation of Liability
+              8. Privacy
             </h2>
+
             <p>
-              Almatrail is not liable for any indirect, incidental, or consequential 
-              damages arising from the use of our platform.
+              Your use of the platform is also governed by our Privacy
+              Policy. By using AlmaTrail, you consent to the collection
+              and use of information as described in the Privacy Policy.
+            </p>
+          </section>
+
+          {/* Liability */}
+          <section>
+            <h2 className="text-xl font-bold text-on-surface mb-3">
+              9. Limitation of Liability
+            </h2>
+
+            <p>
+              AlmaTrail shall not be liable for any indirect, incidental,
+              special, or consequential damages arising from the use of
+              the platform or mentorship sessions.
+            </p>
+
+            <p className="mt-4">
+              Users access and use the platform at their own discretion
+              and risk.
             </p>
           </section>
 
           {/* Termination */}
           <section>
             <h2 className="text-xl font-bold text-on-surface mb-3">
-              9. Termination
+              10. Account Suspension & Termination
             </h2>
+
             <p>
-              We reserve the right to suspend or terminate accounts that violate 
-              these terms or harm the platform.
+              AlmaTrail reserves the right to suspend or terminate
+              accounts that violate these Terms & Conditions, engage
+              in fraudulent activities, or harm the platform or other users.
             </p>
           </section>
 
           {/* Changes */}
           <section>
             <h2 className="text-xl font-bold text-on-surface mb-3">
-              10. Changes to Terms
+              11. Changes to Terms
             </h2>
+
             <p>
-              We may update these Terms & Conditions from time to time. Continued 
-              use of the platform means you accept the updated terms.
+              We may update these Terms & Conditions from time to time.
+              Continued use of the platform after updates constitutes
+              acceptance of the revised terms.
+            </p>
+          </section>
+
+          {/* Governing law */}
+          <section>
+            <h2 className="text-xl font-bold text-on-surface mb-3">
+              12. Governing Law
+            </h2>
+
+            <p>
+              These Terms & Conditions shall be governed by and interpreted
+              in accordance with the laws of India.
             </p>
           </section>
 
           {/* Contact */}
           <section>
             <h2 className="text-xl font-bold text-on-surface mb-3">
-              11. Contact Us
+              13. Contact Us
             </h2>
-            <p>If you have any questions, contact us at:</p>
+
+            <p>
+              If you have any questions regarding these Terms &
+              Conditions, please contact:
+            </p>
+
             <p className="mt-2 font-semibold text-primary">
-              support@almatrail.com
+              adminalmatrail@gmail.com
             </p>
           </section>
 

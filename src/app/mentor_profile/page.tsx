@@ -76,13 +76,19 @@ export default function App() {
   });
 
   const addWorkExperience = () => {
-    setWorkExperiences([...workExperiences, { id: Date.now() }]);
+    setWorkExperiences([...workExperiences, { id: Date.now(), present: false }]);
   };
 
   const removeWorkExperience = (id: number) => {
     if (workExperiences.length > 1) {
       setWorkExperiences(workExperiences.filter(exp => exp.id !== id));
     }
+  };
+
+  const togglePresent = (id: number) => {
+    setWorkExperiences(workExperiences.map(exp => 
+      exp.id === id ? { ...exp, present: !exp.present } : exp
+    ));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -93,7 +99,9 @@ export default function App() {
       firstName: formData.get('firstName') || '',
       lastName: formData.get('lastName') || '',
       email: formData.get('email') || '',
+      university: formData.get('university') || '',
       course: formData.get('course') || '',
+      languages: formData.get('languages') || '',
       dob: formData.get('dob') || '',
       countryId: formData.get('countryId') || '',
       universityId: formData.get('universityId') || '',
@@ -104,19 +112,23 @@ export default function App() {
     const shortBio = formData.get('shortBio') || '';
 
     // Build work history array
-    const workHistory = workExperiences.map(exp => ({
-      id: exp.id,
-      company: formData.get(`company_${exp.id}`) || '',
-      role: formData.get(`role_${exp.id}`) || '',
-      startDate: formData.get(`startDate_${exp.id}`) || '',
-      endDate: formData.get(`endDate_${exp.id}`) || '',
-      present: formData.get(`present_${exp.id}`) === 'on'
-    }));
+    const workHistory = workExperiences.map(exp => {
+      const isPresent = formData.get(`present_${exp.id}`) === 'on';
+      return {
+        id: exp.id,
+        company: formData.get(`company_${exp.id}`) || '',
+        role: formData.get(`role_${exp.id}`) || '',
+        startDate: formData.get(`startDate_${exp.id}`) || '',
+        endDate: isPresent ? new Date().toISOString().split('T')[0] : formData.get(`endDate_${exp.id}`) || '',
+        present: isPresent
+      };
+    });
 
     const submitFormData = new FormData();
     submitFormData.append('personalDetails.firstName', personalDetails.firstName);
     submitFormData.append('personalDetails.lastName', personalDetails.lastName);
     submitFormData.append('personalDetails.email', personalDetails.email);
+    submitFormData.append('personalDetails.university', personalDetails.university);
     submitFormData.append('personalDetails.course', personalDetails.course);
     submitFormData.append('personalDetails.dob', personalDetails.dob as string);
     submitFormData.append('personalDetails.countryId', personalDetails.countryId as string);
@@ -125,7 +137,6 @@ export default function App() {
     submitFormData.append('personalDetails.linkedin', personalDetails.linkedin as string);
 
     submitFormData.append('shortBio', shortBio);
-    submitFormData.append('course', personalDetails.course);
 
     workHistory.forEach((exp, index) => {
       submitFormData.append(`workHistory[${index}].company`, exp.company);
@@ -142,15 +153,20 @@ export default function App() {
       });
     });
 
-    if (profilePhoto && typeof profilePhoto === 'object') {
-      submitFormData.append('profilePhoto', profilePhoto as any);
-    }
-
-    kycDocuments.forEach((doc) => {
-      if (doc.url && typeof doc.url === 'object') {
-        submitFormData.append('kycDocuments', doc.url as any);
+    if (profilePhoto) {
+        const res = await fetch(profilePhoto);
+        const blob = await res.blob();
+        submitFormData.append('profilePicUrl', blob, 'profile.jpg');
       }
-    });
+
+
+    for (const doc of kycDocuments) {
+      if (doc.url) {
+        const res = await fetch(doc.url);
+        const blob = await res.blob();
+        submitFormData.append('kycDocuments', blob, doc.name);
+      }
+    }
 
     try {
       const token = Cookies.get("token") || "";
@@ -189,6 +205,9 @@ export default function App() {
       }
       
       const result = await response.json();
+      if (result.token) {
+        Cookies.set("token", result.token);
+      }
       console.log("Successfully saved mentor profile:", result);
       alert("Profile saved successfully!");
     } catch (error) {
@@ -271,11 +290,29 @@ export default function App() {
                 />
               </div>
               <div className="flex flex-col gap-2">
+                <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">College / University Name</label>
+                <input 
+                  name="university"
+                  className="bg-surface-container-low border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 rounded-lg p-3 font-body text-on-surface transition-all outline-none" 
+                  placeholder="e.g. Stanford University" 
+                  type="text"
+                />
+              </div>
+              <div className="flex flex-col gap-2">
                 <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">Course Completed / In-Progress</label>
                 <input 
                   name="course"
                   className="bg-surface-container-low border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 rounded-lg p-3 font-body text-on-surface transition-all outline-none" 
                   placeholder="e.g. MS in Computer Science" 
+                  type="text"
+                />
+              </div>
+              <div className="flex flex-col gap-2 md:col-span-2">
+                <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">Languages Known (comma separated)</label>
+                <input 
+                  name="languages"
+                  className="bg-surface-container-low border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 rounded-lg p-3 font-body text-on-surface transition-all outline-none" 
+                  placeholder="e.g. English, Spanish, French" 
                   type="text"
                 />
               </div>
@@ -442,17 +479,19 @@ export default function App() {
                             <Calendar size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors pointer-events-none" />
                           </div>
                         </div>
-                        <div className="flex flex-col gap-2">
-                          <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">End Date</label>
-                          <div className="relative group">
-                            <input 
-                              name={`endDate_${exp.id}`}
-                              className="w-full bg-surface-container-lowest border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-3 pl-10 font-body text-on-surface transition-all outline-none appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer" 
-                              type="date"
-                            />
-                            <Calendar size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors pointer-events-none" />
+                        {!exp.present && (
+                          <div className="flex flex-col gap-2">
+                            <label className="text-[10px] font-bold font-headline text-on-surface-variant tracking-widest uppercase">End Date</label>
+                            <div className="relative group">
+                              <input 
+                                name={`endDate_${exp.id}`}
+                                className="w-full bg-surface-container-lowest border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-3 pl-10 font-body text-on-surface transition-all outline-none appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer" 
+                                type="date"
+                              />
+                              <Calendar size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors pointer-events-none" />
+                            </div>
                           </div>
-                        </div>
+                        )}
                       </div>
                       <div className="flex items-center gap-3 md:pt-8">
                         <input 
@@ -460,6 +499,8 @@ export default function App() {
                           className="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary/20 cursor-pointer" 
                           id={`present-check-${exp.id}`} 
                           type="checkbox"
+                          checked={exp.present}
+                          onChange={() => togglePresent(exp.id)}
                         />
                         <label className="text-sm font-medium text-on-surface cursor-pointer" htmlFor={`present-check-${exp.id}`}>
                           I currently work here
