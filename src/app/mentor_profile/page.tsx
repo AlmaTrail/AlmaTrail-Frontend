@@ -18,8 +18,10 @@ import SchedulePicker, { WeeklySchedule } from '@/components/schedulePicker';
 import timezoneData from '@/data/timezone.json';
 import countryData from '@/data/country.json';
 import superpowersData from '@/data/superpowers.json';
+import { getFilterCountries, getFilterUniversities } from '@/services/universityService';
 import { Datepicker } from 'flowbite-react';
 import { format } from 'date-fns';
+import Navbar from '@/components/NewNavbar';
 // import "../globals.css";
 
 export default function App() {
@@ -138,7 +140,7 @@ export default function App() {
     };
     fetchUserDetails();
 
-    getFilterCountries().then(data => setCountries(data));
+    getFilterCountries().then((data: {id: number, name: string}[]) => setCountries(data));
   }, []);
 
   const [countries, setCountries] = useState<{id: number, name: string}[]>([]);
@@ -147,13 +149,13 @@ export default function App() {
 
   useEffect(() => {
     if (selectedCountryId) {
-      getFilterUniversities(Number(selectedCountryId)).then(data => setUniversities(data));
+      getFilterUniversities(Number(selectedCountryId)).then((data: {id: number, name: string}[]) => setUniversities(data));
     } else {
       setUniversities([]);
     }
   }, [selectedCountryId]);
 
-  const [workExperiences, setWorkExperiences] = useState([{ id: 1 }]);
+  const [workExperiences, setWorkExperiences] = useState<Array<{id: number; company?: string; role?: string; startDate?: string; endDate?: string; present?: boolean;}>>([{ id: 1 }]);
   const [selectedKyc, setSelectedKyc] = useState<'id' | 'passport'>('passport');
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const [kycDocuments, setKycDocuments] = useState<{name: string, url: string}[]>([]);
@@ -269,6 +271,7 @@ export default function App() {
       courseEndYear: formData.get('courseEndYear') || '',
       languages: formData.get('languages') || '',
       dob: formData.get('dob') || '',
+      country: formData.get('country') || '',
       countryId: formData.get('countryId') || '',
       universityId: formData.get('universityId') || '',
       timezone: formData.get('timezone') || '',
@@ -402,27 +405,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Top Navigation Bar */}
-      <header className="fixed top-0 w-full z-50 glass-header border-b border-outline-variant/20">
-        <div className="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
-          <span className="text-2xl font-bold tracking-tighter text-primary font-headline">Almatrail</span>
-          <div className="flex items-center gap-4">
-            <span className="text-xs font-semibold text-on-surface-variant tracking-wider uppercase hidden sm:block">
-              Mentor Onboarding
-            </span>
-            <div className="h-8 w-8 rounded-full overflow-hidden ring-2 ring-primary/10">
-              <img 
-                alt="Professional headshot" 
-                className="w-full h-full object-cover" 
-                src="https://picsum.photos/seed/mentor/100/100"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-          </div>
-        </div>
-      </header>
+      <Navbar />
 
-      <main className="pt-24 pb-32 px-4 max-w-4xl mx-auto w-full">
+      <main className="py-16 pb-32 px-4 max-w-4xl mx-auto w-full">
         <form className="space-y-12" onSubmit={handleSubmit}>
           {/* Section 1: Personal Details */}
           <motion.section 

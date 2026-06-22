@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import GoogleOAuthWrapper from "@/components/googleOAuthWrapper";
+import AuthSessionProvider from "@/components/AuthSessionProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,17 +31,19 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <GoogleOAuthWrapper>
-          {children}
-          <Toaster
-            richColors
-            position="top-right"
-            closeButton
-            toastOptions={{
-              classNames: {
-                closeButton: "sonner-close-button",
-              }
-            }}
-          />
+          <AuthSessionProvider>
+            {children}
+            <Toaster
+              richColors
+              position="top-right"
+              closeButton
+              toastOptions={{
+                classNames: {
+                  closeButton: "sonner-close-button",
+                },
+              }}
+            />
+          </AuthSessionProvider>
         </GoogleOAuthWrapper>
       </body>
     </html>

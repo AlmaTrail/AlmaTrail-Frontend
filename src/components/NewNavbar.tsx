@@ -6,6 +6,10 @@ import { Menu, X } from "lucide-react";
 import AuthForm from "./AuthForm";
 import AuthSuccess from "./AuthSuccess";
 import Cookies from "js-cookie";
+import {
+  AUTH_SESSION_EXPIRED_EVENT,
+  clearStoredAuthSession,
+} from "@/lib/auth-session";
 
 const navLinks = [
   "Explore Mentors",
@@ -14,6 +18,15 @@ const navLinks = [
   "Resources",
 ];
 
+const parseJwt = (token: string) => {
+  try {
+    const base64Payload = token.split(".")[1];
+    return JSON.parse(atob(base64Payload));
+  } catch {
+    return null;
+  }
+};
+
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
@@ -21,6 +34,7 @@ const Navbar = () => {
   const [success, setSuccess] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [roles, setRoles] = useState<string[]>([]);
 
   // ESC close
   useEffect(() => {
@@ -36,9 +50,44 @@ const Navbar = () => {
 
   // Check token on load
   useEffect(() => {
-    const token = Cookies.get("token");
-    if (token) setIsLoggedIn(true);
+    const token = Cookies.get("token") || window.localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+      const payload = parseJwt(token);
+      if (payload && Array.isArray(payload.roles)) {
+        setRoles(payload.roles.map((role: string) => role.toUpperCase()));
+      }
+    }
   }, []);
+
+  useEffect(() => {
+    const handleAuthExpired = () => {
+      setIsLoggedIn(false);
+      setProfileOpen(false);
+      setAuthOpen(false);
+      setSuccess(false);
+      setRoles([]);
+    };
+
+    window.addEventListener(AUTH_SESSION_EXPIRED_EVENT, handleAuthExpired);
+
+    return () => {
+      window.removeEventListener(AUTH_SESSION_EXPIRED_EVENT, handleAuthExpired);
+    };
+  }, []);
+
+  const userHasMentorRole = roles.includes("MENTOR");
+  const userHasMenteeRole = roles.includes("MENTEE");
+
+  const accountMenu = userHasMentorRole
+    ? [
+        { label: "Profile", href: "/dashboard/mentor" },
+        { label: "Sessions", href: "/dashboard/mentor/sessions" },
+        { label: "Wallet", href: "/dashboard/mentor/wallet" },
+      ]
+    : [
+        { label: "Profile", href: "/dashboard/mentee" },
+      ];
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -95,23 +144,57 @@ const Navbar = () => {
                   👤
                 </button>
 
-                {/* Dropdown */}
+                {/* Dropdown menu */}
                 {profileOpen && (
                   <div
                     onClick={(e) => e.stopPropagation()}
-                    className="absolute right-0 mt-2 w-40 bg-background border border-border rounded-xl shadow-lg p-2 z-50"
+                    className="absolute right-0 top-full mt-3 w-72 rounded-[28px] border border-border bg-background shadow-2xl shadow-slate-900/10 p-4 text-sm z-50"
                   >
-                    <button
-                      onClick={() => {
-                        Cookies.remove("token");
-                        setIsLoggedIn(false);
-                        setProfileOpen(false);
-                        window.location.reload();
-                      }}
-                      className="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted transition"
-                    >
-                      Logout
-                    </button>
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-on-surface-variant">
+                          Account menu
+                        </p>
+                        <p className="mt-1 text-sm font-semibold text-foreground">
+                          {userHasMentorRole ? "Mentor" : "Mentee"}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => setProfileOpen(false)}
+                        className="rounded-full p-2 text-on-surface-variant hover:bg-muted transition"
+                      >
+                        <X size={18} />
+                      </button>
+                    </div>
+
+                    <div className="mt-4 space-y-2">
+                      {accountMenu.map((item) => (
+                        <a
+                          key={item.href}
+                          href={item.href}
+                          className="block rounded-2xl px-4 py-3 text-sm font-semibold text-on-surface hover:bg-surface-container-low transition"
+                          onClick={() => setProfileOpen(false)}
+                        >
+                          {item.label}
+                        </a>
+                      ))}
+                    </div>
+
+                    <div className="mt-4 border-t border-border pt-4">
+                      <button
+                        className="w-full rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-white hover:opacity-95 transition"
+                        onClick={() => {
+                          clearStoredAuthSession();
+                          setIsLoggedIn(false);
+                          setProfileOpen(false);
+                          setAuthOpen(false);
+                          setSuccess(false);
+                          setRoles([]);
+                        }}
+                      >
+                        Logout
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
@@ -152,19 +235,35 @@ const Navbar = () => {
                 </a>
               ))}
 
-              <div className="flex gap-3 pt-2">
-                {isLoggedIn ? (
+              {isLoggedIn ? (
+                <div className="space-y-2 pt-2">
+                  {accountMenu.map((item) => (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      className="block rounded-xl border border-border px-4 py-3 text-sm font-semibold text-on-surface hover:bg-surface-container-low transition"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {item.label}
+                    </a>
+                  ))}
                   <button
-                    className="flex-1 py-2 border rounded-xl"
+                    className="w-full rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white hover:opacity-95 transition"
                     onClick={() => {
-                      Cookies.remove("token");
+                      clearStoredAuthSession();
                       setIsLoggedIn(false);
-                      window.location.reload();
+                      setProfileOpen(false);
+                      setAuthOpen(false);
+                      setSuccess(false);
+                      setRoles([]);
+                      setMobileOpen(false);
                     }}
                   >
                     Logout
                   </button>
-                ) : (
+                </div>
+              ) : (
+                <div className="flex gap-3 pt-2">
                   <Button
                     variant="ghost"
                     className="flex-1"
@@ -177,20 +276,19 @@ const Navbar = () => {
                   >
                     Login
                   </Button>
-                )}
-
-                <Button
-                  className="flex-1"
-                  onClick={() => {
-                    setType("signup");
-                    setAuthOpen(true);
-                    setSuccess(false);
-                    setMobileOpen(false);
-                  }}
-                >
-                  Get Started
-                </Button>
-              </div>
+                  <Button
+                    className="flex-1"
+                    onClick={() => {
+                      setType("signup");
+                      setAuthOpen(true);
+                      setSuccess(false);
+                      setMobileOpen(false);
+                    }}
+                  >
+                    Get Started
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         )}

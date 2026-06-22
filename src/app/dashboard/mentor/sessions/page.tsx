@@ -61,9 +61,7 @@ const UPCOMING_SESSIONS: Session[] = [
 ];
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<"upcoming" | "pending" | "past">(
-    "upcoming",
-  );
+  const [activeTab, setActiveTab] = useState<"upcoming" | "past">("upcoming");
 
   return (
     <div className="min-h-screen flex flex-col bg-surface overflow-x-hidden">
@@ -180,11 +178,7 @@ export default function App() {
                 onClick={() => setActiveTab("upcoming")}
                 label="Upcoming"
               />
-              <TabButton
-                active={activeTab === "pending"}
-                onClick={() => setActiveTab("pending")}
-                label="Pending Requests"
-              />
+              
               <TabButton
                 active={activeTab === "past"}
                 onClick={() => setActiveTab("past")}

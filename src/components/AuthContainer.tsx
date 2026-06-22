@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import LoginSection from "./loginSection";
-import SignupSection from "./signupSection";
+import AuthForm from "./AuthForm";
 import AuthSuccess from "./AuthSuccess";
 
 export default function AuthContainer() {
@@ -10,7 +9,8 @@ export default function AuthContainer() {
 
   if (view === "login") {
     return (
-      <LoginSection
+      <AuthForm
+        type="login"
         onSwitch={() => setView("signup")}
         onSuccess={() => setView("success")}
       />
@@ -19,7 +19,8 @@ export default function AuthContainer() {
 
   if (view === "signup") {
     return (
-      <SignupSection
+      <AuthForm
+        type="signup"
         onSwitch={() => setView("login")}
         onSuccess={() => setView("success")}
       />
