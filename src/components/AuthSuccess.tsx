@@ -32,7 +32,7 @@ export default function AuthSuccess() {
         <motion.button
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
-          onClick={() => router.push("/mentor_profile")}
+          onClick={() => router.push("/dashboard/mentor/profile")}
           className="flex-1 border border-border rounded-xl py-3 font-medium hover:bg-muted transition"
         >
           Become a Mentor

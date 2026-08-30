@@ -8,7 +8,7 @@ const navItems = [
   { label: 'Home', icon: 'home', href: '/' },
   { label: 'Explore', icon: 'search', href: '/explore' },
   { label: 'Universities', icon: 'school', href: '/explore#universities' },
-  { label: 'Profile', icon: 'person', href: '/mentor_profile' },
+  { label: 'Profile', icon: 'person', href: '/dashboard/mentor/profile' },
 ];
 
 const ExploreFooterNav = () => {

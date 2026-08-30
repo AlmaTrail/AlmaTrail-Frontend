@@ -81,7 +81,7 @@ const Navbar = () => {
 
   const accountMenu = userHasMentorRole
     ? [
-        { label: "Profile", href: "/dashboard/mentor" },
+        { label: "Profile", href: "/dashboard/mentor/profile" },
         { label: "Sessions", href: "/dashboard/mentor/sessions" },
         { label: "Wallet", href: "/dashboard/mentor/wallet" },
       ]
